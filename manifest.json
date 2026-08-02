@@ -1,0 +1,17 @@
+{
+  "name": "iBird Hatching",
+  "short_name": "iBird Hatch",
+  "description": "Incubation & hatching batch tracker — schedule, guidance, egg testing.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#16110c",
+  "theme_color": "#16110c",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icons/icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="iBird Hatch">
+<meta name="theme-color" content="#16110c">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icons/icon.svg">
+<title>iBird Hatching</title>
+<style>
+:root{
+  --bg:#16110c;--panel:#241c14;--line:#3a2e22;--ink:#efe3cf;--muted:#a99a83;
+  --heat:#f0a02a;--heat-d:#c97c14;--fast:#e7724a;--ok:#7bbf6a;--slow:#5aa9d6;
+  --shell:#f3e9d6;--shell-ink:#2a2118;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;}
+body{padding-bottom:calc(78px + env(safe-area-inset-bottom));}
+a{color:var(--heat);}
+button{font-family:inherit;cursor:pointer;border:none;}
+input,select,textarea{font-family:inherit;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:14px;width:100%;}
+label{font-size:12px;color:var(--muted);font-weight:600;display:block;margin:14px 0 6px;}
+.field:first-child label{margin-top:0;}
+
+#updateBar{display:none;position:fixed;top:0;left:0;right:0;background:var(--heat);color:#251603;padding:10px 16px;font-size:13px;font-weight:700;z-index:200;align-items:center;justify-content:space-between;gap:10px;}
+#updateBar button{background:#251603;color:var(--heat);border-radius:8px;padding:7px 12px;font-weight:700;}
+
+header{padding:18px 18px 10px;display:flex;align-items:center;justify-content:space-between;}
+header h1{font-size:17px;letter-spacing:.08em;font-weight:700;margin:0;}
+header .tag{font-size:10.5px;letter-spacing:.22em;color:var(--heat);text-transform:uppercase;margin-top:2px;font-weight:600;}
+.langbtn{background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:9px 13px;font-size:13px;font-weight:700;}
+
+main{padding:0 16px 20px;max-width:640px;margin:0 auto;}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px;}
+.card h2{font-size:15px;margin:0 0 12px;font-weight:700;}
+.muted{color:var(--muted);font-size:13px;}
+.row{display:flex;gap:10px;}
+.row>*{flex:1;}
+
+.pill{display:inline-flex;align-items:center;font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:5px 10px;border-radius:999px;}
+.pill.incubating{background:rgba(90,169,214,.15);color:var(--slow);}
+.pill.lockdown{background:rgba(240,160,42,.18);color:var(--heat);}
+.pill.hatching{background:rgba(123,191,106,.18);color:var(--ok);}
+.pill.complete{background:rgba(169,154,131,.18);color:var(--muted);}
+
+.batch{border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;background:rgba(0,0,0,.12);cursor:pointer;}
+.batch .top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;}
+.batch .name{font-weight:700;font-size:15px;}
+.batch .meta{font-size:12.5px;color:var(--muted);}
+.batch .stats{display:flex;gap:16px;margin-top:10px;font-family:ui-monospace,Consolas,monospace;}
+.batch .stats div b{display:block;font-size:15px;color:var(--ink);}
+.batch .stats div span{font-size:10.5px;color:var(--muted);text-transform:uppercase;}
+
+.event{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px;}
+.event:last-child{border-bottom:none;}
+.event .lbl{font-weight:600;}
+.event .date{color:var(--muted);font-size:12px;white-space:nowrap;}
+.event.today .lbl{color:var(--heat);}
+.event.today .date{color:var(--heat);font-weight:700;}
+
+.btn{background:var(--heat);color:#251603;font-weight:800;border-radius:12px;padding:13px 16px;font-size:14px;width:100%;display:flex;align-items:center;justify-content:center;gap:7px;}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:600;}
+.btn.small{width:auto;padding:9px 14px;font-size:13px;}
+.btn.danger{background:transparent;color:var(--fast);border:1px solid rgba(231,114,74,.5);}
+
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--panel);border-top:1px solid var(--line);display:flex;padding:8px 6px calc(8px + env(safe-area-inset-bottom));z-index:100;}
+nav button{flex:1;background:none;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;font-size:10.5px;font-weight:700;border-radius:10px;}
+nav button.active{color:var(--heat);}
+nav button .ic{font-size:19px;}
+
+.modalwrap{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center;z-index:150;}
+.modalwrap.open{display:flex;}
+.modal{background:var(--bg);border-radius:20px 20px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));width:100%;max-width:640px;max-height:88vh;overflow-y:auto;}
+.modal h2{margin:0 0 4px;font-size:17px;}
+.modal .close{position:absolute;top:16px;inset-inline-end:16px;background:var(--panel);border-radius:10px;width:34px;height:34px;color:var(--muted);font-size:16px;}
+.modalhead{position:relative;margin-bottom:14px;}
+
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:start;padding:6px 6px;font-weight:700;border-bottom:1px solid var(--line);}
+td{padding:8px 6px;border-bottom:1px solid var(--line);}
+tr:last-child td{border-bottom:none;}
+
+.metric{text-align:center;padding:12px 6px;}
+.metric b{display:block;font-size:19px;font-family:ui-monospace,Consolas,monospace;color:var(--heat);}
+.metric span{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+
+.toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--shell);color:var(--shell-ink);padding:11px 18px;border-radius:999px;font-size:13px;font-weight:700;z-index:220;opacity:0;transition:opacity .25s;pointer-events:none;max-width:88%;text-align:center;}
+.toast.show{opacity:1;}
+
+.empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:13.5px;}
+.chip-row{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13px;font-weight:600;color:var(--ink);}
+.chip.active{background:var(--heat);color:#251603;border-color:var(--heat);}
+.note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:8px;}
+</style>
+</head>
+<body>
+
+<div id="updateBar"><span id="t_updateMsg"></span><button onclick="applyUpdate()" id="t_updateBtn"></button></div>
+
+<header>
+  <div>
+    <h1 id="t_appTitle"></h1>
+    <div class="tag" id="t_appTag"></div>
+  </div>
+  <button class="langbtn" onclick="toggleLang()" id="t_langBtn"></button>
+</header>
+
+<main id="view"></main>
+
+<nav id="navbar"></nav>
+
+<div class="modalwrap" id="modalwrap"><div class="modal" id="modalBody"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+var _swReg=null;
+function showUpdateBar(){ document.getElementById('updateBar').style.display='flex'; }
+function trackInstalling(sw){
+  sw.addEventListener('statechange',function(){
+    if(sw.state==='installed'&&navigator.serviceWorker.controller) showUpdateBar();
+  });
+}
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js').then(function(reg){
+    _swReg=reg;
+    if(reg.waiting&&navigator.serviceWorker.controller) showUpdateBar();
+    if(reg.installing) trackInstalling(reg.installing);
+    reg.addEventListener('updatefound',function(){ trackInstalling(reg.installing); });
+    document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') reg.update(); });
+    reg.update();
+  }).catch(function(){});
+}
+function applyUpdate(){
+  document.getElementById('updateBar').style.display='none';
+  var doReload=function(){ window.location.reload(); };
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.addEventListener('controllerchange',doReload);
+    (_swReg&&_swReg.waiting ? Promise.resolve(_swReg) : navigator.serviceWorker.ready).then(function(reg){
+      if(reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'}); else doReload();
+    });
+  } else { doReload(); }
+}
+
+/* ---------- i18n ---------- */
+const I18N={
+en:{
+  appTitle:"iBird Hatching", appTag:"Incubation & hatch tracker", langBtn:"العربية",
+  updateMsg:"Update available", updateBtn:"Reload",
+  navSchedule:"Schedule", navEggTest:"Egg Test", navGuidance:"Guidance", navInfo:"Info", navStore:"Store",
+  newIncubator:"New incubator", newBatch:"New batch", save:"Save", cancel:"Cancel", close:"Close",
+  delete:"Delete", confirmDelete:"Delete this? This can't be undone.", markComplete:"Mark complete",
+  incubatorName:"Name", incubatorType:"Type", incubatorLocation:"Location (optional)", incubatorPower:"Rated power (watts, optional)",
+  typeManual:"Manual", typeEsp32:"ESP32 controller (future)",
+  batchIncubator:"Incubator", batchSpecies:"Species category", batchSetDate:"Set date (day 0)",
+  batchEggsSet:"Eggs set", batchHatcherMode:"At lockdown", hatcherSeparate:"Moves to a separate hatcher", hatcherSame:"Stays in this incubator",
+  batchNotes:"Notes (optional)",
+  statusIncubating:"Incubating", statusLockdown:"Lockdown", statusHatching:"Hatching", statusComplete:"Complete",
+  dayOf:"Day {d} of {n}",
+  eventCandling1:"Candling check #1", eventCandling2:"Candling check #2",
+  eventLockdownWarn:"Lockdown tomorrow — prep", eventLockdownDay:"Lockdown today",
+  eventDND:"Do not disturb — lid closed", eventHatchWarn:"Hatch window opens tomorrow", eventHatchStart:"Hatch window — may begin today",
+  eventChickRemoval:"Move dried chicks to brooder", eventStalled:"Check for stalled/pipped eggs",
+  noBatches:"No batches yet. Add an incubator, then start a batch.", noIncubators:"No incubators yet.",
+  addFirstIncubator:"Add your first incubator",
+  guidanceHeader:"Today", guidanceEmpty:"Nothing due today across your batches.",
+  guidance_incubating:"Maintain target temperature/humidity and keep turning on schedule.",
+  guidance_candle:"Candle today — log results in Egg Test.",
+  guidance_lockdownWarn:"Tomorrow is lockdown: stop the turner, raise humidity toward target, cover water so it doesn't evaporate faster, and don't plan to open the incubator after today.",
+  guidance_lockdownDay:"Lockdown starts today: stop turning, raise humidity to the lockdown target, close the incubator and avoid opening it until hatch.",
+  guidance_dnd:"Don't open the incubator — every opening during lockdown drops humidity and can harm hatching chicks.",
+  guidance_hatchWarn:"Hatch window opens tomorrow. Expect a range, not one exact hour.",
+  guidance_hatchStart:"Hatching may begin today. Let chicks hatch on their own — don't assist unless a chick is truly stuck long past pipping.",
+  guidance_removal:"Once chicks are dry and fluffed, move them to the brooder — don't rush this, but don't leave them too long with unhatched eggs either.",
+  guidance_stalled:"Past the expected hatch window with eggs still unhatched. Candle for a stalled pip and check troubleshooting below.",
+  guidance_complete:"Batch complete.",
+  troubleshootTitle:"Troubleshooting",
+  tr_lowFertility_t:"Low fertility rate, normal Hatch-of-Fertile",
+  tr_lowFertility_d:"Points upstream of the incubator — breeder flock age, nutrition, male:female ratio, or egg storage/age before setting.",
+  tr_lowHOF_t:"Fertility fine, low Hatch-of-Fertile",
+  tr_lowHOF_d:"Points at the incubation process itself — check temperature calibration, humidity accuracy, turning, and ventilation.",
+  tr_stalled_t:"Pipped but not progressing",
+  tr_stalled_d:"Usually humidity too low in the days before lockdown, or too low at lockdown itself. Check your logged humidity against the lockdown target.",
+  tr_tempSpike_t:"Whole batch dies around day 3-5",
+  tr_tempSpike_d:"More likely a temperature spike/drop (power cut, thermostat drift) than an egg-quality problem — check the incubator, not the eggs.",
+  tr_principle:"General rule: humidity is the primary correction lever. Only nudge temperature, in small (±0.1–0.2°C) steps, if humidity is already maxed out or at its floor and the trend still won't close.",
+  eggTestTitle:"Egg Test List", eggTestPick:"Select a batch",
+  candle1Btn:"Log candling #1", candle2Btn:"Log candling #2", hatchBtn:"Log hatch result",
+  fieldEggsFertile:"Fertile eggs remaining", fieldEggsHatched:"Eggs hatched", fieldFirstHatchDate:"First hatch date",
+  metricsFertility:"Fertility rate", metricsHOS:"Hatch of Set", metricsHOF:"Hatch of Fertile", metricsCostPerChick:"Cost per chick",
+  fieldEggCost:"Egg cost, total", fieldOtherCosts:"Other costs (optional)", fieldElectricityRate:"Electricity rate / kWh", fieldCurrency:"Currency",
+  powerCostEstimate:"Estimated power cost", notSet:"—", editCosts:"Edit costs",
+  infoTitle:"Universal incubation reference", infoIntro:"Generic starting points by category. Species-specific overrides come later.",
+  infoIncubationDays:"Incubation period", infoTempForced:"Temp (forced-air)", infoTempStill:"Temp (still-air)",
+  infoHumidityPre:"Humidity, day 1 → lockdown", infoHumidityLock:"Humidity, lockdown → hatch",
+  infoTurning:"Turning", infoLockdownOffset:"Lockdown starts", infoCandlingDays:"Candling checkpoints",
+  daysBeforeHatch:"{n} days before expected hatch",
+  storeTitle:"Store", storeDesc:"Order rings and incubation supplies from ibirdbh.",
+  storeUrlField:"Store URL", storeGoBtn:"Open store", storeNotSet:"Add your store URL in settings below to enable the link.",
+  storeSave:"Save URL",
+  toastSaved:"Saved", toastDeleted:"Deleted",
+  notifEnable:"Enable reminders", notifEnabled:"Reminders on", notifDenied:"Notifications blocked in browser settings",
+  notifLimitationNote:"Best-effort only: reminders fire while this app/tab is open or recently opened. For guaranteed background alerts, the planned Flutter app with push notifications is the long-term fix — see the dev plan.",
+  candleModalTitle1:"Candling check #1", candleModalTitle2:"Candling check #2",
+  candleHint1:"How many eggs are fertile / developing right now?", candleHint2:"Recheck — how many fertile eggs remain?",
+  hatchModalTitle:"Log hatch result",
+  species_poultry:"Poultry (chicken-type)", species_waterfowl:"Waterfowl (duck-type)", species_parrot:"Parrot / psittacine (generic)",
+},
+ar:{
+  appTitle:"آي بيرد للتحضين", appTag:"متابعة التحضين والفقس", langBtn:"English",
+  updateMsg:"يتوفر تحديث", updateBtn:"إعادة التحميل",
+  navSchedule:"الجدول", navEggTest:"فحص البيض", navGuidance:"الإرشاد", navInfo:"معلومات", navStore:"المتجر",
+  newIncubator:"حاضنة جديدة", newBatch:"دفعة جديدة", save:"حفظ", cancel:"إلغاء", close:"إغلاق",
+  delete:"حذف", confirmDelete:"حذف هذا العنصر؟ لا يمكن التراجع.", markComplete:"وضع اكتمل",
+  incubatorName:"الاسم", incubatorType:"النوع", incubatorLocation:"الموقع (اختياري)", incubatorPower:"القدرة المقدّرة (واط، اختياري)",
+  typeManual:"يدوية", typeEsp32:"وحدة تحكم ESP32 (لاحقًا)",
+  batchIncubator:"الحاضنة", batchSpecies:"فئة النوع", batchSetDate:"تاريخ التعيين (اليوم صفر)",
+  batchEggsSet:"عدد البيض المعيَّن", batchHatcherMode:"عند الإغلاق", hatcherSeparate:"تُنقل إلى فقّاسة منفصلة", hatcherSame:"تبقى في نفس الحاضنة",
+  batchNotes:"ملاحظات (اختياري)",
+  statusIncubating:"تحضين", statusLockdown:"إغلاق", statusHatching:"فقس", statusComplete:"مكتملة",
+  dayOf:"اليوم {d} من {n}",
+  eventCandling1:"فحص الإضاءة الأول", eventCandling2:"فحص الإضاءة الثاني",
+  eventLockdownWarn:"الإغلاق غدًا — استعد", eventLockdownDay:"الإغلاق اليوم",
+  eventDND:"لا تفتح الحاضنة", eventHatchWarn:"نافذة الفقس تبدأ غدًا", eventHatchStart:"نافذة الفقس — قد يبدأ اليوم",
+  eventChickRemoval:"انقل الفراخ الجافة إلى الحاضنة الأرضية", eventStalled:"تحقق من بيض متعثر أو منقور",
+  noBatches:"لا توجد دفعات بعد. أضف حاضنة ثم ابدأ دفعة.", noIncubators:"لا توجد حاضنات بعد.",
+  addFirstIncubator:"أضف أول حاضنة",
+  guidanceHeader:"اليوم", guidanceEmpty:"لا يوجد شيء مستحق اليوم في دفعاتك.",
+  guidance_incubating:"حافظ على الحرارة والرطوبة المستهدفة واستمر في التقليب حسب الجدول.",
+  guidance_candle:"افحص بالضوء اليوم — سجّل النتائج في فحص البيض.",
+  guidance_lockdownWarn:"الإغلاق غدًا: أوقف جهاز التقليب، ارفع الرطوبة نحو الهدف، غطِّ الماء لتقليل التبخر، ولا تخطط لفتح الحاضنة بعد اليوم.",
+  guidance_lockdownDay:"يبدأ الإغلاق اليوم: أوقف التقليب، ارفع الرطوبة إلى هدف الإغلاق، أغلق الحاضنة وتجنّب فتحها حتى الفقس.",
+  guidance_dnd:"لا تفتح الحاضنة — كل فتح أثناء الإغلاق يُخفّض الرطوبة وقد يضر الفراخ أثناء الفقس.",
+  guidance_hatchWarn:"نافذة الفقس تبدأ غدًا. توقع نطاقًا زمنيًا وليس ساعة محددة.",
+  guidance_hatchStart:"قد يبدأ الفقس اليوم. دع الفراخ تفقس بنفسها — لا تساعد إلا إذا كان الفرخ عالقًا فعلاً بعد وقت طويل من النقر.",
+  guidance_removal:"بعد أن تجف الفراخ وتنفش ريشها، انقلها إلى الحاضنة الأرضية — لا تتعجل، لكن لا تتركها طويلاً مع بيض لم يفقس.",
+  guidance_stalled:"تجاوزت نافذة الفقس المتوقعة وبعض البيض لم يفقس. افحص بالضوء بحثًا عن نقر متعثر وراجع استكشاف الأخطاء أدناه.",
+  guidance_complete:"الدفعة مكتملة.",
+  troubleshootTitle:"استكشاف الأخطاء",
+  tr_lowFertility_t:"نسبة خصوبة منخفضة، ونسبة فقس من الخصب طبيعية",
+  tr_lowFertility_d:"يشير إلى ما قبل الحاضنة — عمر القطيع، التغذية، نسبة الذكور للإناث، أو تخزين/عمر البيض قبل التعيين.",
+  tr_lowHOF_t:"الخصوبة جيدة، لكن فقس الخصب منخفض",
+  tr_lowHOF_d:"يشير إلى عملية التحضين نفسها — تحقق من معايرة الحرارة، دقة الرطوبة، التقليب، والتهوية.",
+  tr_stalled_t:"نقر البيضة لكن دون تقدّم",
+  tr_stalled_d:"غالبًا رطوبة منخفضة في الأيام السابقة للإغلاق، أو منخفضة عند الإغلاق نفسه. قارن الرطوبة المسجَّلة بهدف الإغلاق.",
+  tr_tempSpike_t:"موت الدفعة كاملة حول اليوم 3-5",
+  tr_tempSpike_d:"الأرجح ارتفاع أو انخفاض مفاجئ بالحرارة (انقطاع كهرباء، انحراف الثرموستات) وليس مشكلة بجودة البيض — تحقق من الحاضنة.",
+  tr_principle:"القاعدة العامة: الرطوبة هي أداة التصحيح الأساسية. لا تُعدّل الحرارة إلا بخطوات صغيرة (±0.1–0.2°م) وفقط إذا كانت الرطوبة بالفعل عند أقصى أو أدنى حد ولا يزال الاتجاه غير مقارب للهدف.",
+  eggTestTitle:"فحص البيض", eggTestPick:"اختر دفعة",
+  candle1Btn:"تسجيل الفحص الأول", candle2Btn:"تسجيل الفحص الثاني", hatchBtn:"تسجيل نتيجة الفقس",
+  fieldEggsFertile:"عدد البيض الخصب المتبقي", fieldEggsHatched:"عدد البيض الذي فقس", fieldFirstHatchDate:"تاريخ أول فقس",
+  metricsFertility:"نسبة الخصوبة", metricsHOS:"فقس من المعيَّن", metricsHOF:"فقس من الخصب", metricsCostPerChick:"تكلفة الفرخ الواحد",
+  fieldEggCost:"تكلفة البيض الإجمالية", fieldOtherCosts:"تكاليف أخرى (اختياري)", fieldElectricityRate:"سعر الكهرباء / ك.و.س", fieldCurrency:"العملة",
+  powerCostEstimate:"تكلفة الطاقة المقدَّرة", notSet:"—", editCosts:"تعديل التكاليف",
+  infoTitle:"مرجع تحضين عام", infoIntro:"نقاط بداية عامة حسب الفئة. تخصيص كل نوع يأتي لاحقًا.",
+  infoIncubationDays:"مدة التحضين", infoTempForced:"الحرارة (هواء قسري)", infoTempStill:"الحرارة (هواء ساكن)",
+  infoHumidityPre:"الرطوبة، اليوم 1 → الإغلاق", infoHumidityLock:"الرطوبة، الإغلاق → الفقس",
+  infoTurning:"التقليب", infoLockdownOffset:"يبدأ الإغلاق", infoCandlingDays:"مواعيد الفحص بالضوء",
+  daysBeforeHatch:"قبل {n} أيام من الفقس المتوقع",
+  storeTitle:"المتجر", storeDesc:"اطلب الأطواق ومستلزمات التحضين من متجر آي بيرد.",
+  storeUrlField:"رابط المتجر", storeGoBtn:"فتح المتجر", storeNotSet:"أضف رابط متجرك أدناه لتفعيل الزر.",
+  storeSave:"حفظ الرابط",
+  toastSaved:"تم الحفظ", toastDeleted:"تم الحذف",
+  notifEnable:"تفعيل التذكيرات", notifEnabled:"التذكيرات مفعّلة", notifDenied:"الإشعارات محظورة في إعدادات المتصفح",
+  notifLimitationNote:"أفضل جهد ممكن فقط: تعمل التذكيرات أثناء فتح التطبيق أو فتحه مؤخرًا. للتنبيهات المضمونة في الخلفية، تطبيق Flutter المخطط له مع الإشعارات الفعلية هو الحل طويل المدى — راجع خطة التطوير.",
+  candleModalTitle1:"فحص الإضاءة الأول", candleModalTitle2:"فحص الإضاءة الثاني",
+  candleHint1:"كم عدد البيض الخصب/النامي حاليًا؟", candleHint2:"إعادة فحص — كم بيضة خصبة متبقية؟",
+  hatchModalTitle:"تسجيل نتيجة الفقس",
+  species_poultry:"دواجن (نمط الدجاج)", species_waterfowl:"طيور مائية (نمط البط)", species_parrot:"ببغاوات (عام)",
+}
+};
+let LANG=(localStorage.getItem('ibird_lang')||'ar');
+function t(key,vars){
+  let s=I18N[LANG][key]||I18N.en[key]||key;
+  if(vars) for(const k in vars) s=s.replace('{'+k+'}',vars[k]);
+  return s;
+}
+function toggleLang(){
+  LANG=LANG==='ar'?'en':'ar';
+  localStorage.setItem('ibird_lang',LANG);
+  applyLangAttrs();
+  renderAll();
+}
+function applyLangAttrs(){
+  document.documentElement.lang=LANG;
+  document.documentElement.dir=LANG==='ar'?'rtl':'ltr';
+}
+
+/* ---------- species profiles (generic, universal defaults — §7/§3 of the dev plan) ---------- */
+const SPECIES=[
+  {id:'poultry', nameKey:'species_poultry', incubationDays:21, tempForced:37.5, tempStill:38.9,
+   humidityPre:'45–50%', humidityLock:'65–70%', turning:'3–5x/day (odd count)', lockdownOffsetDays:3, candlingDays:[7,14], hatchSpreadHours:36, chickRemovalHours:36},
+  {id:'waterfowl', nameKey:'species_waterfowl', incubationDays:28, tempForced:37.5, tempStill:38.9,
+   humidityPre:'55–60%', humidityLock:'70–75%', turning:'3–5x/day (odd count)', lockdownOffsetDays:3, candlingDays:[10,25], hatchSpreadHours:48, chickRemovalHours:36},
+  {id:'parrot', nameKey:'species_parrot', incubationDays:26, tempForced:37.3, tempStill:38.6,
+   humidityPre:'40–50%', humidityLock:'65–70%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:3, candlingDays:[7,14], hatchSpreadHours:48, chickRemovalHours:36},
+];
+function speciesById(id){ return SPECIES.find(s=>s.id===id)||SPECIES[0]; }
+
+/* ---------- storage (localStorage — small Normal-mode dataset; migrate to IndexedDB when Detailed per-egg mode ships, per §6) ---------- */
+function load(key,fallback){ try{ const v=JSON.parse(localStorage.getItem(key)); return v==null?fallback:v; }catch(e){ return fallback; } }
+function save(key,val){ localStorage.setItem(key,JSON.stringify(val)); }
+function uid(){ return (crypto.randomUUID?crypto.randomUUID():'id-'+Date.now()+'-'+Math.random().toString(16).slice(2)); }
+
+let incubators=load('ibird_incubators',[]);
+let batches=load('ibird_batches',[]);
+let settings=load('ibird_settings',{storeUrl:'',electricityRate:0.03,currency:'BHD'});
+function saveIncubators(){ save('ibird_incubators',incubators); }
+function saveBatches(){ save('ibird_batches',batches); }
+function saveSettings(){ save('ibird_settings',settings); }
+
+/* ---------- date helpers ---------- */
+function todayISO(){ return new Date().toISOString().slice(0,10); }
+function addDays(iso,n){ const d=new Date(iso+'T00:00:00Z'); d.setUTCDate(d.getUTCDate()+n); return d.toISOString().slice(0,10); }
+function daysBetween(a,b){ return Math.round((new Date(b+'T00:00:00Z')-new Date(a+'T00:00:00Z'))/86400000); }
+function fmtDate(iso){ if(!iso) return t('notSet'); const d=new Date(iso+'T00:00:00Z'); return d.toLocaleDateString(LANG==='ar'?'ar-BH':'en-GB',{day:'numeric',month:'short',timeZone:'UTC'}); }
+
+/* ---------- schedule derivation (§4 of the dev plan) ---------- */
+function computeSchedule(batch){
+  const sp=speciesById(batch.speciesId);
+  const today=todayISO();
+  const dayNum=daysBetween(batch.setDate,today);
+  const lockDay=sp.incubationDays-sp.lockdownOffsetDays;
+  const hatchDay=sp.incubationDays;
+  const hatchBufferDays=Math.ceil(sp.hatchSpreadHours/24);
+
+  let status;
+  if(batch.manualComplete) status='complete';
+  else if(dayNum<lockDay) status='incubating';
+  else if(dayNum<hatchDay) status='lockdown';
+  else if(dayNum<hatchDay+hatchBufferDays+3) status='hatching';
+  else status='complete';
+
+  const events=[];
+  events.push({key:'candling1',label:t('eventCandling1'),date:addDays(batch.setDate,sp.candlingDays[0])});
+  events.push({key:'candling2',label:t('eventCandling2'),date:addDays(batch.setDate,sp.candlingDays[1])});
+  events.push({key:'lockdownWarn',label:t('eventLockdownWarn'),date:addDays(batch.setDate,lockDay-1)});
+  events.push({key:'lockdownDay',label:t('eventLockdownDay'),date:addDays(batch.setDate,lockDay)});
+  events.push({key:'dnd',label:t('eventDND'),date:addDays(batch.setDate,lockDay+1)});
+  events.push({key:'hatchWarn',label:t('eventHatchWarn'),date:addDays(batch.setDate,hatchDay-1)});
+  events.push({key:'hatchStart',label:t('eventHatchStart'),date:addDays(batch.setDate,hatchDay)});
+  if(batch.firstHatchAt){
+    events.push({key:'chickRemoval',label:t('eventChickRemoval'),date:addDays(batch.firstHatchAt,Math.ceil(sp.chickRemovalHours/24))});
+  }
+  const fertileUnknownOrRemaining=(batch.eggsFertile==null)||(batch.eggsHatched==null)||(batch.eggsHatched<batch.eggsFertile);
+  if(fertileUnknownOrRemaining && status!=='complete'){
+    events.push({key:'stalled',label:t('eventStalled'),date:addDays(batch.setDate,hatchDay+hatchBufferDays+2)});
+  }
+  events.sort((a,b)=>a.date<b.date?-1:1);
+
+  return {sp,dayNum,lockDay,hatchDay,status,events,today};
+}
+
+function metricsFor(batch){
+  const m={};
+  if(batch.eggsFertile!=null && batch.eggsSet>0) m.fertility=(batch.eggsFertile/batch.eggsSet*100);
+  if(batch.eggsHatched!=null && batch.eggsSet>0) m.hos=(batch.eggsHatched/batch.eggsSet*100);
+  if(batch.eggsHatched!=null && batch.eggsFertile>0) m.hof=(batch.eggsHatched/batch.eggsFertile*100);
+  const incubator=incubators.find(i=>i.id===batch.incubatorId);
+  const sp=speciesById(batch.speciesId);
+  let powerCost=null;
+  if(incubator && incubator.ratedPowerWatts){
+    const kwh=(incubator.ratedPowerWatts/1000)*sp.incubationDays*24;
+    powerCost=kwh*(settings.electricityRate||0);
+  }
+  m.powerCost=powerCost;
+  if(batch.eggsHatched>0){
+    const total=(batch.eggCostTotal||0)+(powerCost||0)+(batch.otherCosts||0);
+    m.costPerChick=total/batch.eggsHatched;
+  }
+  return m;
+}
+
+/* ---------- UI shell ---------- */
+let TAB=load('ibird_tab','schedule');
+function setTab(tabId){ TAB=tabId; save('ibird_tab',TAB); renderAll(); }
+
+function renderAll(){
+  applyLangAttrs();
+  document.getElementById('t_appTitle').textContent=t('appTitle');
+  document.getElementById('t_appTag').textContent=t('appTag');
+  document.getElementById('t_langBtn').textContent=t('langBtn');
+  document.getElementById('t_updateMsg').textContent=t('updateMsg');
+  document.getElementById('t_updateBtn').textContent=t('updateBtn');
+  renderNav();
+  renderView();
+}
+function renderNav(){
+  const tabs=[
+    ['schedule','navSchedule','📅'],['eggtest','navEggTest','🔦'],
+    ['guidance','navGuidance','🧭'],['info','navInfo','📖'],['store','navStore','🛒']
+  ];
+  document.getElementById('navbar').innerHTML=tabs.map(([id,key,ic])=>
+    `<button class="${TAB===id?'active':''}" onclick="setTab('${id}')"><span class="ic">${ic}</span>${t(key)}</button>`
+  ).join('');
+}
+function renderView(){
+  const el=document.getElementById('view');
+  if(TAB==='schedule') el.innerHTML=viewSchedule();
+  else if(TAB==='eggtest') el.innerHTML=viewEggTest();
+  else if(TAB==='guidance') el.innerHTML=viewGuidance();
+  else if(TAB==='info') el.innerHTML=viewInfo();
+  else if(TAB==='store') el.innerHTML=viewStore();
+}
+
+/* ---------- Schedule branch ---------- */
+function viewSchedule(){
+  let html='';
+  if(incubators.length===0){
+    html+=`<div class="card"><div class="empty">${t('noIncubators')}</div>
+      <button class="btn" onclick="openIncubatorModal()">${t('addFirstIncubator')}</button></div>`;
+    return html;
+  }
+  html+=`<div class="row" style="margin-bottom:14px">
+    <button class="btn ghost small" onclick="openIncubatorModal()">+ ${t('newIncubator')}</button>
+    <button class="btn small" onclick="openBatchModal()">+ ${t('newBatch')}</button>
+  </div>`;
+
+  incubators.forEach(inc=>{
+    const incBatches=batches.filter(b=>b.incubatorId===inc.id);
+    html+=`<div class="card"><h2>${escapeHtml(inc.name)}</h2>`;
+    if(incBatches.length===0){
+      html+=`<div class="muted">${t('noBatches')}</div>`;
+    } else {
+      incBatches.forEach(b=>{
+        const sc=computeSchedule(b);
+        const sp=sc.sp;
+        html+=`<div class="batch" onclick="openBatchDetail('${b.id}')">
+          <div class="top">
+            <div class="name">${t(sp.nameKey)}</div>
+            <span class="pill ${sc.status}">${t('status'+sc.status.charAt(0).toUpperCase()+sc.status.slice(1))}</span>
+          </div>
+          <div class="meta">${t('dayOf',{d:Math.max(sc.dayNum,0),n:sp.incubationDays})} · ${fmtDate(b.setDate)}</div>
+          <div class="stats">
+            <div><b>${b.eggsSet}</b><span>${t('batchEggsSet')}</span></div>
+            <div><b>${b.eggsFertile!=null?b.eggsFertile:t('notSet')}</b><span>${t('fieldEggsFertile')}</span></div>
+            <div><b>${b.eggsHatched!=null?b.eggsHatched:t('notSet')}</b><span>${t('fieldEggsHatched')}</span></div>
+          </div>
+        </div>`;
+      });
+    }
+    html+=`</div>`;
+  });
+  return html;
+}
+
+function openBatchDetail(batchId){
+  const b=batches.find(x=>x.id===batchId);
+  if(!b) return;
+  const sc=computeSchedule(b);
+  const todayIso=sc.today;
+  let evHtml=sc.events.map(ev=>`<div class="event ${ev.date===todayIso?'today':''}"><span class="lbl">${ev.label}</span><span class="date">${fmtDate(ev.date)}</span></div>`).join('');
+  openModal(`
+    <div class="modalhead"><h2>${t(sc.sp.nameKey)}</h2><div class="muted">${t('dayOf',{d:Math.max(sc.dayNum,0),n:sc.sp.incubationDays})}</div>
+      <button class="close" onclick="closeModal()">✕</button></div>
+    <div class="card" style="margin:14px 0 10px">${evHtml}</div>
+    <div class="row">
+      <button class="btn ghost" onclick="closeModal();setTab('eggtest')">${t('navEggTest')}</button>
+      <button class="btn ghost" onclick="markComplete('${b.id}')">${t('markComplete')}</button>
+    </div>
+    <button class="btn danger" style="margin-top:10px" onclick="deleteBatch('${b.id}')">${t('delete')}</button>
+  `);
+}
+function markComplete(batchId){
+  const b=batches.find(x=>x.id===batchId); if(!b) return;
+  b.manualComplete=true; saveBatches(); closeModal(); renderAll(); toast(t('toastSaved'));
+}
+function deleteBatch(batchId){
+  if(!confirm(t('confirmDelete'))) return;
+  batches=batches.filter(b=>b.id!==batchId); saveBatches(); closeModal(); renderAll(); toast(t('toastDeleted'));
+}
+
+/* ---------- Incubator / Batch modals ---------- */
+function openIncubatorModal(){
+  openModal(`
+    <div class="modalhead"><h2>${t('newIncubator')}</h2><button class="close" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>${t('incubatorName')}</label><input id="f_incName"></div>
+    <div class="field"><label>${t('incubatorType')}</label>
+      <select id="f_incType"><option value="manual">${t('typeManual')}</option><option value="esp32">${t('typeEsp32')}</option></select></div>
+    <div class="field"><label>${t('incubatorLocation')}</label><input id="f_incLoc"></div>
+    <div class="field"><label>${t('incubatorPower')}</label><input id="f_incPower" type="number" inputmode="numeric"></div>
+    <button class="btn" style="margin-top:16px" onclick="saveIncubator()">${t('save')}</button>
+  `);
+}
+function saveIncubator(){
+  const name=document.getElementById('f_incName').value.trim();
+  if(!name) return;
+  incubators.push({
+    id:uid(), name,
+    type:document.getElementById('f_incType').value,
+    location:document.getElementById('f_incLoc').value.trim(),
+    ratedPowerWatts:parseFloat(document.getElementById('f_incPower').value)||null
+  });
+  saveIncubators(); closeModal(); renderAll(); toast(t('toastSaved'));
+}
+
+function openBatchModal(){
+  if(incubators.length===0){ openIncubatorModal(); return; }
+  const incOptions=incubators.map(i=>`<option value="${i.id}">${escapeHtml(i.name)}</option>`).join('');
+  const spOptions=SPECIES.map(s=>`<option value="${s.id}">${t(s.nameKey)}</option>`).join('');
+  openModal(`
+    <div class="modalhead"><h2>${t('newBatch')}</h2><button class="close" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>${t('batchIncubator')}</label><select id="f_batchInc">${incOptions}</select></div>
+    <div class="field"><label>${t('batchSpecies')}</label><select id="f_batchSpecies">${spOptions}</select></div>
+    <div class="field"><label>${t('batchSetDate')}</label><input id="f_batchDate" type="date" value="${todayISO()}"></div>
+    <div class="field"><label>${t('batchEggsSet')}</label><input id="f_batchEggs" type="number" inputmode="numeric"></div>
+    <div class="field"><label>${t('batchHatcherMode')}</label>
+      <select id="f_batchHatcher"><option value="same_incubator">${t('hatcherSame')}</option><option value="separate_hatcher">${t('hatcherSeparate')}</option></select></div>
+    <div class="field"><label>${t('batchNotes')}</label><textarea id="f_batchNotes" rows="2"></textarea></div>
+    <button class="btn" style="margin-top:16px" onclick="saveBatch()">${t('save')}</button>
+  `);
+}
+function saveBatch(){
+  const eggsSet=parseInt(document.getElementById('f_batchEggs').value,10);
+  if(!eggsSet||eggsSet<=0) return;
+  batches.push({
+    id:uid(),
+    incubatorId:document.getElementById('f_batchInc').value,
+    speciesId:document.getElementById('f_batchSpecies').value,
+    setDate:document.getElementById('f_batchDate').value||todayISO(),
+    trackingMode:'normal',
+    eggsSet, eggsFertile:null, eggsHatched:null, firstHatchAt:null,
+    eggCostTotal:0, otherCosts:0,
+    hatcherMode:document.getElementById('f_batchHatcher').value,
+    notes:document.getElementById('f_batchNotes').value.trim(),
+    manualComplete:false
+  });
+  saveBatches(); closeModal(); renderAll(); toast(t('toastSaved'));
+}
+
+/* ---------- Egg Test List branch (§4a) ---------- */
+let EGGTEST_SELECTED=null;
+function viewEggTest(){
+  if(batches.length===0) return `<div class="card"><div class="empty">${t('noBatches')}</div></div>`;
+  const options=batches.map(b=>{
+    const sc=computeSchedule(b);
+    return `<button class="chip ${EGGTEST_SELECTED===b.id?'active':''}" onclick="selectEggTestBatch('${b.id}')">${t(sc.sp.nameKey)} · ${fmtDate(b.setDate)}</button>`;
+  }).join('');
+  let html=`<div class="card"><h2>${t('eggTestTitle')}</h2><div class="chip-row">${options}</div></div>`;
+
+  const b=batches.find(x=>x.id===EGGTEST_SELECTED)||batches[0];
+  if(!b) return html;
+  EGGTEST_SELECTED=b.id;
+  const m=metricsFor(b);
+
+  html+=`<div class="card">
+    <div class="row">
+      <button class="btn ghost small" onclick="openCandleModal('${b.id}',1)">${t('candle1Btn')}</button>
+      <button class="btn ghost small" onclick="openCandleModal('${b.id}',2)">${t('candle2Btn')}</button>
+      <button class="btn ghost small" onclick="openHatchModal('${b.id}')">${t('hatchBtn')}</button>
+    </div>
+  </div>`;
+
+  html+=`<div class="card"><h2>${t('metricsFertility')} / ${t('metricsHOS')} / ${t('metricsHOF')}</h2>
+    <div class="row">
+      <div class="metric"><b>${m.fertility!=null?m.fertility.toFixed(1)+'%':t('notSet')}</b><span>${t('metricsFertility')}</span></div>
+      <div class="metric"><b>${m.hos!=null?m.hos.toFixed(1)+'%':t('notSet')}</b><span>${t('metricsHOS')}</span></div>
+      <div class="metric"><b>${m.hof!=null?m.hof.toFixed(1)+'%':t('notSet')}</b><span>${t('metricsHOF')}</span></div>
+    </div></div>`;
+
+  html+=`<div class="card"><h2>${t('metricsCostPerChick')}</h2>
+    <div class="row">
+      <div class="field"><label>${t('fieldEggCost')}</label><input id="f_costEgg" type="number" value="${b.eggCostTotal||0}" onchange="updateCosts('${b.id}')"></div>
+      <div class="field"><label>${t('fieldOtherCosts')}</label><input id="f_costOther" type="number" value="${b.otherCosts||0}" onchange="updateCosts('${b.id}')"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>${t('fieldElectricityRate')}</label><input id="f_elecRate" type="number" step="0.001" value="${settings.electricityRate}" onchange="updateSettingsRate()"></div>
+      <div class="field"><label>${t('fieldCurrency')}</label><input id="f_currency" value="${settings.currency}" onchange="updateSettingsCurrency()"></div>
+    </div>
+    <div class="note">${t('powerCostEstimate')}: ${m.powerCost!=null?m.powerCost.toFixed(2)+' '+settings.currency:t('notSet')}</div>
+    <div class="metric" style="margin-top:6px"><b>${m.costPerChick!=null?m.costPerChick.toFixed(2)+' '+settings.currency:t('notSet')}</b><span>${t('metricsCostPerChick')}</span></div>
+  </div>`;
+
+  return html;
+}
+function selectEggTestBatch(id){ EGGTEST_SELECTED=id; renderView(); }
+function updateCosts(batchId){
+  const b=batches.find(x=>x.id===batchId); if(!b) return;
+  b.eggCostTotal=parseFloat(document.getElementById('f_costEgg').value)||0;
+  b.otherCosts=parseFloat(document.getElementById('f_costOther').value)||0;
+  saveBatches(); renderView();
+}
+function updateSettingsRate(){ settings.electricityRate=parseFloat(document.getElementById('f_elecRate').value)||0; saveSettings(); renderView(); }
+function updateSettingsCurrency(){ settings.currency=document.getElementById('f_currency').value||'BHD'; saveSettings(); renderView(); }
+
+function openCandleModal(batchId,round){
+  const b=batches.find(x=>x.id===batchId); if(!b) return;
+  const defaultVal=round===1?b.eggsSet:(b.eggsFertile!=null?b.eggsFertile:b.eggsSet);
+  openModal(`
+    <div class="modalhead"><h2>${round===1?t('candleModalTitle1'):t('candleModalTitle2')}</h2><button class="close" onclick="closeModal()">✕</button></div>
+    <div class="muted">${round===1?t('candleHint1'):t('candleHint2')}</div>
+    <div class="field"><label>${t('fieldEggsFertile')}</label><input id="f_candleFertile" type="number" inputmode="numeric" value="${defaultVal}"></div>
+    <button class="btn" style="margin-top:16px" onclick="saveCandle('${b.id}')">${t('save')}</button>
+  `);
+}
+function saveCandle(batchId){
+  const b=batches.find(x=>x.id===batchId); if(!b) return;
+  const v=parseInt(document.getElementById('f_candleFertile').value,10);
+  if(isNaN(v)||v<0) return;
+  b.eggsFertile=v;
+  saveBatches(); closeModal(); renderAll(); toast(t('toastSaved'));
+}
+function openHatchModal(batchId){
+  const b=batches.find(x=>x.id===batchId); if(!b) return;
+  const defaultVal=b.eggsFertile!=null?b.eggsFertile:b.eggsSet;
+  openModal(`
+    <div class="modalhead"><h2>${t('hatchModalTitle')}</h2><button class="close" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>${t('fieldEggsHatched')}</label><input id="f_hatched" type="number" inputmode="numeric" value="${b.eggsHatched!=null?b.eggsHatched:defaultVal}"></div>
+    <div class="field"><label>${t('fieldFirstHatchDate')}</label><input id="f_firstHatch" type="date" value="${b.firstHatchAt||todayISO()}"></div>
+    <button class="btn" style="margin-top:16px" onclick="saveHatch('${b.id}')">${t('save')}</button>
+  `);
+}
+function saveHatch(batchId){
+  const b=batches.find(x=>x.id===batchId); if(!b) return;
+  const v=parseInt(document.getElementById('f_hatched').value,10);
+  if(isNaN(v)||v<0) return;
+  b.eggsHatched=v;
+  b.firstHatchAt=document.getElementById('f_firstHatch').value||todayISO();
+  saveBatches(); closeModal(); renderAll(); toast(t('toastSaved'));
+}
+
+/* ---------- Guidance branch (§1a #2, §5a) ---------- */
+function viewGuidance(){
+  let html=`<div class="card"><h2>${t('guidanceHeader')}</h2>`;
+  const todayIso=todayISO();
+  let anyToday=false;
+  batches.filter(b=>!b.manualComplete).forEach(b=>{
+    const sc=computeSchedule(b);
+    const todaysEvents=sc.events.filter(ev=>ev.date===todayIso);
+    if(todaysEvents.length===0) return;
+    anyToday=true;
+    const sp=sc.sp;
+    todaysEvents.forEach(ev=>{
+      const guideKey='guidance_'+({candling1:'candle',candling2:'candle',lockdownWarn:'lockdownWarn',lockdownDay:'lockdownDay',dnd:'dnd',hatchWarn:'hatchWarn',hatchStart:'hatchStart',chickRemoval:'removal',stalled:'stalled'}[ev.key]||'incubating');
+      html+=`<div class="batch" onclick="openBatchDetail('${b.id}')">
+        <div class="top"><div class="name">${t(sp.nameKey)}</div><span class="pill ${sc.status}">${ev.label}</span></div>
+        <div class="meta">${t(guideKey)}</div>
+      </div>`;
+    });
+  });
+  if(!anyToday) html+=`<div class="muted">${t('guidanceEmpty')}</div>`;
+  html+=`</div>`;
+
+  html+=`<div class="card"><h2>${t('troubleshootTitle')}</h2>
+    <div class="event"><div><div class="lbl">${t('tr_lowFertility_t')}</div><div class="muted">${t('tr_lowFertility_d')}</div></div></div>
+    <div class="event"><div><div class="lbl">${t('tr_lowHOF_t')}</div><div class="muted">${t('tr_lowHOF_d')}</div></div></div>
+    <div class="event"><div><div class="lbl">${t('tr_stalled_t')}</div><div class="muted">${t('tr_stalled_d')}</div></div></div>
+    <div class="event"><div><div class="lbl">${t('tr_tempSpike_t')}</div><div class="muted">${t('tr_tempSpike_d')}</div></div></div>
+    <div class="note">${t('tr_principle')}</div>
+  </div>`;
+
+  html+=notifCard();
+  return html;
+}
+
+/* ---------- Info branch (§7) ---------- */
+function viewInfo(){
+  let html=`<div class="card"><h2>${t('infoTitle')}</h2><div class="muted">${t('infoIntro')}</div></div>`;
+  SPECIES.forEach(sp=>{
+    html+=`<div class="card"><h2>${t(sp.nameKey)}</h2>
+      <table>
+        <tr><td class="muted">${t('infoIncubationDays')}</td><td>${sp.incubationDays} ${LANG==='ar'?'يوم':'days'}</td></tr>
+        <tr><td class="muted">${t('infoTempForced')}</td><td>${sp.tempForced}°C</td></tr>
+        <tr><td class="muted">${t('infoTempStill')}</td><td>${sp.tempStill}°C</td></tr>
+        <tr><td class="muted">${t('infoHumidityPre')}</td><td>${sp.humidityPre}</td></tr>
+        <tr><td class="muted">${t('infoHumidityLock')}</td><td>${sp.humidityLock}</td></tr>
+        <tr><td class="muted">${t('infoTurning')}</td><td>${sp.turning}</td></tr>
+        <tr><td class="muted">${t('infoLockdownOffset')}</td><td>${t('daysBeforeHatch',{n:sp.lockdownOffsetDays})}</td></tr>
+        <tr><td class="muted">${t('infoCandlingDays')}</td><td>${LANG==='ar'?'اليوم':'day'} ${sp.candlingDays[0]}, ${sp.candlingDays[1]}</td></tr>
+      </table>
+    </div>`;
+  });
+  return html;
+}
+
+/* ---------- Store branch (§1a #5) ---------- */
+function viewStore(){
+  let html=`<div class="card"><h2>${t('storeTitle')}</h2><div class="muted">${t('storeDesc')}</div>`;
+  if(settings.storeUrl){
+    html+=`<a class="btn" style="margin-top:14px;text-decoration:none" href="${escapeHtml(settings.storeUrl)}" target="_blank" rel="noopener">${t('storeGoBtn')}</a>`;
+  } else {
+    html+=`<div class="note">${t('storeNotSet')}</div>`;
+  }
+  html+=`</div>
+  <div class="card">
+    <div class="field"><label>${t('storeUrlField')}</label><input id="f_storeUrl" value="${escapeHtml(settings.storeUrl||'')}" placeholder="https://"></div>
+    <button class="btn ghost small" style="margin-top:10px" onclick="saveStoreUrl()">${t('storeSave')}</button>
+  </div>`;
+  return html;
+}
+function saveStoreUrl(){
+  settings.storeUrl=document.getElementById('f_storeUrl').value.trim();
+  saveSettings(); renderView(); toast(t('toastSaved'));
+}
+
+/* ---------- best-effort local notifications ---------- */
+function notifCard(){
+  const perm=('Notification' in window)?Notification.permission:'unsupported';
+  let btn='';
+  if(perm==='granted') btn=`<span class="pill hatching">${t('notifEnabled')}</span>`;
+  else if(perm==='denied') btn=`<div class="muted">${t('notifDenied')}</div>`;
+  else btn=`<button class="btn ghost small" onclick="requestNotifPermission()">${t('notifEnable')}</button>`;
+  return `<div class="card"><h2>🔔</h2>${btn}<div class="note">${t('notifLimitationNote')}</div></div>`;
+}
+function requestNotifPermission(){
+  if(!('Notification' in window)) return;
+  Notification.requestPermission().then(()=>renderView());
+}
+function checkDueNotifications(){
+  if(!('Notification' in window) || Notification.permission!=='granted') return;
+  const todayIso=todayISO();
+  const shown=load('ibird_notif_shown',{});
+  batches.filter(b=>!b.manualComplete).forEach(b=>{
+    const sc=computeSchedule(b);
+    sc.events.filter(ev=>ev.date===todayIso).forEach(ev=>{
+      const key=b.id+'_'+ev.key+'_'+ev.date;
+      if(shown[key]) return;
+      try{ new Notification(t('appTitle'),{body:ev.label,icon:'./icons/icon.svg'}); }catch(e){}
+      shown[key]=true;
+    });
+  });
+  save('ibird_notif_shown',shown);
+}
+
+/* ---------- modal / toast helpers ---------- */
+function openModal(html){
+  document.getElementById('modalBody').innerHTML=html;
+  document.getElementById('modalwrap').classList.add('open');
+}
+function closeModal(){ document.getElementById('modalwrap').classList.remove('open'); }
+document.getElementById('modalwrap').addEventListener('click',(e)=>{ if(e.target.id==='modalwrap') closeModal(); });
+let toastTimer=null;
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),1800);
+}
+function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* ---------- init ---------- */
+applyLangAttrs();
+renderAll();
+checkDueNotifications();
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') checkDueNotifications(); });
+</script>
+</body>
+</html>
