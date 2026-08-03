@@ -97,6 +97,17 @@ tr:last-child td{border-bottom:none;}
 .chip{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13px;font-weight:600;color:var(--ink);}
 .chip.active{background:var(--heat);color:#251603;border-color:var(--heat);}
 .note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:8px;}
+
+.hero{padding:8px 4px 22px;text-align:center;}
+.hero .emoji{font-size:46px;display:block;margin-bottom:12px;}
+.hero h2{font-size:21px;margin:0 0 8px;}
+.hero p{color:var(--muted);font-size:13.5px;line-height:1.65;margin:0 auto 22px;max-width:420px;}
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;text-align:start;}
+.feature{background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:14px;padding:14px;}
+.feature .ic{font-size:19px;display:block;margin-bottom:6px;}
+.feature b{display:block;font-size:13px;margin-bottom:3px;}
+.feature span{font-size:11.5px;color:var(--muted);line-height:1.45;display:block;}
+.feature:last-child:nth-child(odd){grid-column:1/-1;}
 </style>
 </head>
 <body>
@@ -168,6 +179,20 @@ en:{
   eventChickRemoval:"Move dried chicks to brooder", eventStalled:"Check for stalled/pipped eggs",
   noBatches:"No batches yet. Add an incubator, then start a batch.", noIncubators:"No incubators yet.",
   addFirstIncubator:"Add your first incubator",
+  heroTitle:"Hatch with confidence", heroIntro:"Track incubators and batches, get day-by-day guidance, and see your hatch results — all in one place, working offline.",
+  featureInfo_t:"Info", featureInfo_d:"Reference temp, humidity & turning by species category",
+  featureGuidance_t:"Guidance", featureGuidance_d:"What to do today, and what to check when something's off",
+  featureSchedule_t:"Schedule", featureSchedule_d:"Candling, lockdown and hatch dates, worked out for you",
+  featureEggTest_t:"Egg Test", featureEggTest_d:"Log candling results, fertility and hatch rate",
+  featureStore_t:"Store", featureStore_d:"Rings and supplies, one tap away",
+  guideTitle:"How incubation works", guideIntro:"The seven-stage arc every batch goes through, start to brooder.",
+  guide1_t:"1 · Set the eggs (Day 0)", guide1_d:"Similar size, no cracks, warmed to room temperature before loading. This is Day 0 — log the batch here to start tracking it.",
+  guide2_t:"2 · Hold steady conditions", guide2_d:"Keep temperature and humidity inside your species' range (see Info) and turn on schedule until lockdown.",
+  guide3_t:"3 · Candle at the checkpoints", guide3_d:"Day 7: remove clear/infertile eggs. Day 14: confirm growth and air-cell size. Log both in Egg Test List.",
+  guide4_t:"4 · Prep for lockdown", guide4_d:"One day before lockdown: stop the turner, start raising humidity toward the lockdown target, cover standing water.",
+  guide5_t:"5 · Lockdown — hands off", guide5_d:"Stop turning, raise humidity to target, close the incubator and leave it closed until hatch. Every open drops humidity.",
+  guide6_t:"6 · Hatch window", guide6_d:"Let chicks hatch on their own over the window (it's a range, not one hour) — don't assist unless a chick is truly stuck long past pipping.",
+  guide7_t:"7 · Move to brooder", guide7_d:"Once dry and fluffed, move chicks to the brooder. Log the hatch count and any costs in Egg Test List to see your results.",
   guidanceHeader:"Today", guidanceEmpty:"Nothing due today across your batches.",
   guidance_incubating:"Maintain target temperature/humidity and keep turning on schedule.",
   guidance_candle:"Candle today — log results in Egg Test.",
@@ -230,6 +255,20 @@ ar:{
   eventChickRemoval:"انقل الفراخ الجافة إلى الحاضنة الأرضية", eventStalled:"تحقق من بيض متعثر أو منقور",
   noBatches:"لا توجد دفعات بعد. أضف حاضنة ثم ابدأ دفعة.", noIncubators:"لا توجد حاضنات بعد.",
   addFirstIncubator:"أضف أول حاضنة",
+  heroTitle:"فقس بثقة", heroIntro:"تابع حاضناتك ودفعاتك، احصل على إرشاد يوميًا، وشاهد نتائج الفقس — كل ذلك في مكان واحد ويعمل بلا إنترنت.",
+  featureInfo_t:"معلومات", featureInfo_d:"مرجع الحرارة والرطوبة والتقليب لكل فئة نوع",
+  featureGuidance_t:"الإرشاد", featureGuidance_d:"ماذا تفعل اليوم، وماذا تفحص عند وجود خلل",
+  featureSchedule_t:"الجدول", featureSchedule_d:"مواعيد الفحص والإغلاق والفقس، محسوبة تلقائيًا",
+  featureEggTest_t:"فحص البيض", featureEggTest_d:"سجّل نتائج الفحص بالضوء ونسب الخصوبة والفقس",
+  featureStore_t:"المتجر", featureStore_d:"الأطواق والمستلزمات على بُعد نقرة",
+  guideTitle:"كيف يعمل التحضين", guideIntro:"سبع مراحل تمر بها كل دفعة، من التعيين حتى الحاضنة الأرضية.",
+  guide1_t:"١ · عيّن البيض (اليوم صفر)", guide1_d:"بيض متقارب الحجم وخالٍ من الشروخ، ودافئ لدرجة حرارة الغرفة قبل التحميل. هذا هو اليوم صفر — سجّل الدفعة هنا لبدء المتابعة.",
+  guide2_t:"٢ · حافظ على ثبات الظروف", guide2_d:"حافظ على الحرارة والرطوبة ضمن نطاق نوعك (راجع معلومات) وقلّب حسب الجدول حتى الإغلاق.",
+  guide3_t:"٣ · افحص بالضوء عند المواعيد", guide3_d:"اليوم 7: أزل البيض الصافي/غير المخصب. اليوم 14: تأكد من النمو وحجم الغرفة الهوائية. سجّل كلاهما في فحص البيض.",
+  guide4_t:"٤ · استعد للإغلاق", guide4_d:"قبل يوم من الإغلاق: أوقف جهاز التقليب، ابدأ برفع الرطوبة نحو هدف الإغلاق، وغطِّ أي ماء راكد.",
+  guide5_t:"٥ · الإغلاق — لا تلمس", guide5_d:"أوقف التقليب، ارفع الرطوبة إلى الهدف، أغلق الحاضنة واتركها مغلقة حتى الفقس. كل فتح يُخفّض الرطوبة.",
+  guide6_t:"٦ · نافذة الفقس", guide6_d:"دع الفراخ تفقس بنفسها خلال النافذة (نطاق زمني وليس ساعة واحدة) — لا تساعد إلا إذا كان الفرخ عالقًا فعلاً بعد وقت طويل من النقر.",
+  guide7_t:"٧ · انقل إلى الحاضنة الأرضية", guide7_d:"بعد أن تجف الفراخ وتنفش ريشها، انقلها إلى الحاضنة الأرضية. سجّل عدد الفقس وأي تكاليف في فحص البيض لترى نتائجك.",
   guidanceHeader:"اليوم", guidanceEmpty:"لا يوجد شيء مستحق اليوم في دفعاتك.",
   guidance_incubating:"حافظ على الحرارة والرطوبة المستهدفة واستمر في التقليب حسب الجدول.",
   guidance_candle:"افحص بالضوء اليوم — سجّل النتائج في فحص البيض.",
@@ -412,8 +451,19 @@ function renderView(){
 function viewSchedule(){
   let html='';
   if(incubators.length===0){
-    html+=`<div class="card"><div class="empty">${t('noIncubators')}</div>
-      <button class="btn" onclick="openIncubatorModal()">${t('addFirstIncubator')}</button></div>`;
+    html+=`<div class="hero">
+      <span class="emoji">🐣</span>
+      <h2>${t('heroTitle')}</h2>
+      <p>${t('heroIntro')}</p>
+      <div class="feature-grid">
+        <div class="feature"><span class="ic">📅</span><b>${t('featureSchedule_t')}</b><span>${t('featureSchedule_d')}</span></div>
+        <div class="feature"><span class="ic">🔦</span><b>${t('featureEggTest_t')}</b><span>${t('featureEggTest_d')}</span></div>
+        <div class="feature"><span class="ic">🧭</span><b>${t('featureGuidance_t')}</b><span>${t('featureGuidance_d')}</span></div>
+        <div class="feature"><span class="ic">📖</span><b>${t('featureInfo_t')}</b><span>${t('featureInfo_d')}</span></div>
+        <div class="feature"><span class="ic">🛒</span><b>${t('featureStore_t')}</b><span>${t('featureStore_d')}</span></div>
+      </div>
+      <button class="btn" onclick="openIncubatorModal()">${t('addFirstIncubator')}</button>
+    </div>`;
     return html;
   }
   html+=`<div class="row" style="margin-bottom:14px">
@@ -626,7 +676,13 @@ function saveHatch(batchId){
 
 /* ---------- Guidance branch (§1a #2, §5a) ---------- */
 function viewGuidance(){
-  let html=`<div class="card"><h2>${t('guidanceHeader')}</h2>`;
+  let html=`<div class="card"><h2>${t('guideTitle')}</h2><div class="muted" style="margin-bottom:6px">${t('guideIntro')}</div>`;
+  for(let i=1;i<=7;i++){
+    html+=`<div class="event"><div><div class="lbl">${t('guide'+i+'_t')}</div><div class="muted">${t('guide'+i+'_d')}</div></div></div>`;
+  }
+  html+=`</div>`;
+
+  html+=`<div class="card"><h2>${t('guidanceHeader')}</h2>`;
   const todayIso=todayISO();
   let anyToday=false;
   batches.filter(b=>!b.manualComplete).forEach(b=>{
