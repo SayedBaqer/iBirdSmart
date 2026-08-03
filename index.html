@@ -6,12 +6,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="iBird Hatch">
+<meta name="apple-mobile-web-app-title" content="iBird Hatch Machine">
 <meta name="theme-color" content="#16110c">
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="./icons/icon.svg">
-<title>iBird Hatching</title>
+<title>iBird Hatching Machine</title>
 <style>
 :root{
   --bg:#16110c;--panel:#241c14;--line:#3a2e22;--ink:#efe3cf;--muted:#a99a83;
@@ -47,6 +47,10 @@ main{padding:0 16px 20px;max-width:640px;margin:0 auto;}
 .pill.lockdown{background:rgba(240,160,42,.18);color:var(--heat);}
 .pill.hatching{background:rgba(123,191,106,.18);color:var(--ok);}
 .pill.complete{background:rgba(169,154,131,.18);color:var(--muted);}
+.pill.ok{background:rgba(123,191,106,.18);color:var(--ok);}
+.pill.fast{background:rgba(231,114,74,.18);color:var(--fast);}
+.pill.slow{background:rgba(90,169,214,.18);color:var(--slow);}
+.pill.wait{background:rgba(169,154,131,.18);color:var(--muted);}
 
 .batch{border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;background:rgba(0,0,0,.12);cursor:pointer;}
 .batch .top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;}
@@ -108,6 +112,11 @@ tr:last-child td{border-bottom:none;}
 .feature b{display:block;font-size:13px;margin-bottom:3px;}
 .feature span{font-size:11.5px;color:var(--muted);line-height:1.45;display:block;}
 .feature:last-child:nth-child(odd){grid-column:1/-1;}
+
+.dev-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.dev-stage{background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center;}
+.dev-stage b{display:block;font-size:12px;color:var(--heat);margin:4px 0 4px;}
+.dev-stage span{font-size:11px;color:var(--muted);line-height:1.4;display:block;}
 </style>
 </head>
 <body>
@@ -161,7 +170,7 @@ function applyUpdate(){
 /* ---------- i18n ---------- */
 const I18N={
 en:{
-  appTitle:"iBird Hatching", appTag:"Incubation & hatch tracker", langBtn:"العربية",
+  appTitle:"iBird Hatching Machine", appTag:"Incubation & hatch tracker", langBtn:"العربية",
   updateMsg:"Update available", updateBtn:"Reload",
   navSchedule:"Schedule", navEggTest:"Egg Test", navGuidance:"Guidance", navInfo:"Info", navStore:"Store",
   newIncubator:"New incubator", newBatch:"New batch", save:"Save", cancel:"Cancel", close:"Close",
@@ -184,7 +193,8 @@ en:{
   featureGuidance_t:"Guidance", featureGuidance_d:"What to do today, and what to check when something's off",
   featureSchedule_t:"Schedule", featureSchedule_d:"Candling, lockdown and hatch dates, worked out for you",
   featureEggTest_t:"Egg Test", featureEggTest_d:"Log candling results, fertility and hatch rate",
-  featureStore_t:"Store", featureStore_d:"Rings and supplies, one tap away",
+  featureDrydown_t:"Dry-Down", featureDrydown_d:"Per-egg weight tracking for valuable or rare clutches",
+  featureStore_t:"Store", featureStore_d:"Incubators and supplies, one tap away",
   guideTitle:"How incubation works", guideIntro:"The seven-stage arc every batch goes through, start to brooder.",
   guide1_t:"1 · Set the eggs (Day 0)", guide1_d:"Similar size, no cracks, warmed to room temperature before loading. This is Day 0 — log the batch here to start tracking it.",
   guide2_t:"2 · Hold steady conditions", guide2_d:"Keep temperature and humidity inside your species' range (see Info) and turn on schedule until lockdown.",
@@ -215,18 +225,40 @@ en:{
   tr_tempSpike_d:"More likely a temperature spike/drop (power cut, thermostat drift) than an egg-quality problem — check the incubator, not the eggs.",
   tr_principle:"General rule: humidity is the primary correction lever. Only nudge temperature, in small (±0.1–0.2°C) steps, if humidity is already maxed out or at its floor and the trend still won't close.",
   eggTestTitle:"Egg Test List", eggTestPick:"Select a batch",
+  navDrydown:"Dry-Down", drydownTitle:"Dry-Down", drydownIntro:"Per-egg weight tracking for valuable/rare clutches — weigh in on your own schedule, get a target curve and a humidity correction.",
+  newEgg:"New egg", noEggs:"No eggs yet. Add one to start weight tracking.",
+  eggLabel:"Label / ID", eggFreshWeight:"Fresh weight (g)", eggTargetLoss:"Target loss at pip (%)",
+  addWeighIn:"Add weigh-in", weighInWeight:"Weight (g)", weighInDate:"Date",
+  statusOk:"On target", statusFast:"Losing fast", statusSlow:"Losing slow", statusWait:"Awaiting weigh-in", statusLockdownEgg:"Lockdown",
+  currentWeight:"Current weight", lostSoFar:"Lost so far", targetToday:"Target today", dayOfPip:"Day {d} · pip day {p}",
+  msgWait:"Record the fresh weight on setting day, then weigh on your own schedule. Target today: {w}g ({l}% lost).",
+  msgOk:"Right on the line ({s} vs ideal). Hold humidity steady.",
+  msgFast:"Lost {o}% too much — drying too fast. Raise humidity ~{step}% and re-weigh in 2–3 days.",
+  msgSlow:"Lost {o}% too little — drying too slow. Lower humidity ~{step}% (or open a vent) and re-weigh in 2–3 days.",
+  msgLockSep:"Past pip day {p}. Stop turning, move to the hatcher, raise humidity to 65–70%.",
+  msgLockSame:"Past pip day {p}. Staying in this incubator: stop turning, lay the egg flat, raise humidity to 65–70% — leave temperature as-is, no separate hatcher needed.",
+  rhPrincipleNote:"Humidity is the primary lever. Only nudge temperature, in small (±0.1–0.2°C) steps, if humidity is already maxed or floored and the trend still won't close.",
   candle1Btn:"Log candling #1", candle2Btn:"Log candling #2", hatchBtn:"Log hatch result",
   fieldEggsFertile:"Fertile eggs remaining", fieldEggsHatched:"Eggs hatched", fieldFirstHatchDate:"First hatch date",
   metricsFertility:"Fertility rate", metricsHOS:"Hatch of Set", metricsHOF:"Hatch of Fertile", metricsCostPerChick:"Cost per chick",
   fieldEggCost:"Egg cost, total", fieldOtherCosts:"Other costs (optional)", fieldElectricityRate:"Electricity rate / kWh", fieldCurrency:"Currency",
   powerCostEstimate:"Estimated power cost", notSet:"—", editCosts:"Edit costs",
-  infoTitle:"Universal incubation reference", infoIntro:"Generic starting points by category. Species-specific overrides come later.",
+  infoTitle:"Incubation reference", infoIntro:"Tap a species for full detail — temp, humidity, turning, lockdown and candling days.",
   infoIncubationDays:"Incubation period", infoTempForced:"Temp (forced-air)", infoTempStill:"Temp (still-air)",
   infoHumidityPre:"Humidity, day 1 → lockdown", infoHumidityLock:"Humidity, lockdown → hatch",
   infoTurning:"Turning", infoLockdownOffset:"Lockdown starts", infoCandlingDays:"Candling checkpoints",
   daysBeforeHatch:"{n} days before expected hatch",
-  storeTitle:"Store", storeDesc:"Order rings and incubation supplies from ibirdbh.",
-  storeUrlField:"Store URL", storeGoBtn:"Open store", storeNotSet:"Add your store URL in settings below to enable the link.",
+  colSpecies:"Species", colDays:"Days", colTemp:"Temp", colHumidity:"Humidity",
+  devTitle:"Egg development, stage by stage", devIntro:"A hen's 21-day cycle shown as a visual reference — the same arc, compressed or stretched, applies to every species (see each species' own days above).",
+  dev1_t:"Day 3–4", dev1_d:"Heartbeat begins. Candling shows a fine web of blood vessels branching from a small dark spot.",
+  dev2_t:"Day 7", dev2_d:"Embryo clearly visible with a defined dark eye-spot; vessels have spread further across the shell.",
+  dev3_t:"Day 10–12", dev3_d:"Legs, wings and digits are forming. The body is filling noticeably more of the shell.",
+  dev4_t:"Day 14", dev4_d:"Embryo fills most of the shell. Feathers begin appearing; the air cell is now clearly defined.",
+  dev5_t:"Day 18 (lockdown)", dev5_d:"Down covers the body, the beak is hardening, and the chick positions its head under a wing toward the air cell.",
+  dev6_t:"Day 21 (hatch)", dev6_d:"Fully formed chick, internally pipped into the air cell and breathing air — ready to pip the shell and hatch.",
+  storeTitle:"Store", storeDesc:"Incubators, spare parts and bird supplies from ibirdbh.com.",
+  storeUrlField:"Store URL", storeGoBtn:"Open full store", storeNotSet:"Add your store URL in settings below to enable the link.",
+  storeFeatured:"Featured items", storeMoreCategories:"More categories",
   storeSave:"Save URL",
   toastSaved:"Saved", toastDeleted:"Deleted",
   notifEnable:"Enable reminders", notifEnabled:"Reminders on", notifDenied:"Notifications blocked in browser settings",
@@ -234,10 +266,12 @@ en:{
   candleModalTitle1:"Candling check #1", candleModalTitle2:"Candling check #2",
   candleHint1:"How many eggs are fertile / developing right now?", candleHint2:"Recheck — how many fertile eggs remain?",
   hatchModalTitle:"Log hatch result",
-  species_poultry:"Poultry (chicken-type)", species_waterfowl:"Waterfowl (duck-type)", species_parrot:"Parrot / psittacine (generic)",
+  species_poultry:"Hens (chicken)", species_quail:"Quail", species_waterfowl:"Ducks", species_geese:"Geese",
+  species_parrot:"Amazon parrot", species_macaw:"Macaw", species_lovebird:"Lovebird", species_africangrey:"African Grey", species_cockatoo:"Cockatoo", species_eclectus:"Eclectus",
+  infoSourceNote:"Temperature/humidity/day ranges are industry-standard incubation reference figures (species biology, not anyone's proprietary data) — always cross-check against your incubator manufacturer's guidance.",
 },
 ar:{
-  appTitle:"آي بيرد للتحضين", appTag:"متابعة التحضين والفقس", langBtn:"English",
+  appTitle:"آي بيرد لمكائن التفريخ", appTag:"متابعة التحضين والفقس", langBtn:"English",
   updateMsg:"يتوفر تحديث", updateBtn:"إعادة التحميل",
   navSchedule:"الجدول", navEggTest:"فحص البيض", navGuidance:"الإرشاد", navInfo:"معلومات", navStore:"المتجر",
   newIncubator:"حاضنة جديدة", newBatch:"دفعة جديدة", save:"حفظ", cancel:"إلغاء", close:"إغلاق",
@@ -260,7 +294,8 @@ ar:{
   featureGuidance_t:"الإرشاد", featureGuidance_d:"ماذا تفعل اليوم، وماذا تفحص عند وجود خلل",
   featureSchedule_t:"الجدول", featureSchedule_d:"مواعيد الفحص والإغلاق والفقس، محسوبة تلقائيًا",
   featureEggTest_t:"فحص البيض", featureEggTest_d:"سجّل نتائج الفحص بالضوء ونسب الخصوبة والفقس",
-  featureStore_t:"المتجر", featureStore_d:"الأطواق والمستلزمات على بُعد نقرة",
+  featureDrydown_t:"تجفيف البيض", featureDrydown_d:"متابعة وزن كل بيضة للدفعات النادرة أو القيّمة",
+  featureStore_t:"المتجر", featureStore_d:"مكائن التفريخ والمستلزمات على بُعد نقرة",
   guideTitle:"كيف يعمل التحضين", guideIntro:"سبع مراحل تمر بها كل دفعة، من التعيين حتى الحاضنة الأرضية.",
   guide1_t:"١ · عيّن البيض (اليوم صفر)", guide1_d:"بيض متقارب الحجم وخالٍ من الشروخ، ودافئ لدرجة حرارة الغرفة قبل التحميل. هذا هو اليوم صفر — سجّل الدفعة هنا لبدء المتابعة.",
   guide2_t:"٢ · حافظ على ثبات الظروف", guide2_d:"حافظ على الحرارة والرطوبة ضمن نطاق نوعك (راجع معلومات) وقلّب حسب الجدول حتى الإغلاق.",
@@ -291,18 +326,40 @@ ar:{
   tr_tempSpike_d:"الأرجح ارتفاع أو انخفاض مفاجئ بالحرارة (انقطاع كهرباء، انحراف الثرموستات) وليس مشكلة بجودة البيض — تحقق من الحاضنة.",
   tr_principle:"القاعدة العامة: الرطوبة هي أداة التصحيح الأساسية. لا تُعدّل الحرارة إلا بخطوات صغيرة (±0.1–0.2°م) وفقط إذا كانت الرطوبة بالفعل عند أقصى أو أدنى حد ولا يزال الاتجاه غير مقارب للهدف.",
   eggTestTitle:"فحص البيض", eggTestPick:"اختر دفعة",
+  navDrydown:"تجفيف البيض", drydownTitle:"تجفيف البيض", drydownIntro:"متابعة وزن كل بيضة على حدة للدفعات النادرة أو القيّمة — زِن حسب جدولك الخاص، واحصل على منحنى مستهدف وتصحيح للرطوبة.",
+  newEgg:"بيضة جديدة", noEggs:"لا توجد بيضات بعد. أضف واحدة لبدء متابعة الوزن.",
+  eggLabel:"التسمية / المعرّف", eggFreshWeight:"الوزن الطازج (غ)", eggTargetLoss:"الفقد المستهدف عند النقر (٪)",
+  addWeighIn:"إضافة وزن", weighInWeight:"الوزن (غ)", weighInDate:"التاريخ",
+  statusOk:"على الهدف", statusFast:"يجف بسرعة", statusSlow:"يجف ببطء", statusWait:"بانتظار الوزن", statusLockdownEgg:"إغلاق",
+  currentWeight:"الوزن الحالي", lostSoFar:"المفقود حتى الآن", targetToday:"الهدف اليوم", dayOfPip:"اليوم {d} · يوم النقر {p}",
+  msgWait:"سجّل الوزن الطازج يوم التعيين، ثم زِن حسب جدولك. الهدف اليوم: {w}غ ({l}٪ مفقود).",
+  msgOk:"على الخط تمامًا ({s} عن المثالي). حافظ على الرطوبة ثابتة.",
+  msgFast:"فقدت {o}٪ زيادة — يجف بسرعة. ارفع الرطوبة ~{step}٪ وأعد الوزن خلال 2–3 أيام.",
+  msgSlow:"فقدت {o}٪ أقل من اللازم — يجف ببطء. اخفض الرطوبة ~{step}٪ (أو افتح فتحة تهوية) وأعد الوزن خلال 2–3 أيام.",
+  msgLockSep:"تجاوزت يوم النقر {p}. أوقف التقليب، انقل البيضة إلى الفقّاسة، ارفع الرطوبة إلى 65–70٪.",
+  msgLockSame:"تجاوزت يوم النقر {p}. ستبقى في نفس الحاضنة: أوقف التقليب، ضع البيضة مسطّحة، ارفع الرطوبة إلى 65–70٪ — اترك الحرارة كما هي، لا حاجة لفقّاسة منفصلة.",
+  rhPrincipleNote:"الرطوبة هي الأداة الأساسية. لا تُعدّل الحرارة إلا بخطوات صغيرة (±0.1–0.2°م) وفقط إذا كانت الرطوبة عند أقصى أو أدنى حد ولا يزال الاتجاه غير مقارب للهدف.",
   candle1Btn:"تسجيل الفحص الأول", candle2Btn:"تسجيل الفحص الثاني", hatchBtn:"تسجيل نتيجة الفقس",
   fieldEggsFertile:"عدد البيض الخصب المتبقي", fieldEggsHatched:"عدد البيض الذي فقس", fieldFirstHatchDate:"تاريخ أول فقس",
   metricsFertility:"نسبة الخصوبة", metricsHOS:"فقس من المعيَّن", metricsHOF:"فقس من الخصب", metricsCostPerChick:"تكلفة الفرخ الواحد",
   fieldEggCost:"تكلفة البيض الإجمالية", fieldOtherCosts:"تكاليف أخرى (اختياري)", fieldElectricityRate:"سعر الكهرباء / ك.و.س", fieldCurrency:"العملة",
   powerCostEstimate:"تكلفة الطاقة المقدَّرة", notSet:"—", editCosts:"تعديل التكاليف",
-  infoTitle:"مرجع تحضين عام", infoIntro:"نقاط بداية عامة حسب الفئة. تخصيص كل نوع يأتي لاحقًا.",
+  infoTitle:"مرجع التحضين", infoIntro:"اضغط على أي نوع لعرض التفاصيل الكاملة — الحرارة، الرطوبة، التقليب، الإغلاق ومواعيد الفحص.",
   infoIncubationDays:"مدة التحضين", infoTempForced:"الحرارة (هواء قسري)", infoTempStill:"الحرارة (هواء ساكن)",
   infoHumidityPre:"الرطوبة، اليوم 1 → الإغلاق", infoHumidityLock:"الرطوبة، الإغلاق → الفقس",
   infoTurning:"التقليب", infoLockdownOffset:"يبدأ الإغلاق", infoCandlingDays:"مواعيد الفحص بالضوء",
   daysBeforeHatch:"قبل {n} أيام من الفقس المتوقع",
-  storeTitle:"المتجر", storeDesc:"اطلب الأطواق ومستلزمات التحضين من متجر آي بيرد.",
-  storeUrlField:"رابط المتجر", storeGoBtn:"فتح المتجر", storeNotSet:"أضف رابط متجرك أدناه لتفعيل الزر.",
+  colSpecies:"النوع", colDays:"الأيام", colTemp:"الحرارة", colHumidity:"الرطوبة",
+  devTitle:"مراحل نمو الجنين داخل البيضة", devIntro:"دورة الدجاج البالغة 21 يومًا كمرجع بصري — نفس المسار، مضغوطًا أو ممتدًا، ينطبق على كل الأنواع (راجع أيام كل نوع أعلاه).",
+  dev1_t:"اليوم 3–4", dev1_d:"يبدأ نبض القلب. يُظهر الفحص بالضوء شبكة دقيقة من الأوعية الدموية متفرعة من نقطة داكنة صغيرة.",
+  dev2_t:"اليوم 7", dev2_d:"الجنين واضح مع نقطة عين داكنة محددة؛ الأوعية الدموية امتدت أكثر عبر القشرة.",
+  dev3_t:"اليوم 10–12", dev3_d:"تتشكّل الأرجل والأجنحة والأصابع. الجسم يملأ جزءًا أكبر من القشرة بشكل ملحوظ.",
+  dev4_t:"اليوم 14", dev4_d:"الجنين يملأ معظم القشرة. تبدأ الريش بالظهور؛ الغرفة الهوائية أصبحت محددة بوضوح.",
+  dev5_t:"اليوم 18 (الإغلاق)", dev5_d:"الزغب يغطي الجسم، المنقار يتصلّب، ويضع الفرخ رأسه تحت جناحه نحو الغرفة الهوائية.",
+  dev6_t:"اليوم 21 (الفقس)", dev6_d:"فرخ مكتمل التكوّن، نقر داخليًا إلى الغرفة الهوائية ويتنفس هواءً — جاهز لنقر القشرة والفقس.",
+  storeTitle:"المتجر", storeDesc:"مكائن تفريخ وقطع غيار ومستلزمات الطيور من ibirdbh.com.",
+  storeUrlField:"رابط المتجر", storeGoBtn:"فتح المتجر الكامل", storeNotSet:"أضف رابط متجرك أدناه لتفعيل الزر.",
+  storeFeatured:"منتجات مميزة", storeMoreCategories:"فئات أخرى",
   storeSave:"حفظ الرابط",
   toastSaved:"تم الحفظ", toastDeleted:"تم الحذف",
   notifEnable:"تفعيل التذكيرات", notifEnabled:"التذكيرات مفعّلة", notifDenied:"الإشعارات محظورة في إعدادات المتصفح",
@@ -310,7 +367,9 @@ ar:{
   candleModalTitle1:"فحص الإضاءة الأول", candleModalTitle2:"فحص الإضاءة الثاني",
   candleHint1:"كم عدد البيض الخصب/النامي حاليًا؟", candleHint2:"إعادة فحص — كم بيضة خصبة متبقية؟",
   hatchModalTitle:"تسجيل نتيجة الفقس",
-  species_poultry:"دواجن (نمط الدجاج)", species_waterfowl:"طيور مائية (نمط البط)", species_parrot:"ببغاوات (عام)",
+  species_poultry:"دجاج", species_quail:"سمان", species_waterfowl:"بط", species_geese:"إوز",
+  species_parrot:"ببغاء أمازون", species_macaw:"ماكاو", species_lovebird:"لوفبيرد", species_africangrey:"الرمادي الإفريقي", species_cockatoo:"كوكاتو", species_eclectus:"إكليكتوس",
+  infoSourceNote:"أرقام الحرارة والرطوبة ومدة التحضين هي قيم مرجعية معيارية في صناعة التحضين (بيانات بيولوجية عامة، وليست ملكية خاصة لأي جهة) — راجع دائمًا تعليمات الشركة المصنّعة لحاضنتك.",
 }
 };
 let LANG=(localStorage.getItem('ibird_lang')||'ar');
@@ -330,28 +389,81 @@ function applyLangAttrs(){
   document.documentElement.dir=LANG==='ar'?'rtl':'ltr';
 }
 
-/* ---------- species profiles (generic, universal defaults — §7/§3 of the dev plan) ---------- */
+/* ---------- species profiles (§7/§3 of the dev plan) ----------
+   Incubation-day ranges, temperature and humidity figures are standard
+   incubation-reference values (egg biology, published across hatchery
+   and incubator-manufacturer literature) — not any single source's
+   proprietary data. Turning frequency and lockdown/candling offsets
+   follow common incubation practice. Cross-check against your own
+   incubator manufacturer's guidance; treat these as starting points. */
 const SPECIES=[
   {id:'poultry', nameKey:'species_poultry', incubationDays:21, tempForced:37.5, tempStill:38.9,
-   humidityPre:'45–50%', humidityLock:'65–70%', turning:'3–5x/day (odd count)', lockdownOffsetDays:3, candlingDays:[7,14], hatchSpreadHours:36, chickRemovalHours:36},
+   humidityPre:'40–50%', humidityLock:'65–70%', turning:'3–5x/day (odd count)', lockdownOffsetDays:3, candlingDays:[7,14], hatchSpreadHours:36, chickRemovalHours:36},
+  {id:'quail', nameKey:'species_quail', incubationDays:18, tempForced:37.3, tempStill:38.7,
+   humidityPre:'40–50%', humidityLock:'65–70%', turning:'3–5x/day (odd count)', lockdownOffsetDays:2, candlingDays:[7,12], hatchSpreadHours:24, chickRemovalHours:24},
   {id:'waterfowl', nameKey:'species_waterfowl', incubationDays:28, tempForced:37.5, tempStill:38.9,
-   humidityPre:'55–60%', humidityLock:'70–75%', turning:'3–5x/day (odd count)', lockdownOffsetDays:3, candlingDays:[10,25], hatchSpreadHours:48, chickRemovalHours:36},
-  {id:'parrot', nameKey:'species_parrot', incubationDays:26, tempForced:37.3, tempStill:38.6,
-   humidityPre:'40–50%', humidityLock:'65–70%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:3, candlingDays:[7,14], hatchSpreadHours:48, chickRemovalHours:36},
+   humidityPre:'45–55%', humidityLock:'70–75%', turning:'3–5x/day (odd count)', lockdownOffsetDays:3, candlingDays:[9,20], hatchSpreadHours:48, chickRemovalHours:36},
+  {id:'geese', nameKey:'species_geese', incubationDays:30, tempForced:37.3, tempStill:38.7,
+   humidityPre:'45–55%', humidityLock:'70–75%', turning:'3–5x/day (odd count)', lockdownOffsetDays:3, candlingDays:[10,22], hatchSpreadHours:48, chickRemovalHours:36},
+  {id:'parrot', nameKey:'species_parrot', incubationDays:27, tempForced:37.3, tempStill:38.6,
+   humidityPre:'35–45%', humidityLock:'55–65%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:3, candlingDays:[7,14], hatchSpreadHours:48, chickRemovalHours:36},
+  {id:'macaw', nameKey:'species_macaw', incubationDays:29, tempForced:37.3, tempStill:38.6,
+   humidityPre:'35–45%', humidityLock:'55–65%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:3, candlingDays:[7,15], hatchSpreadHours:48, chickRemovalHours:36},
+  {id:'lovebird', nameKey:'species_lovebird', incubationDays:23, tempForced:37.3, tempStill:38.6,
+   humidityPre:'35–45%', humidityLock:'55–65%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:2, candlingDays:[6,12], hatchSpreadHours:36, chickRemovalHours:24},
+  {id:'africangrey', nameKey:'species_africangrey', incubationDays:27, tempForced:37.3, tempStill:38.6,
+   humidityPre:'35–45%', humidityLock:'55–65%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:3, candlingDays:[7,14], hatchSpreadHours:48, chickRemovalHours:36},
+  {id:'cockatoo', nameKey:'species_cockatoo', incubationDays:30, tempForced:37.3, tempStill:38.6,
+   humidityPre:'35–45%', humidityLock:'55–65%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:3, candlingDays:[7,15], hatchSpreadHours:48, chickRemovalHours:36},
+  {id:'eclectus', nameKey:'species_eclectus', incubationDays:28, tempForced:37.3, tempStill:38.6,
+   humidityPre:'35–45%', humidityLock:'55–65%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:3, candlingDays:[7,14], hatchSpreadHours:48, chickRemovalHours:36},
 ];
 function speciesById(id){ return SPECIES.find(s=>s.id===id)||SPECIES[0]; }
 
-/* ---------- storage (localStorage — small Normal-mode dataset; migrate to IndexedDB when Detailed per-egg mode ships, per §6) ---------- */
+/* original schematic egg/embryo illustration — not a photo, just growth-by-fraction diagram */
+function eggIllustration(pct){
+  const airTopY=4, airH=16+pct*30;
+  const embR=9+pct*33, embCy=76-pct*8;
+  const eyeShow=pct>0.35;
+  return `<svg viewBox="0 0 100 132" width="58" height="76" aria-hidden="true">
+    <path d="M50,4 C75,4 93,35 93,68 C93,102 74,128 50,128 C26,128 7,102 7,68 C7,35 25,4 50,4 Z" fill="var(--panel)" stroke="var(--heat-d)" stroke-width="2"/>
+    <path d="M11,${airTopY+airH} A${43},${43} 0 0 1 89,${airTopY+airH}" fill="none" stroke="var(--slow)" stroke-width="1.6" stroke-dasharray="3,3" opacity=".65"/>
+    <ellipse cx="50" cy="${embCy}" rx="${embR*0.82}" ry="${embR}" fill="var(--ok)" opacity=".5"/>
+    ${eyeShow?`<circle cx="${50-embR*0.22}" cy="${embCy-embR*0.25}" r="2.4" fill="var(--ok)" opacity=".9"/>`:''}
+  </svg>`;
+}
+
+/* ---------- storage (localStorage — dataset stays small even with per-egg weigh-ins for a hobbyist scale; revisit if usage grows well beyond that) ---------- */
 function load(key,fallback){ try{ const v=JSON.parse(localStorage.getItem(key)); return v==null?fallback:v; }catch(e){ return fallback; } }
 function save(key,val){ localStorage.setItem(key,JSON.stringify(val)); }
 function uid(){ return (crypto.randomUUID?crypto.randomUUID():'id-'+Date.now()+'-'+Math.random().toString(16).slice(2)); }
 
 let incubators=load('ibird_incubators',[]);
 let batches=load('ibird_batches',[]);
-let settings=load('ibird_settings',{storeUrl:'',electricityRate:0.03,currency:'BHD'});
+let eggs=load('ibird_eggs',[]);
+let settings=load('ibird_settings',{storeUrl:'https://ibirdbh.com',electricityRate:0.03,currency:'BHD'});
 function saveIncubators(){ save('ibird_incubators',incubators); }
 function saveBatches(){ save('ibird_batches',batches); }
+function saveEggs(){ save('ibird_eggs',eggs); }
 function saveSettings(){ save('ibird_settings',settings); }
+function defaultTargetLoss(sp){ return ['parrot','macaw','lovebird','africangrey','cockatoo','eclectus'].includes(sp.id)?14:13; }
+
+/* ---------- ibirdbh.com real store categories/products (user-confirmed source, not guessed) ---------- */
+const STORE_CATEGORIES=[
+  {ic:'🐣',en:'Incubators',ar:'مكائن تفريخ',url:'https://ibirdbh.com/product-category/%d9%85%d9%83%d8%a7%d8%a6%d9%86-%d8%aa%d9%81%d8%b1%d9%8a%d8%ae/'},
+  {ic:'🔧',en:'Incubator parts',ar:'قطع غيار مكائن التفريخ',url:'https://ibirdbh.com/product-category/%d9%82%d8%b7%d8%b9-%d8%ba%d9%8a%d8%a7%d8%b1-%d9%85%d9%83%d8%a7%d8%a6%d9%86-%d8%a7%d9%84%d8%aa%d9%81%d8%b1%d9%8a%d8%ae/'},
+  {ic:'🐦',en:'Poultry & bird supplies',ar:'مستلزمات الدواجن والطيور',url:'https://ibirdbh.com/product-category/%d9%85%d8%b3%d8%aa%d9%84%d8%b2%d9%85%d8%a7%d8%aa-%d8%a7%d9%84%d8%af%d9%88%d8%a7%d8%ac%d9%86-%d9%88%d8%a7%d9%84%d8%b7%d9%8a%d9%88%d8%b1/'},
+];
+const STORE_MORE=[
+  {en:'Agriculture supplies',ar:'مستلزمات الزراعة',url:'https://ibirdbh.com/product-category/%d9%85%d8%b3%d8%aa%d9%84%d8%b2%d9%85%d8%a7%d8%aa-%d8%a7%d9%84%d8%b2%d8%b1%d8%a7%d8%b9%d8%a9/'},
+  {en:'Livestock supplies',ar:'مستلزمات المواشي',url:'https://ibirdbh.com/product-category/%d9%85%d8%b3%d8%aa%d9%84%d8%b2%d9%85%d8%a7%d8%aa-%d8%a7%d9%84%d9%85%d9%88%d8%a7%d8%b4%d9%8a/'},
+  {en:'Beekeeping supplies',ar:'مستلزمات النحل',url:'https://ibirdbh.com/product-category/%d9%85%d8%b3%d8%aa%d9%84%d8%b2%d9%85%d8%a7%d8%aa-%d8%a7%d9%84%d9%86%d8%ad%d9%84/'},
+];
+const STORE_PRODUCTS=[
+  {en:'Incubator maintenance & repair',ar:'صيانة وإصلاح مكائن التفريخ',price:'10.00',url:'https://ibirdbh.com/product/incubator-maintenance-repairing/'},
+  {en:'Chicken nipple drinker',ar:'حلمة سقاية للدجاج',price:'0.15',url:'https://ibirdbh.com/product/chicken-nipple/'},
+  {en:'Drinking cup 6mm',ar:'كوب سقاية 6مم',price:'0.25',url:'https://ibirdbh.com/product/drinking-cup-6mm/'},
+];
 
 /* ---------- date helpers ---------- */
 function todayISO(){ return new Date().toISOString().slice(0,10); }
@@ -415,6 +527,34 @@ function metricsFor(batch){
   return m;
 }
 
+/* ---------- Dry-Down: per-egg weight tracking (ported from the iBird Eggs project) ----------
+   Target loss ramps linearly from 0% at day 0 to egg.targetLoss% at the
+   pip/lockdown day — same model as the original Dry-Down app. */
+function pipDay(egg){ const sp=speciesById(egg.speciesId); return sp.incubationDays-sp.lockdownOffsetDays; }
+function targetLossAt(egg,day){ const p=pipDay(egg); return egg.targetLoss*Math.min(Math.max(day,0),p)/p; }
+function targetWeightAt(egg,day){ return egg.fresh*(1-targetLossAt(egg,day)/100); }
+function lossPct(egg,weight){ return (egg.fresh-weight)/egg.fresh*100; }
+
+function analyseEgg(egg){
+  const p=pipDay(egg);
+  const elapsed=daysBetween(egg.setDate,todayISO());
+  const ms=(egg.weighIns||[]).slice().sort((a,b)=>a.date<b.date?-1:1);
+  const last=ms.length?ms[ms.length-1]:null;
+  const out={elapsed,p,targetWeightToday:targetWeightAt(egg,elapsed),targetLossToday:targetLossAt(egg,elapsed)};
+  if(elapsed>=p){ out.status='lockdown'; return out; }
+  if(!last){ out.status='wait'; return out; }
+  const lastDay=daysBetween(egg.setDate,last.date);
+  const aLoss=lossPct(egg,last.weight), tLoss=targetLossAt(egg,lastDay);
+  const tol=Math.max(1.0,0.12*Math.max(tLoss,1));
+  const dev=aLoss-tLoss;
+  out.lastDay=lastDay; out.aLoss=aLoss; out.tLoss=tLoss; out.tol=tol; out.dev=dev; out.last=last;
+  out.status=dev>tol?'fast':(dev<-tol?'slow':'ok');
+  if(out.status!=='ok'){
+    out.rhStep=Math.max(3,Math.min(12,Math.round(Math.abs(dev)*1.4)));
+  }
+  return out;
+}
+
 /* ---------- UI shell ---------- */
 let TAB=load('ibird_tab','schedule');
 function setTab(tabId){ TAB=tabId; save('ibird_tab',TAB); renderAll(); }
@@ -431,7 +571,7 @@ function renderAll(){
 }
 function renderNav(){
   const tabs=[
-    ['schedule','navSchedule','📅'],['eggtest','navEggTest','🔦'],
+    ['schedule','navSchedule','📅'],['eggtest','navEggTest','🔦'],['drydown','navDrydown','⚖️'],
     ['guidance','navGuidance','🧭'],['info','navInfo','📖'],['store','navStore','🛒']
   ];
   document.getElementById('navbar').innerHTML=tabs.map(([id,key,ic])=>
@@ -442,6 +582,7 @@ function renderView(){
   const el=document.getElementById('view');
   if(TAB==='schedule') el.innerHTML=viewSchedule();
   else if(TAB==='eggtest') el.innerHTML=viewEggTest();
+  else if(TAB==='drydown') el.innerHTML=viewDrydown();
   else if(TAB==='guidance') el.innerHTML=viewGuidance();
   else if(TAB==='info') el.innerHTML=viewInfo();
   else if(TAB==='store') el.innerHTML=viewStore();
@@ -458,6 +599,7 @@ function viewSchedule(){
       <div class="feature-grid">
         <div class="feature"><span class="ic">📅</span><b>${t('featureSchedule_t')}</b><span>${t('featureSchedule_d')}</span></div>
         <div class="feature"><span class="ic">🔦</span><b>${t('featureEggTest_t')}</b><span>${t('featureEggTest_d')}</span></div>
+        <div class="feature"><span class="ic">⚖️</span><b>${t('featureDrydown_t')}</b><span>${t('featureDrydown_d')}</span></div>
         <div class="feature"><span class="ic">🧭</span><b>${t('featureGuidance_t')}</b><span>${t('featureGuidance_d')}</span></div>
         <div class="feature"><span class="ic">📖</span><b>${t('featureInfo_t')}</b><span>${t('featureInfo_d')}</span></div>
         <div class="feature"><span class="ic">🛒</span><b>${t('featureStore_t')}</b><span>${t('featureStore_d')}</span></div>
@@ -622,8 +764,8 @@ function viewEggTest(){
       <div class="field"><label>${t('fieldElectricityRate')}</label><input id="f_elecRate" type="number" step="0.001" value="${settings.electricityRate}" onchange="updateSettingsRate()"></div>
       <div class="field"><label>${t('fieldCurrency')}</label><input id="f_currency" value="${settings.currency}" onchange="updateSettingsCurrency()"></div>
     </div>
-    <div class="note">${t('powerCostEstimate')}: ${m.powerCost!=null?m.powerCost.toFixed(2)+' '+settings.currency:t('notSet')}</div>
-    <div class="metric" style="margin-top:6px"><b>${m.costPerChick!=null?m.costPerChick.toFixed(2)+' '+settings.currency:t('notSet')}</b><span>${t('metricsCostPerChick')}</span></div>
+    <div class="note">${t('powerCostEstimate')}: ${m.powerCost!=null?ltr(m.powerCost.toFixed(2)+' '+settings.currency):t('notSet')}</div>
+    <div class="metric" style="margin-top:6px"><b>${m.costPerChick!=null?ltr(m.costPerChick.toFixed(2)+' '+settings.currency):t('notSet')}</b><span>${t('metricsCostPerChick')}</span></div>
   </div>`;
 
   return html;
@@ -674,6 +816,121 @@ function saveHatch(batchId){
   saveBatches(); closeModal(); renderAll(); toast(t('toastSaved'));
 }
 
+/* ---------- Dry-Down branch: per-egg weight tracking ---------- */
+function viewDrydown(){
+  let html=`<div class="card"><h2>${t('drydownTitle')}</h2><div class="muted" style="margin-bottom:12px">${t('drydownIntro')}</div>
+    <button class="btn ghost small" onclick="openEggModal()">+ ${t('newEgg')}</button></div>`;
+
+  if(eggs.length===0){
+    html+=`<div class="card"><div class="empty">${t('noEggs')}</div></div>`;
+    return html;
+  }
+
+  eggs.forEach(egg=>{
+    const a=analyseEgg(egg);
+    const sp=speciesById(egg.speciesId);
+    html+=`<div class="batch" onclick="openEggDetail('${egg.id}')">
+      <div class="top">
+        <div class="name">${escapeHtml(egg.label)}</div>
+        <span class="pill ${a.status}">${t('status'+(a.status==='lockdown'?'LockdownEgg':a.status.charAt(0).toUpperCase()+a.status.slice(1)))}</span>
+      </div>
+      <div class="meta">${t(sp.nameKey)} · ${t('dayOfPip',{d:Math.max(a.elapsed,0),p:a.p})}</div>
+      <div class="stats">
+        <div><b>${egg.fresh}</b><span>${LANG==='ar'?'الوزن الطازج':'fresh (g)'}</span></div>
+        <div><b>${a.last?a.last.weight.toFixed(1):t('notSet')}</b><span>${t('currentWeight')}</span></div>
+        <div><b>${a.aLoss!=null?a.aLoss.toFixed(1)+'%':t('notSet')}</b><span>${t('lostSoFar')}</span></div>
+      </div>
+    </div>`;
+  });
+  return html;
+}
+
+function openEggModal(){
+  const spOptions=SPECIES.map(s=>`<option value="${s.id}">${t(s.nameKey)}</option>`).join('');
+  openModal(`
+    <div class="modalhead"><h2>${t('newEgg')}</h2><button class="close" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>${t('eggLabel')}</label><input id="f_eggLabel"></div>
+    <div class="field"><label>${t('batchSpecies')}</label><select id="f_eggSpecies">${spOptions}</select></div>
+    <div class="row">
+      <div class="field"><label>${t('eggFreshWeight')}</label><input id="f_eggFresh" type="number" step="0.1" inputmode="decimal"></div>
+      <div class="field"><label>${t('eggTargetLoss')}</label><input id="f_eggTarget" type="number" step="0.5" value="13" inputmode="decimal"></div>
+    </div>
+    <div class="field"><label>${t('batchSetDate')}</label><input id="f_eggDate" type="date" value="${todayISO()}"></div>
+    <div class="field"><label>${t('batchHatcherMode')}</label>
+      <select id="f_eggHatcher"><option value="same_incubator">${t('hatcherSame')}</option><option value="separate_hatcher">${t('hatcherSeparate')}</option></select></div>
+    <button class="btn" style="margin-top:16px" onclick="saveEgg()">${t('save')}</button>
+  `);
+  document.getElementById('f_eggSpecies').addEventListener('change',function(){
+    document.getElementById('f_eggTarget').value=defaultTargetLoss(speciesById(this.value));
+  });
+}
+function saveEgg(){
+  const label=document.getElementById('f_eggLabel').value.trim();
+  const fresh=parseFloat(document.getElementById('f_eggFresh').value);
+  if(!label||!fresh||fresh<=0) return;
+  eggs.push({
+    id:uid(), label,
+    speciesId:document.getElementById('f_eggSpecies').value,
+    fresh, targetLoss:parseFloat(document.getElementById('f_eggTarget').value)||13,
+    setDate:document.getElementById('f_eggDate').value||todayISO(),
+    hatcherMode:document.getElementById('f_eggHatcher').value,
+    weighIns:[]
+  });
+  saveEggs(); closeModal(); renderAll(); toast(t('toastSaved'));
+}
+
+function openEggDetail(eggId){
+  const egg=eggs.find(x=>x.id===eggId); if(!egg) return;
+  const a=analyseEgg(egg);
+  let msg='';
+  if(a.status==='lockdown') msg=t(egg.hatcherMode==='separate_hatcher'?'msgLockSep':'msgLockSame',{p:a.p});
+  else if(a.status==='wait') msg=t('msgWait',{w:a.targetWeightToday.toFixed(2),l:a.targetLossToday.toFixed(1)});
+  else if(a.status==='ok') msg=t('msgOk',{s:(a.dev>=0?'+':'')+a.dev.toFixed(1)});
+  else msg=t(a.status==='fast'?'msgFast':'msgSlow',{o:Math.abs(a.dev).toFixed(1),step:a.rhStep});
+
+  const rows=(egg.weighIns||[]).slice().sort((x,y)=>x.date<y.date?1:-1).map(m=>{
+    const d=daysBetween(egg.setDate,m.date), tl=targetLossAt(egg,d), al=lossPct(egg,m.weight);
+    return `<tr><td>${LANG==='ar'?'يوم':'day'} ${d} · ${fmtDate(m.date)}</td><td>${m.weight}g</td><td>${al.toFixed(1)}% (${(al-tl>=0?'+':'')}${(al-tl).toFixed(1)})</td></tr>`;
+  }).join('');
+
+  openModal(`
+    <div class="modalhead"><h2>${escapeHtml(egg.label)}</h2><div class="muted">${t(speciesById(egg.speciesId).nameKey)} · ${t('dayOfPip',{d:Math.max(a.elapsed,0),p:a.p})}</div>
+      <button class="close" onclick="closeModal()">✕</button></div>
+    <div class="card" style="background:rgba(0,0,0,.2)"><span class="pill ${a.status}">${t('status'+(a.status==='lockdown'?'LockdownEgg':a.status.charAt(0).toUpperCase()+a.status.slice(1)))}</span>
+      <div style="margin-top:10px">${msg}</div>
+      ${a.status!=='lockdown'&&a.status!=='wait'?`<div class="note">${t('rhPrincipleNote')}</div>`:''}
+    </div>
+    <div class="row" style="margin:14px 0">
+      <div class="metric"><b>${a.last?a.last.weight.toFixed(1):t('notSet')}</b><span>${t('currentWeight')}</span></div>
+      <div class="metric"><b>${a.aLoss!=null?a.aLoss.toFixed(1)+'%':t('notSet')}</b><span>${t('lostSoFar')}</span></div>
+      <div class="metric"><b>${a.targetWeightToday.toFixed(1)}</b><span>${t('targetToday')}</span></div>
+    </div>
+    <button class="btn ghost small" onclick="openWeighInModal('${egg.id}')">+ ${t('addWeighIn')}</button>
+    ${rows?`<table style="margin-top:14px">${rows}</table>`:''}
+    <button class="btn danger" style="margin-top:14px" onclick="deleteEgg('${egg.id}')">${t('delete')}</button>
+  `);
+}
+function openWeighInModal(eggId){
+  openModal(`
+    <div class="modalhead"><h2>${t('addWeighIn')}</h2><button class="close" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>${t('weighInWeight')}</label><input id="f_weighWeight" type="number" step="0.1" inputmode="decimal"></div>
+    <div class="field"><label>${t('weighInDate')}</label><input id="f_weighDate" type="date" value="${todayISO()}"></div>
+    <button class="btn" style="margin-top:16px" onclick="saveWeighIn('${eggId}')">${t('save')}</button>
+  `);
+}
+function saveWeighIn(eggId){
+  const egg=eggs.find(x=>x.id===eggId); if(!egg) return;
+  const w=parseFloat(document.getElementById('f_weighWeight').value);
+  if(!w||w<=0) return;
+  egg.weighIns=egg.weighIns||[];
+  egg.weighIns.push({id:uid(),weight:w,date:document.getElementById('f_weighDate').value||todayISO()});
+  saveEggs(); openEggDetail(eggId); toast(t('toastSaved'));
+}
+function deleteEgg(eggId){
+  if(!confirm(t('confirmDelete'))) return;
+  eggs=eggs.filter(e=>e.id!==eggId); saveEggs(); closeModal(); renderAll(); toast(t('toastDeleted'));
+}
+
 /* ---------- Guidance branch (§1a #2, §5a) ---------- */
 function viewGuidance(){
   let html=`<div class="card"><h2>${t('guideTitle')}</h2><div class="muted" style="margin-bottom:6px">${t('guideIntro')}</div>`;
@@ -717,33 +974,70 @@ function viewGuidance(){
 /* ---------- Info branch (§7) ---------- */
 function viewInfo(){
   let html=`<div class="card"><h2>${t('infoTitle')}</h2><div class="muted">${t('infoIntro')}</div></div>`;
-  SPECIES.forEach(sp=>{
-    html+=`<div class="card"><h2>${t(sp.nameKey)}</h2>
-      <table>
-        <tr><td class="muted">${t('infoIncubationDays')}</td><td>${sp.incubationDays} ${LANG==='ar'?'يوم':'days'}</td></tr>
-        <tr><td class="muted">${t('infoTempForced')}</td><td>${sp.tempForced}°C</td></tr>
-        <tr><td class="muted">${t('infoTempStill')}</td><td>${sp.tempStill}°C</td></tr>
-        <tr><td class="muted">${t('infoHumidityPre')}</td><td>${sp.humidityPre}</td></tr>
-        <tr><td class="muted">${t('infoHumidityLock')}</td><td>${sp.humidityLock}</td></tr>
-        <tr><td class="muted">${t('infoTurning')}</td><td>${sp.turning}</td></tr>
-        <tr><td class="muted">${t('infoLockdownOffset')}</td><td>${t('daysBeforeHatch',{n:sp.lockdownOffsetDays})}</td></tr>
-        <tr><td class="muted">${t('infoCandlingDays')}</td><td>${LANG==='ar'?'اليوم':'day'} ${sp.candlingDays[0]}, ${sp.candlingDays[1]}</td></tr>
-      </table>
-    </div>`;
-  });
+
+  html+=`<div class="card"><h2>${t('devTitle')}</h2><div class="muted" style="margin-bottom:10px">${t('devIntro')}</div>
+    <div class="dev-grid">`;
+  const fracs=[0.14,0.30,0.5,0.62,0.82,1];
+  for(let i=1;i<=6;i++){
+    html+=`<div class="dev-stage">${eggIllustration(fracs[i-1])}<b>${t('dev'+i+'_t')}</b><span>${t('dev'+i+'_d')}</span></div>`;
+  }
+  html+=`</div></div>`;
+
+  html+=`<div class="card"><table>
+    <tr><th>${t('colSpecies')}</th><th>${t('colDays')}</th><th>${t('colTemp')}</th><th>${t('colHumidity')}</th></tr>
+    ${SPECIES.map(sp=>`<tr onclick="openSpeciesDetail('${sp.id}')" style="cursor:pointer">
+      <td>${t(sp.nameKey)}</td><td>${sp.incubationDays}</td><td>${ltr(sp.tempForced+'°C')}</td><td>${ltr(sp.humidityPre)}</td>
+    </tr>`).join('')}
+  </table></div>`;
+
+  html+=`<div class="note" style="padding:0 4px">${t('infoSourceNote')}</div>`;
   return html;
+}
+function openSpeciesDetail(id){
+  const sp=speciesById(id);
+  openModal(`
+    <div class="modalhead"><h2>${t(sp.nameKey)}</h2><button class="close" onclick="closeModal()">✕</button></div>
+    <table>
+      <tr><td class="muted">${t('infoIncubationDays')}</td><td>${sp.incubationDays} ${LANG==='ar'?'يوم':'days'}</td></tr>
+      <tr><td class="muted">${t('infoTempForced')}</td><td>${ltr(sp.tempForced+'°C')}</td></tr>
+      <tr><td class="muted">${t('infoTempStill')}</td><td>${ltr(sp.tempStill+'°C')}</td></tr>
+      <tr><td class="muted">${t('infoHumidityPre')}</td><td>${ltr(sp.humidityPre)}</td></tr>
+      <tr><td class="muted">${t('infoHumidityLock')}</td><td>${ltr(sp.humidityLock)}</td></tr>
+      <tr><td class="muted">${t('infoTurning')}</td><td>${ltr(sp.turning)}</td></tr>
+      <tr><td class="muted">${t('infoLockdownOffset')}</td><td>${t('daysBeforeHatch',{n:sp.lockdownOffsetDays})}</td></tr>
+      <tr><td class="muted">${t('infoCandlingDays')}</td><td>${LANG==='ar'?'اليوم':'day'} ${ltr(sp.candlingDays[0]+', '+sp.candlingDays[1])}</td></tr>
+    </table>
+  `);
 }
 
 /* ---------- Store branch (§1a #5) ---------- */
 function viewStore(){
-  let html=`<div class="card"><h2>${t('storeTitle')}</h2><div class="muted">${t('storeDesc')}</div>`;
+  let html=`<div class="card"><h2>${t('storeTitle')}</h2><div class="muted">${t('storeDesc')}</div></div>`;
+
+  html+=`<div class="feature-grid">`;
+  STORE_CATEGORIES.forEach(c=>{
+    html+=`<a class="feature" style="text-decoration:none;color:inherit;display:block" href="${c.url}" target="_blank" rel="noopener">
+      <span class="ic">${c.ic}</span><b>${LANG==='ar'?c.ar:c.en}</b></a>`;
+  });
+  html+=`</div>`;
+
+  html+=`<div class="card"><h2>${t('storeFeatured')}</h2>`;
+  STORE_PRODUCTS.forEach(p=>{
+    html+=`<div class="event"><div><div class="lbl">${LANG==='ar'?p.ar:p.en}</div><div class="muted">${ltr(p.price+' '+settings.currency)}</div></div>
+      <a class="btn ghost small" style="text-decoration:none" href="${p.url}" target="_blank" rel="noopener">→</a></div>`;
+  });
+  html+=`</div>`;
+
+  html+=`<div class="card"><h2>${t('storeMoreCategories')}</h2><div class="chip-row">`;
+  STORE_MORE.forEach(c=>{
+    html+=`<a class="chip" style="text-decoration:none" href="${c.url}" target="_blank" rel="noopener">${LANG==='ar'?c.ar:c.en}</a>`;
+  });
+  html+=`</div></div>`;
+
   if(settings.storeUrl){
-    html+=`<a class="btn" style="margin-top:14px;text-decoration:none" href="${escapeHtml(settings.storeUrl)}" target="_blank" rel="noopener">${t('storeGoBtn')}</a>`;
-  } else {
-    html+=`<div class="note">${t('storeNotSet')}</div>`;
+    html+=`<a class="btn" style="margin-bottom:14px;text-decoration:none;display:flex" href="${escapeHtml(settings.storeUrl)}" target="_blank" rel="noopener">${t('storeGoBtn')}</a>`;
   }
-  html+=`</div>
-  <div class="card">
+  html+=`<div class="card">
     <div class="field"><label>${t('storeUrlField')}</label><input id="f_storeUrl" value="${escapeHtml(settings.storeUrl||'')}" placeholder="https://"></div>
     <button class="btn ghost small" style="margin-top:10px" onclick="saveStoreUrl()">${t('storeSave')}</button>
   </div>`;
@@ -796,6 +1090,7 @@ function toast(msg){
   el.textContent=msg; el.classList.add('show');
   clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),1800);
 }
+function ltr(s){ return `<span dir="ltr" style="unicode-bidi:isolate">${s}</span>`; }
 function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 /* ---------- init ---------- */
