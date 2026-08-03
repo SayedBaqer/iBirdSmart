@@ -268,6 +268,7 @@ en:{
   hatchModalTitle:"Log hatch result",
   species_poultry:"Hens (chicken)", species_quail:"Quail", species_waterfowl:"Ducks", species_geese:"Geese",
   species_parrot:"Amazon parrot", species_macaw:"Macaw", species_lovebird:"Lovebird", species_africangrey:"African Grey", species_cockatoo:"Cockatoo", species_eclectus:"Eclectus",
+  species_turkey:"Turkey", species_pheasant:"Pheasant", species_partridge:"Partridge", species_falcon:"Falcon", species_cockatiel:"Cockatiel", species_budgie:"Budgerigar",
   infoSourceNote:"Temperature/humidity/day ranges are industry-standard incubation reference figures (species biology, not anyone's proprietary data) — always cross-check against your incubator manufacturer's guidance.",
 },
 ar:{
@@ -369,6 +370,7 @@ ar:{
   hatchModalTitle:"تسجيل نتيجة الفقس",
   species_poultry:"دجاج", species_quail:"سمان", species_waterfowl:"بط", species_geese:"إوز",
   species_parrot:"ببغاء أمازون", species_macaw:"ماكاو", species_lovebird:"لوفبيرد", species_africangrey:"الرمادي الإفريقي", species_cockatoo:"كوكاتو", species_eclectus:"إكليكتوس",
+  species_turkey:"ديك رومي", species_pheasant:"تدرج (فيزنت)", species_partridge:"حجل", species_falcon:"صقر", species_cockatiel:"كوكتيل", species_budgie:"بادجي (عصفور دندن)",
   infoSourceNote:"أرقام الحرارة والرطوبة ومدة التحضين هي قيم مرجعية معيارية في صناعة التحضين (بيانات بيولوجية عامة، وليست ملكية خاصة لأي جهة) — راجع دائمًا تعليمات الشركة المصنّعة لحاضنتك.",
 }
 };
@@ -417,6 +419,18 @@ const SPECIES=[
    humidityPre:'35–45%', humidityLock:'55–65%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:3, candlingDays:[7,15], hatchSpreadHours:48, chickRemovalHours:36},
   {id:'eclectus', nameKey:'species_eclectus', incubationDays:28, tempForced:37.3, tempStill:38.6,
    humidityPre:'35–45%', humidityLock:'55–65%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:3, candlingDays:[7,14], hatchSpreadHours:48, chickRemovalHours:36},
+  {id:'turkey', nameKey:'species_turkey', incubationDays:28, tempForced:37.5, tempStill:38.9,
+   humidityPre:'45–50%', humidityLock:'65–70%', turning:'3–5x/day (odd count)', lockdownOffsetDays:3, candlingDays:[10,24], hatchSpreadHours:48, chickRemovalHours:36},
+  {id:'pheasant', nameKey:'species_pheasant', incubationDays:24, tempForced:37.3, tempStill:38.7,
+   humidityPre:'40–50%', humidityLock:'65–70%', turning:'3–5x/day (odd count)', lockdownOffsetDays:3, candlingDays:[7,16], hatchSpreadHours:36, chickRemovalHours:36},
+  {id:'partridge', nameKey:'species_partridge', incubationDays:24, tempForced:37.5, tempStill:38.9,
+   humidityPre:'40–50%', humidityLock:'65–70%', turning:'3–5x/day (odd count)', lockdownOffsetDays:3, candlingDays:[7,16], hatchSpreadHours:36, chickRemovalHours:36},
+  {id:'falcon', nameKey:'species_falcon', incubationDays:32, tempForced:37.0, tempStill:38.4,
+   humidityPre:'40–45%', humidityLock:'55–60%', turning:'3–5x/day (odd count)', lockdownOffsetDays:3, candlingDays:[10,24], hatchSpreadHours:48, chickRemovalHours:36},
+  {id:'cockatiel', nameKey:'species_cockatiel', incubationDays:19, tempForced:37.3, tempStill:38.6,
+   humidityPre:'35–45%', humidityLock:'55–65%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:2, candlingDays:[6,12], hatchSpreadHours:36, chickRemovalHours:24},
+  {id:'budgie', nameKey:'species_budgie', incubationDays:18, tempForced:37.3, tempStill:38.6,
+   humidityPre:'35–45%', humidityLock:'55–65%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:2, candlingDays:[6,11], hatchSpreadHours:24, chickRemovalHours:24},
 ];
 function speciesById(id){ return SPECIES.find(s=>s.id===id)||SPECIES[0]; }
 
@@ -446,7 +460,7 @@ function saveIncubators(){ save('ibird_incubators',incubators); }
 function saveBatches(){ save('ibird_batches',batches); }
 function saveEggs(){ save('ibird_eggs',eggs); }
 function saveSettings(){ save('ibird_settings',settings); }
-function defaultTargetLoss(sp){ return ['parrot','macaw','lovebird','africangrey','cockatoo','eclectus'].includes(sp.id)?14:13; }
+function defaultTargetLoss(sp){ return ['parrot','macaw','lovebird','africangrey','cockatoo','eclectus','cockatiel','budgie'].includes(sp.id)?14:13; }
 
 /* ---------- ibirdbh.com real store categories/products (user-confirmed source, not guessed) ---------- */
 const STORE_CATEGORIES=[
