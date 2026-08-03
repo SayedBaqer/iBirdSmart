@@ -238,6 +238,8 @@ en:{
   msgLockSep:"Past pip day {p}. Stop turning, move to the hatcher, raise humidity to 65–70%.",
   msgLockSame:"Past pip day {p}. Staying in this incubator: stop turning, lay the egg flat, raise humidity to 65–70% — leave temperature as-is, no separate hatcher needed.",
   rhPrincipleNote:"Humidity is the primary lever. Only nudge temperature, in small (±0.1–0.2°C) steps, if humidity is already maxed or floored and the trend still won't close.",
+  linkedBatch:"Batch (optional)", trackedEggsTitle:"Tracked eggs", noTrackedEggs:"No eggs tracked individually for this batch yet.",
+  addTrackedEgg:"Add tracked egg", noneOption:"None — standalone egg",
   candle1Btn:"Log candling #1", candle2Btn:"Log candling #2", hatchBtn:"Log hatch result",
   fieldEggsFertile:"Fertile eggs remaining", fieldEggsHatched:"Eggs hatched", fieldFirstHatchDate:"First hatch date",
   metricsFertility:"Fertility rate", metricsHOS:"Hatch of Set", metricsHOF:"Hatch of Fertile", metricsCostPerChick:"Cost per chick",
@@ -340,6 +342,8 @@ ar:{
   msgLockSep:"تجاوزت يوم النقر {p}. أوقف التقليب، انقل البيضة إلى الفقّاسة، ارفع الرطوبة إلى 65–70٪.",
   msgLockSame:"تجاوزت يوم النقر {p}. ستبقى في نفس الحاضنة: أوقف التقليب، ضع البيضة مسطّحة، ارفع الرطوبة إلى 65–70٪ — اترك الحرارة كما هي، لا حاجة لفقّاسة منفصلة.",
   rhPrincipleNote:"الرطوبة هي الأداة الأساسية. لا تُعدّل الحرارة إلا بخطوات صغيرة (±0.1–0.2°م) وفقط إذا كانت الرطوبة عند أقصى أو أدنى حد ولا يزال الاتجاه غير مقارب للهدف.",
+  linkedBatch:"الدفعة (اختياري)", trackedEggsTitle:"البيض المتابَع", noTrackedEggs:"لا يوجد بيض متابَع فرديًا لهذه الدفعة بعد.",
+  addTrackedEgg:"إضافة بيضة متابَعة", noneOption:"بلا — بيضة مستقلة",
   candle1Btn:"تسجيل الفحص الأول", candle2Btn:"تسجيل الفحص الثاني", hatchBtn:"تسجيل نتيجة الفقس",
   fieldEggsFertile:"عدد البيض الخصب المتبقي", fieldEggsHatched:"عدد البيض الذي فقس", fieldFirstHatchDate:"تاريخ أول فقس",
   metricsFertility:"نسبة الخصوبة", metricsHOS:"فقس من المعيَّن", metricsHOF:"فقس من الخصب", metricsCostPerChick:"تكلفة الفرخ الواحد",
@@ -661,6 +665,16 @@ function openBatchDetail(batchId){
   const sc=computeSchedule(b);
   const todayIso=sc.today;
   let evHtml=sc.events.map(ev=>`<div class="event ${ev.date===todayIso?'today':''}"><span class="lbl">${ev.label}</span><span class="date">${fmtDate(ev.date)}</span></div>`).join('');
+
+  const linked=eggs.filter(e=>e.batchId===b.id);
+  let eggsHtml=linked.map(egg=>{
+    const a=analyseEgg(egg);
+    return `<div class="event" style="cursor:pointer" onclick="openEggDetail('${egg.id}')">
+      <span class="lbl">${escapeHtml(egg.label)}</span>
+      <span class="pill ${a.status}">${t('status'+(a.status==='lockdown'?'LockdownEgg':a.status.charAt(0).toUpperCase()+a.status.slice(1)))}</span>
+    </div>`;
+  }).join('');
+
   openModal(`
     <div class="modalhead"><h2>${t(sc.sp.nameKey)}</h2><div class="muted">${t('dayOf',{d:Math.max(sc.dayNum,0),n:sc.sp.incubationDays})}</div>
       <button class="close" onclick="closeModal()">✕</button></div>
@@ -669,7 +683,12 @@ function openBatchDetail(batchId){
       <button class="btn ghost" onclick="closeModal();setTab('eggtest')">${t('navEggTest')}</button>
       <button class="btn ghost" onclick="markComplete('${b.id}')">${t('markComplete')}</button>
     </div>
-    <button class="btn danger" style="margin-top:10px" onclick="deleteBatch('${b.id}')">${t('delete')}</button>
+    <div class="card" style="margin-top:14px">
+      <h2>${t('trackedEggsTitle')}</h2>
+      ${eggsHtml||`<div class="muted">${t('noTrackedEggs')}</div>`}
+      <button class="btn ghost small" style="margin-top:10px" onclick="openEggModal('${b.id}')">+ ${t('addTrackedEgg')}</button>
+    </div>
+    <button class="btn danger" style="margin-top:14px" onclick="deleteBatch('${b.id}')">${t('delete')}</button>
   `);
 }
 function markComplete(batchId){
@@ -849,6 +868,7 @@ function viewDrydown(){
         <span class="pill ${a.status}">${t('status'+(a.status==='lockdown'?'LockdownEgg':a.status.charAt(0).toUpperCase()+a.status.slice(1)))}</span>
       </div>
       <div class="meta">${t(sp.nameKey)} · ${t('dayOfPip',{d:Math.max(a.elapsed,0),p:a.p})}</div>
+      ${egg.batchId&&batches.find(x=>x.id===egg.batchId)?`<div class="meta">🔗 ${t('linkedBatch')}: ${fmtDate(batches.find(x=>x.id===egg.batchId).setDate)}</div>`:''}
       <div class="stats">
         <div><b>${egg.fresh}</b><span>${LANG==='ar'?'الوزن الطازج':'fresh (g)'}</span></div>
         <div><b>${a.last?a.last.weight.toFixed(1):t('notSet')}</b><span>${t('currentWeight')}</span></div>
@@ -859,31 +879,51 @@ function viewDrydown(){
   return html;
 }
 
-function openEggModal(){
+function openEggModal(presetBatchId){
   const spOptions=SPECIES.map(s=>`<option value="${s.id}">${t(s.nameKey)}</option>`).join('');
+  const batchOptions=`<option value="">${t('noneOption')}</option>`+batches.map(b=>{
+    const sp=speciesById(b.speciesId);
+    return `<option value="${b.id}" ${b.id===presetBatchId?'selected':''}>${t(sp.nameKey)} · ${fmtDate(b.setDate)}</option>`;
+  }).join('');
+  const preset=presetBatchId?batches.find(b=>b.id===presetBatchId):null;
   openModal(`
     <div class="modalhead"><h2>${t('newEgg')}</h2><button class="close" onclick="closeModal()">✕</button></div>
     <div class="field"><label>${t('eggLabel')}</label><input id="f_eggLabel"></div>
+    <div class="field"><label>${t('linkedBatch')}</label><select id="f_eggBatch">${batchOptions}</select></div>
     <div class="field"><label>${t('batchSpecies')}</label><select id="f_eggSpecies">${spOptions}</select></div>
     <div class="row">
       <div class="field"><label>${t('eggFreshWeight')}</label><input id="f_eggFresh" type="number" step="0.1" inputmode="decimal"></div>
       <div class="field"><label>${t('eggTargetLoss')}</label><input id="f_eggTarget" type="number" step="0.5" value="13" inputmode="decimal"></div>
     </div>
-    <div class="field"><label>${t('batchSetDate')}</label><input id="f_eggDate" type="date" value="${todayISO()}"></div>
+    <div class="field"><label>${t('batchSetDate')}</label><input id="f_eggDate" type="date" value="${preset?preset.setDate:todayISO()}"></div>
     <div class="field"><label>${t('batchHatcherMode')}</label>
       <select id="f_eggHatcher"><option value="same_incubator">${t('hatcherSame')}</option><option value="separate_hatcher">${t('hatcherSeparate')}</option></select></div>
     <button class="btn" style="margin-top:16px" onclick="saveEgg()">${t('save')}</button>
   `);
+  if(preset){
+    document.getElementById('f_eggSpecies').value=preset.speciesId;
+    document.getElementById('f_eggHatcher').value=preset.hatcherMode;
+    document.getElementById('f_eggTarget').value=defaultTargetLoss(speciesById(preset.speciesId));
+  }
   document.getElementById('f_eggSpecies').addEventListener('change',function(){
     document.getElementById('f_eggTarget').value=defaultTargetLoss(speciesById(this.value));
+  });
+  document.getElementById('f_eggBatch').addEventListener('change',function(){
+    const b=batches.find(x=>x.id===this.value);
+    if(!b) return;
+    document.getElementById('f_eggSpecies').value=b.speciesId;
+    document.getElementById('f_eggHatcher').value=b.hatcherMode;
+    document.getElementById('f_eggDate').value=b.setDate;
+    document.getElementById('f_eggTarget').value=defaultTargetLoss(speciesById(b.speciesId));
   });
 }
 function saveEgg(){
   const label=document.getElementById('f_eggLabel').value.trim();
   const fresh=parseFloat(document.getElementById('f_eggFresh').value);
   if(!label||!fresh||fresh<=0) return;
+  const batchId=document.getElementById('f_eggBatch').value||null;
   eggs.push({
-    id:uid(), label,
+    id:uid(), label, batchId,
     speciesId:document.getElementById('f_eggSpecies').value,
     fresh, targetLoss:parseFloat(document.getElementById('f_eggTarget').value)||13,
     setDate:document.getElementById('f_eggDate').value||todayISO(),
