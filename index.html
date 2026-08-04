@@ -27,10 +27,10 @@ input,select,textarea{font-family:inherit;background:var(--panel);color:var(--in
 label{font-size:12px;color:var(--muted);font-weight:600;display:block;margin:14px 0 6px;}
 .field:first-child label{margin-top:0;}
 
-#updateBar{display:none;position:fixed;top:0;left:0;right:0;background:var(--heat);color:#251603;padding:10px 16px;font-size:13px;font-weight:700;z-index:200;align-items:center;justify-content:space-between;gap:10px;}
+#updateBar{display:none;position:fixed;top:0;left:0;right:0;background:var(--heat);color:#251603;padding:calc(10px + env(safe-area-inset-top)) 16px 10px;font-size:13px;font-weight:700;z-index:200;align-items:center;justify-content:space-between;gap:10px;}
 #updateBar button{background:#251603;color:var(--heat);border-radius:8px;padding:7px 12px;font-weight:700;}
 
-header{padding:18px 18px 10px;display:flex;align-items:center;justify-content:space-between;}
+header{padding:calc(18px + env(safe-area-inset-top)) 18px 10px;display:flex;align-items:center;justify-content:space-between;}
 header h1{font-size:17px;letter-spacing:.08em;font-weight:700;margin:0;}
 header .tag{font-size:10.5px;letter-spacing:.22em;color:var(--heat);text-transform:uppercase;margin-top:2px;font-weight:600;}
 .langbtn{background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:9px 13px;font-size:13px;font-weight:700;}
