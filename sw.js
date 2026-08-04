@@ -1,4 +1,4 @@
-const CACHE = 'ibird-hatch-v3';
+const CACHE = 'ibird-hatch-v4';
 const ASSETS = [
   './',
   './index.html',
