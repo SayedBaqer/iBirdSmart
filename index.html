@@ -9,8 +9,8 @@
 <meta name="apple-mobile-web-app-title" content="iBird Hatch Machine">
 <meta name="theme-color" content="#16110c">
 <link rel="manifest" href="./manifest.json">
-<link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="./icons/icon.svg">
+<link rel="icon" href="./icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
 <title>iBird Hatching Machine</title>
 <style>
 :root{
@@ -259,9 +259,8 @@ en:{
   dev5_t:"Day 18 (lockdown)", dev5_d:"Down covers the body, the beak is hardening, and the chick positions its head under a wing toward the air cell.",
   dev6_t:"Day 21 (hatch)", dev6_d:"Fully formed chick, internally pipped into the air cell and breathing air — ready to pip the shell and hatch.",
   storeTitle:"Store", storeDesc:"Incubators, spare parts and bird supplies from ibirdbh.com.",
-  storeUrlField:"Store URL", storeGoBtn:"Open full store", storeNotSet:"Add your store URL in settings below to enable the link.",
+  storeGoBtn:"Open full store",
   storeFeatured:"Featured items", storeMoreCategories:"More categories",
-  storeSave:"Save URL",
   toastSaved:"Saved", toastDeleted:"Deleted",
   notifEnable:"Enable reminders", notifEnabled:"Reminders on", notifDenied:"Notifications blocked in browser settings",
   notifLimitationNote:"Best-effort only: reminders fire while this app/tab is open or recently opened. For guaranteed background alerts, the planned Flutter app with push notifications is the long-term fix — see the dev plan.",
@@ -363,9 +362,8 @@ ar:{
   dev5_t:"اليوم 18 (الإغلاق)", dev5_d:"الزغب يغطي الجسم، المنقار يتصلّب، ويضع الفرخ رأسه تحت جناحه نحو الغرفة الهوائية.",
   dev6_t:"اليوم 21 (الفقس)", dev6_d:"فرخ مكتمل التكوّن، نقر داخليًا إلى الغرفة الهوائية ويتنفس هواءً — جاهز لنقر القشرة والفقس.",
   storeTitle:"المتجر", storeDesc:"مكائن تفريخ وقطع غيار ومستلزمات الطيور من ibirdbh.com.",
-  storeUrlField:"رابط المتجر", storeGoBtn:"فتح المتجر الكامل", storeNotSet:"أضف رابط متجرك أدناه لتفعيل الزر.",
+  storeGoBtn:"فتح المتجر الكامل",
   storeFeatured:"منتجات مميزة", storeMoreCategories:"فئات أخرى",
-  storeSave:"حفظ الرابط",
   toastSaved:"تم الحفظ", toastDeleted:"تم الحذف",
   notifEnable:"تفعيل التذكيرات", notifEnabled:"التذكيرات مفعّلة", notifDenied:"الإشعارات محظورة في إعدادات المتصفح",
   notifLimitationNote:"أفضل جهد ممكن فقط: تعمل التذكيرات أثناء فتح التطبيق أو فتحه مؤخرًا. للتنبيهات المضمونة في الخلفية، تطبيق Flutter المخطط له مع الإشعارات الفعلية هو الحل طويل المدى — راجع خطة التطوير.",
@@ -459,7 +457,8 @@ function uid(){ return (crypto.randomUUID?crypto.randomUUID():'id-'+Date.now()+'
 let incubators=load('ibird_incubators',[]);
 let batches=load('ibird_batches',[]);
 let eggs=load('ibird_eggs',[]);
-let settings=load('ibird_settings',{storeUrl:'https://ibirdbh.com',electricityRate:0.03,currency:'BHD'});
+let settings=load('ibird_settings',{electricityRate:0.03,currency:'BHD'});
+const STORE_URL='https://ibirdbh.com';
 function saveIncubators(){ save('ibird_incubators',incubators); }
 function saveBatches(){ save('ibird_batches',batches); }
 function saveEggs(){ save('ibird_eggs',eggs); }
@@ -1088,18 +1087,8 @@ function viewStore(){
   });
   html+=`</div></div>`;
 
-  if(settings.storeUrl){
-    html+=`<a class="btn" style="margin-bottom:14px;text-decoration:none;display:flex" href="${escapeHtml(settings.storeUrl)}" target="_blank" rel="noopener">${t('storeGoBtn')}</a>`;
-  }
-  html+=`<div class="card">
-    <div class="field"><label>${t('storeUrlField')}</label><input id="f_storeUrl" value="${escapeHtml(settings.storeUrl||'')}" placeholder="https://"></div>
-    <button class="btn ghost small" style="margin-top:10px" onclick="saveStoreUrl()">${t('storeSave')}</button>
-  </div>`;
+  html+=`<a class="btn" style="margin-bottom:14px;text-decoration:none;display:flex" href="${STORE_URL}" target="_blank" rel="noopener">${t('storeGoBtn')}</a>`;
   return html;
-}
-function saveStoreUrl(){
-  settings.storeUrl=document.getElementById('f_storeUrl').value.trim();
-  saveSettings(); renderView(); toast(t('toastSaved'));
 }
 
 /* ---------- best-effort local notifications ---------- */
@@ -1124,7 +1113,7 @@ function checkDueNotifications(){
     sc.events.filter(ev=>ev.date===todayIso).forEach(ev=>{
       const key=b.id+'_'+ev.key+'_'+ev.date;
       if(shown[key]) return;
-      try{ new Notification(t('appTitle'),{body:ev.label,icon:'./icons/icon.svg'}); }catch(e){}
+      try{ new Notification(t('appTitle'),{body:ev.label,icon:'./icons/icon-192.png'}); }catch(e){}
       shown[key]=true;
     });
   });

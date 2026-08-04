@@ -1,10 +1,11 @@
-const CACHE = 'ibird-hatch-v1';
+const CACHE = 'ibird-hatch-v2';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './icons/icon.svg',
-  './icons/icon-maskable.svg'
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/icon-maskable.png'
 ];
 
 self.addEventListener('install', (e) => {
