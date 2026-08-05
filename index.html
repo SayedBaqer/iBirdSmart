@@ -206,6 +206,7 @@ en:{
   featureDrydown_t:"Dry-Down", featureDrydown_d:"Per-egg weight tracking for valuable or rare clutches",
   featureStore_t:"Store", featureStore_d:"Incubators and supplies, one tap away",
   guideTitle:"How incubation works", guideIntro:"The seven-stage arc every batch goes through, start to brooder.",
+  guide0_t:"0 · Before you set: store & handle right", guide0_d:"Hold fertile eggs at 13–18°C, 70–80% RH, pointed-end down. Turn stored eggs ~90° once or twice a day past 2–3 days — hatchability drops after 7–10 days in storage. Warm eggs gradually to room temperature over several hours before setting; a cold egg into a warm incubator causes condensation, a route for contamination.",
   guide1_t:"1 · Set the eggs (Day 0)", guide1_d:"Similar size, no cracks, warmed to room temperature before loading. This is Day 0 — log the batch here to start tracking it.",
   guide2_t:"2 · Hold steady conditions", guide2_d:"Keep temperature and humidity inside your species' range (see Info) and turn on schedule until lockdown.",
   guide3_t:"3 · Candle at the checkpoints", guide3_d:"Day 7: remove clear/infertile eggs. Day 14: confirm growth and air-cell size. Log both in Egg Test List.",
@@ -234,6 +235,19 @@ en:{
   tr_tempSpike_t:"Whole batch dies around day 3-5",
   tr_tempSpike_d:"More likely a temperature spike/drop (power cut, thermostat drift) than an egg-quality problem — check the incubator, not the eggs.",
   tr_principle:"General rule: humidity is the primary correction lever. Only nudge temperature, in small (±0.1–0.2°C) steps, if humidity is already maxed out or at its floor and the trend still won't close.",
+  problemsTitle:"Common problems", problemsIntro:"Most hatching problems trace back to one of the five factors above drifting out of range, or to breeder nutrition, storage or handling further back in the chain. A candled sample and a weight-loss trend are more useful than any single symptom alone.",
+  prob1_t:"Chicks hatch late", prob1_d:"Incubator temp too low; oversized eggs; older breeding stock; extended storage before setting; weak embryos",
+  prob2_t:"Early/premature hatching, bloody navels", prob2_d:"Incubator temperature too high",
+  prob3_t:"Slow, drawn-out hatch across the batch", prob3_d:"Mixed egg sizes/ages in one batch; hot or cold spots; inconsistent storage history",
+  prob4_t:"Sticky chicks, smeared with albumen", prob4_d:"Temp too low; humidity too high; inadequate turning; very large or old eggs",
+  prob5_t:"Chicks stuck in the shell, dry membranes", prob5_d:"Low humidity during storage; poor turning; cracked shell or poor shell quality",
+  prob6_t:"Weak chicks at hatch", prob6_d:"Hatching temp too high; poor hatcher ventilation; contamination",
+  prob7_t:"Malpositioned chicks", prob7_d:"Eggs set small-end up or on their side; inadequate or excessive turning; temp out of range; breeder nutrition; old breeding stock; rough handling",
+  prob8_t:"Malformations, crooked toes, bent legs", prob8_d:"Breeder nutrition; jarring or rough handling; temp out of range; poor storage; inadequate turning",
+  prob9_t:"Small air cell, weight loss under target", prob9_d:"Humidity too high; very thick/low-porosity shell; temp too low",
+  prob10_t:"Large air cell, weight loss over target", prob10_d:"Humidity too low; thin/highly porous shell; temp too high",
+  prob11_t:"Exploding or heavily contaminated eggs", prob11_d:"Dirty eggs at collection; improper washing; condensation/water on shell; cross-contamination from a spoiled egg",
+  prob12_t:"Eyes stuck closed, down matted at hatch", prob12_d:"Hatcher temp too high; chicks left in hatcher too long; excessive air movement drying down prematurely",
   eggTestTitle:"Egg Test List", eggTestPick:"Select a batch",
   navDrydown:"Dry-Down", drydownTitle:"Dry-Down", drydownIntro:"Per-egg weight tracking for valuable/rare clutches — weigh in on your own schedule, get a target curve and a humidity correction.",
   newEgg:"New egg", noEggs:"No eggs yet. Add one to start weight tracking.",
@@ -255,19 +269,53 @@ en:{
   metricsFertility:"Fertility rate", metricsHOS:"Hatch of Set", metricsHOF:"Hatch of Fertile", metricsCostPerChick:"Cost per chick",
   fieldEggCost:"Egg cost, total", fieldOtherCosts:"Other costs (optional)", fieldElectricityRate:"Electricity rate / kWh", fieldCurrency:"Currency",
   powerCostEstimate:"Estimated power cost", notSet:"—", editCosts:"Edit costs",
-  infoTitle:"Incubation reference", infoIntro:"Tap a species for full detail — temp, humidity, turning, lockdown and candling days.",
-  infoIncubationDays:"Incubation period", infoTempForced:"Temp (forced-air)", infoTempStill:"Temp (still-air)",
-  infoHumidityPre:"Humidity, day 1 → lockdown", infoHumidityLock:"Humidity, lockdown → hatch",
+  infoTitle:"Incubation reference", infoIntro:"An independent reference guide compiled from published poultry-science, aviculture and raptor-breeding literature (see Sources below). Tap a species for full detail.",
+  infoIncubationDays:"Incubation period", infoTempForced:"Temperature", infoTempStill:"Temp (still-air)",
+  infoHumidityPre:"Humidity, main period", infoHumidityLock:"Humidity, hatch",
   infoTurning:"Turning", infoLockdownOffset:"Lockdown starts", infoCandlingDays:"Candling checkpoints",
   daysBeforeHatch:"{n} days before expected hatch",
-  colSpecies:"Species", colDays:"Days", colTemp:"Temp", colHumidity:"Humidity",
+  colSpecies:"Species", colDays:"Days", colTemp:"Temp", colHumidity:"Humidity", colRH:"RH%", colWetC:"Wet-bulb °C", colWetF:"Wet-bulb °F",
+  speciesTitle:"Species reference table",
+  principlesTitle:"Five things every embryo needs", principlesIntro:"Whatever the species, these five factors need to stay in range for the whole incubation period — they interact, so a fix for one can disturb another.",
+  principle_temp_t:"Temperature", principle_temp_d:"Embryonic growth only runs at the right pace within a narrow thermal window — both the air around the eggs and the temperature at the egg's centre.",
+  principle_turn_t:"Turning", principle_turn_d:"Regularly re-angling the egg keeps the embryo moving through fresh albumen and stops it sticking to the shell membrane.",
+  principle_humidity_t:"Humidity", principle_humidity_d:"The embryo must lose a predictable share of the egg's water by evaporation. Too little leaves a chick swollen and poorly positioned; too much leaves it dehydrated.",
+  principle_gas_t:"Gas exchange", principle_gas_d:"A growing embryo needs a steady supply of oxygen and a way to shed carbon dioxide, even while temperature and humidity stay steady.",
+  principle_clean_t:"Cleanliness", principle_clean_d:"A porous shell is also a route for bacteria and mould — both the egg-storage area and the incubator itself need to stay clean.",
+  altricialNote:"Precocial chicks (poultry, waterfowl) hatch mature — eyes open, downy, able to leave the nest within a day or two. Altricial chicks (parrots, raptors) hatch far less developed and depend on their parents — in the nest they're turned more often and more vigorously, and breeders commonly carry that over into artificial incubation.",
+  turning_precocial:"Standard tray/roller turning per manufacturer, until lockdown (precocial species — §1.2)",
+  turning_altricial:"More frequent, more vigorous turning than poultry — altricial species are turned on a tighter cycle in the nest (§1.2)",
   devTitle:"Egg development, stage by stage", devIntro:"A hen's 21-day cycle shown as a visual reference — the same arc, compressed or stretched, applies to every species (see each species' own days above).",
-  dev1_t:"Day 3–4", dev1_d:"Heartbeat begins. Candling shows a fine web of blood vessels branching from a small dark spot.",
-  dev2_t:"Day 7", dev2_d:"Embryo clearly visible with a defined dark eye-spot; vessels have spread further across the shell.",
-  dev3_t:"Day 10–12", dev3_d:"Legs, wings and digits are forming. The body is filling noticeably more of the shell.",
-  dev4_t:"Day 14", dev4_d:"Embryo fills most of the shell. Feathers begin appearing; the air cell is now clearly defined.",
-  dev5_t:"Day 18 (lockdown)", dev5_d:"Down covers the body, the beak is hardening, and the chick positions its head under a wing toward the air cell.",
-  dev6_t:"Day 21 (hatch)", dev6_d:"Fully formed chick, internally pipped into the air cell and breathing air — ready to pip the shell and hatch.",
+  dev1_t:"Day 1", dev1_d:"The fertilised germinal disc begins dividing; the primitive streak appears and the first blood islands form.",
+  dev2_t:"Day 2", dev2_d:"Blood islands link into a vascular network. A simple tubular heart forms and starts beating by about hour 44.",
+  dev3_t:"Day 3–4", dev3_d:"The embryo splits into three germ layers (gastrulation). Wing and leg buds appear; the amniotic sac begins enclosing the embryo.",
+  dev4_t:"Day 5–6", dev4_d:"Reproductive organs and sex differentiation begin. Digits and the beak start forming; the eye gains visible pigment.",
+  dev5_t:"Day 7–8", dev5_d:"The neck lengthens, separating head from body. Upper and lower beak differentiate; eye pigmentation is clearly visible.",
+  dev6_t:"Day 9–10", dev6_d:"Claws and the first feather follicles appear. The allantois grows rapidly; the egg tooth begins forming.",
+  dev7_t:"Day 11–13", dev7_d:"Skeletal calcification begins. Scales, down and toenails appear.",
+  dev8_t:"Day 14", dev8_d:"The embryo repositions, head tucked under the right wing — distinctly chick-like now.",
+  dev9_t:"Day 15–17", dev9_d:"Down grows in and gains colour. Albumen is nearly used up; the beak turns toward the air cell.",
+  dev10_t:"Day 18–19", dev10_d:"The yolk sac begins drawing into the body cavity; amniotic fluid falls sharply.",
+  dev11_t:"Day 20", dev11_d:"Yolk fully internalised. The chick breaks into the air cell (internal pip) and takes its first breath.",
+  dev12_t:"Day 21", dev12_d:"External pipping begins, followed by a slow rotation that chips a line around the shell until the cap detaches.",
+  incTypesTitle:"Incubator types",
+  inc_stillair_t:"Still-air", inc_stillair_d:"An insulated box with natural convection only — heat rises, so a real top-to-bottom gradient forms. Sensors sit near egg height; still-air machines typically run ~1–1.5°C warmer than the forced-draft target to compensate, and need to stay level with similarly-sized eggs.",
+  inc_forceddraft_t:"Forced-draft", inc_forceddraft_d:"A circulating fan keeps temperature close to uniform throughout, so sensor placement matters less and different egg sizes can share a machine. The same airflow dries eggs faster, so humidity needs closer attention.",
+  inc_contact_t:"Contact / radiant-heat", inc_contact_d:"Warms eggs through a heated surface resting on top, mimicking a parent's brood patch, lifted periodically for fresh air. Research shows this produces a real temperature gradient across the egg that shifts as the embryo grows — eggs seem to tolerate small swings a little better this way, though accurate control still matters.",
+  turningTitle:"Turning mechanisms",
+  turn_tilt_t:"Tilting trays", turn_tilt_d:"The most common commercial approach — eggs rock through ~80° total on a timed cycle. Efficient at scale, well suited to poultry-type eggs.",
+  turn_roller_t:"Roller beds", turn_roller_d:"Eggs rest on rollers that spin as a moving floor shifts beneath them, rotating the eggs in place.",
+  turn_floor_t:"Moving floors", turn_floor_d:"Eggs lie on a floor that slides side to side with fixed dividers, rolling the eggs. Works well for symmetrical eggs like duck; pointed eggs tend to bunch.",
+  turn_trough_t:"Troughs / channels", turn_trough_d:"Semicircular tilting channels sized for very small eggs like quail — a more limited turning angle than the other methods.",
+  humidityTitle:"Measuring humidity", humidityIntro:"Two common methods — both need some air movement to read accurately, so neither is reliable in a still-air machine; egg weight loss (below) is the better guide there.",
+  hygrometer_t:"Hygrometers", hygrometer_d:"Measure humidity directly. Electronic sensors are generally more accurate than mechanical (hair) ones — check any hygrometer against a known reference before trusting it; a cheap, uncalibrated one can mislead more than having none.",
+  wetbulb_t:"Wet-bulb thermometers", wetbulb_d:"A moist-wicked thermometer reads cooler than a dry one as water evaporates from the wick — the drier the air, the bigger the gap. That gap converts to a relative-humidity percentage.",
+  wetbulbNote:"Conversion at a dry-bulb temperature of 37.5°C (99.5°F). At a different dry-bulb temperature the same wet-bulb reading gives a slightly different RH%.",
+  weightLossTitle:"Tracking weight loss",
+  weightLossText:"Weighing eggs through incubation is the most reliable way to check conditions are correct — more reliable than any single humidity reading. Most eggs need to lose around 13–15% of fresh weight by internal pipping, though some raptors and parrots run a little higher; confirm against published data or your own hatch records.",
+  hoytText:"If fresh weight wasn't recorded at laying, Hoyt's (1979) formula estimates it from length (L) and breadth (B) in cm: volume ≈ 0.51 × L × B², fresh weight ≈ Kw × L × B² (Kw ≈ 0.55–0.58 for chicken-type eggs, otherwise weigh a small sample to solve for Kw). Daily target loss = (fresh weight × target %) ÷ days to internal pip.",
+  hoytSource:"Source: Hoyt, D.F. (1979). \"Practical Methods of Estimating Volume and Fresh Weight of Bird Eggs.\" The Auk, 96(1), 73–77.",
+  stillAirNote:"Temperature shown is for forced-draft incubators; still-air machines typically need to run ~1–1.5°C (2–3°F) warmer at egg height for the same true egg-centre temperature.",
   storeTitle:"Store", storeDesc:"Incubators, spare parts and bird supplies from ibirdbh.com.",
   storeGoBtn:"Open full store",
   storeFeatured:"Featured items", storeMoreCategories:"More categories",
@@ -277,10 +325,20 @@ en:{
   candleModalTitle1:"Candling check #1", candleModalTitle2:"Candling check #2",
   candleHint1:"How many eggs are fertile / developing right now?", candleHint2:"Recheck — how many fertile eggs remain?",
   hatchModalTitle:"Log hatch result",
-  species_poultry:"Hens (chicken)", species_quail:"Quail", species_waterfowl:"Ducks", species_geese:"Geese",
-  species_parrot:"Amazon parrot", species_macaw:"Macaw", species_lovebird:"Lovebird", species_africangrey:"African Grey", species_cockatoo:"Cockatoo", species_eclectus:"Eclectus",
-  species_turkey:"Turkey", species_pheasant:"Pheasant", species_partridge:"Partridge", species_falcon:"Falcon", species_cockatiel:"Cockatiel", species_budgie:"Budgerigar",
-  infoSourceNote:"Temperature/humidity/day ranges are industry-standard incubation reference figures (species biology, not anyone's proprietary data) — always cross-check against your incubator manufacturer's guidance.",
+  candleRefTitle:"What you see when candling",
+  candleRef1_t:"Clear, no internal detail visible", candleRef1_d:"Probably infertile, or very early embryo death (after the first third of incubation)",
+  candleRef2_t:"Fine web of red vessels spreading from a central spot", candleRef2_d:"Fertile and developing normally",
+  candleRef3_t:"A red or dark ring/blotch, no vessel network", candleRef3_d:"Early embryo death",
+  candleRef4_t:"Dark, indistinct mass filling much of the shell; air cell enlarging normally", candleRef4_d:"Developing normally in later incubation — fine detail is naturally harder to see",
+  candleRef5_t:"Little movement; dull, patchy appearance; poorly defined air-cell margin", candleRef5_d:"Possible late-stage death — worth watching, not necessarily removing immediately",
+  candleRef6_t:"Dark body visible moving, bill projecting into the air cell", candleRef6_d:"Close to hatching, typically within 24–48 hours",
+  cat_poultry:"Poultry & Gamebirds", cat_waterfowl:"Waterfowl", cat_parrot:"Parrots (Psittacines)", cat_raptor:"Birds of Prey (Raptors)", cat_ratite:"Ratites",
+  species_chicken:"Chicken", species_turkey:"Turkey", species_guineafowl:"Guinea fowl", species_pheasant:"Pheasant", species_chukar:"Chukar partridge", species_peafowl:"Peafowl", species_coturnix:"Coturnix quail", species_bobwhite:"Bobwhite quail",
+  species_duck:"Domestic duck", species_muscovy:"Muscovy duck", species_goose:"Goose",
+  species_budgie:"Budgerigar", species_cockatiel:"Cockatiel", species_lovebird:"Lovebird", species_conure:"Conure", species_parrot:"Amazon parrot", species_africangrey:"African Grey", species_macaw:"Macaw", species_cockatoo:"Cockatoo",
+  species_kestrel:"Kestrel / small falcon", species_peregrine:"Peregrine / larger falcon", species_owl:"Owls (general)",
+  species_ostrich:"Ostrich", species_emu:"Emu", species_rhea:"Rhea",
+  infoSourceNote:"Sources: university agricultural-extension incubation guides (Mississippi State, Virginia Tech, Alabama Cooperative Extension, Oregon State); Hoyt, D.F. (1979), The Auk 96(1) for the weight-estimation formulas; published avicultural literature on psittacine incubation; raptor-breeding literature including Raptor Research Foundation material; general ornithology references on precocial/altricial development. Compiled independently, not from any single manufacturer's documentation — figures and diagrams are original, not reproductions of anyone's artwork. Not a substitute for the instructions supplied with your own incubator; where they disagree, follow the manufacturer.",
 },
 ar:{
   appTitle:"آي بيرد لمكائن التفريخ", appTag:"متابعة التحضين والفقس", langBtn:"English",
@@ -309,6 +367,7 @@ ar:{
   featureDrydown_t:"تجفيف البيض", featureDrydown_d:"متابعة وزن كل بيضة للدفعات النادرة أو القيّمة",
   featureStore_t:"المتجر", featureStore_d:"مكائن التفريخ والمستلزمات على بُعد نقرة",
   guideTitle:"كيف يعمل التحضين", guideIntro:"سبع مراحل تمر بها كل دفعة، من التعيين حتى الحاضنة الأرضية.",
+  guide0_t:"٠ · قبل التعيين: التخزين والتعامل الصحيح", guide0_d:"احفظ البيض الخصب عند 13–18°م، رطوبة 70–80٪، بالطرف المدبب للأسفل. قلّب البيض المخزَّن بزاوية ~90° مرة أو مرتين يوميًا بعد يومين إلى ثلاثة — تنخفض قابلية الفقس بعد 7–10 أيام من التخزين. دفّئ البيض تدريجيًا لحرارة الغرفة على مدى ساعات قبل التعيين؛ فوضع بيضة باردة في حاضنة دافئة يسبب تكاثفًا، وهو طريق للتلوث.",
   guide1_t:"١ · عيّن البيض (اليوم صفر)", guide1_d:"بيض متقارب الحجم وخالٍ من الشروخ، ودافئ لدرجة حرارة الغرفة قبل التحميل. هذا هو اليوم صفر — سجّل الدفعة هنا لبدء المتابعة.",
   guide2_t:"٢ · حافظ على ثبات الظروف", guide2_d:"حافظ على الحرارة والرطوبة ضمن نطاق نوعك (راجع معلومات) وقلّب حسب الجدول حتى الإغلاق.",
   guide3_t:"٣ · افحص بالضوء عند المواعيد", guide3_d:"اليوم 7: أزل البيض الصافي/غير المخصب. اليوم 14: تأكد من النمو وحجم الغرفة الهوائية. سجّل كلاهما في فحص البيض.",
@@ -337,6 +396,19 @@ ar:{
   tr_tempSpike_t:"موت الدفعة كاملة حول اليوم 3-5",
   tr_tempSpike_d:"الأرجح ارتفاع أو انخفاض مفاجئ بالحرارة (انقطاع كهرباء، انحراف الثرموستات) وليس مشكلة بجودة البيض — تحقق من الحاضنة.",
   tr_principle:"القاعدة العامة: الرطوبة هي أداة التصحيح الأساسية. لا تُعدّل الحرارة إلا بخطوات صغيرة (±0.1–0.2°م) وفقط إذا كانت الرطوبة بالفعل عند أقصى أو أدنى حد ولا يزال الاتجاه غير مقارب للهدف.",
+  problemsTitle:"مشكلات شائعة", problemsIntro:"معظم مشكلات الفقس تعود لأحد العوامل الخمسة أعلاه بعد خروجه عن نطاقه، أو لتغذية القطيع أو التخزين أو التعامل في مرحلة سابقة. عينة مفحوصة بالضوء واتجاه فقد الوزن أكثر فائدة من أي عرض منفرد.",
+  prob1_t:"فقس متأخر", prob1_d:"حرارة الحاضنة منخفضة؛ بيض كبير الحجم؛ قطيع تربية أكبر سنًا؛ تخزين مطوّل قبل التعيين؛ أجنة ضعيفة",
+  prob2_t:"فقس مبكر/سابق لأوانه، سرة نازفة", prob2_d:"حرارة الحاضنة مرتفعة",
+  prob3_t:"فقس بطيء ومتفرق عبر الدفعة", prob3_d:"تفاوت أحجام/أعمار البيض في دفعة واحدة؛ نقاط ساخنة أو باردة؛ تاريخ تخزين غير متسق",
+  prob4_t:"فراخ لزجة، ملطّخة بالزلال", prob4_d:"حرارة منخفضة؛ رطوبة مرتفعة؛ تقليب غير كافٍ؛ بيض كبير جدًا أو قديم",
+  prob5_t:"فراخ عالقة داخل القشرة، أغشية جافة", prob5_d:"رطوبة منخفضة أثناء التخزين؛ تقليب ضعيف؛ قشرة متصدعة أو رديئة الجودة",
+  prob6_t:"فراخ ضعيفة عند الفقس", prob6_d:"حرارة فقس مرتفعة؛ تهوية ضعيفة في الفقّاسة؛ تلوث",
+  prob7_t:"فراخ سيئة الوضعية", prob7_d:"بيض موضوع بالطرف الصغير للأعلى أو على جانبه؛ تقليب غير كافٍ أو مفرط؛ حرارة خارج النطاق؛ نقص تغذية القطيع؛ قطيع تربية أكبر سنًا؛ تعامل خشن",
+  prob8_t:"تشوّهات، أصابع معوجة، أرجل منحنية", prob8_d:"نقص تغذية القطيع؛ اهتزاز أو تعامل خشن؛ حرارة خارج النطاق؛ تخزين رديء؛ تقليب غير كافٍ",
+  prob9_t:"غرفة هوائية صغيرة، فقد وزن أقل من الهدف", prob9_d:"رطوبة مرتفعة؛ قشرة سميكة جدًا أو منخفضة المسامية؛ حرارة منخفضة",
+  prob10_t:"غرفة هوائية كبيرة، فقد وزن أكثر من الهدف", prob10_d:"رطوبة منخفضة؛ قشرة رقيقة أو عالية المسامية؛ حرارة مرتفعة",
+  prob11_t:"بيض منفجر أو ملوّث بشدة", prob11_d:"بيض متسخ عند الجمع؛ غسل غير سليم؛ تكاثف أو ماء على القشرة؛ تلوث متبادل من بيضة فاسدة سابقة",
+  prob12_t:"عيون ملتصقة، زغب متكتل عند الفقس", prob12_d:"حرارة فقّاسة مرتفعة؛ بقاء الفراخ طويلاً في الفقّاسة بعد الخروج؛ حركة هواء مفرطة تجفف الزغب مبكرًا",
   eggTestTitle:"فحص البيض", eggTestPick:"اختر دفعة",
   navDrydown:"تجفيف البيض", drydownTitle:"تجفيف البيض", drydownIntro:"متابعة وزن كل بيضة على حدة للدفعات النادرة أو القيّمة — زِن حسب جدولك الخاص، واحصل على منحنى مستهدف وتصحيح للرطوبة.",
   newEgg:"بيضة جديدة", noEggs:"لا توجد بيضات بعد. أضف واحدة لبدء متابعة الوزن.",
@@ -358,18 +430,53 @@ ar:{
   metricsFertility:"نسبة الخصوبة", metricsHOS:"فقس من المعيَّن", metricsHOF:"فقس من الخصب", metricsCostPerChick:"تكلفة الفرخ الواحد",
   fieldEggCost:"تكلفة البيض الإجمالية", fieldOtherCosts:"تكاليف أخرى (اختياري)", fieldElectricityRate:"سعر الكهرباء / ك.و.س", fieldCurrency:"العملة",
   powerCostEstimate:"تكلفة الطاقة المقدَّرة", notSet:"—", editCosts:"تعديل التكاليف",
-  infoTitle:"مرجع التحضين", infoIntro:"اضغط على أي نوع لعرض التفاصيل الكاملة — الحرارة، الرطوبة، التقليب، الإغلاق ومواعيد الفحص.",
-  infoIncubationDays:"مدة التحضين", infoTempForced:"الحرارة (هواء قسري)", infoTempStill:"الحرارة (هواء ساكن)",
-  infoHumidityPre:"الرطوبة، اليوم 1 → الإغلاق", infoHumidityLock:"الرطوبة، الإغلاق → الفقس",
+  infoTitle:"مرجع التحضين", infoIntro:"دليل مرجعي مستقل جُمع من مراجع علمية منشورة في تربية الدواجن والطيور والجوارح (راجع المصادر أدناه). اضغط على أي نوع لعرض التفاصيل الكاملة.",
+  infoIncubationDays:"مدة التحضين", infoTempForced:"الحرارة", infoTempStill:"الحرارة (هواء ساكن)",
+  infoHumidityPre:"الرطوبة، الفترة الرئيسية", infoHumidityLock:"الرطوبة، الفقس",
   infoTurning:"التقليب", infoLockdownOffset:"يبدأ الإغلاق", infoCandlingDays:"مواعيد الفحص بالضوء",
   daysBeforeHatch:"قبل {n} أيام من الفقس المتوقع",
-  colSpecies:"النوع", colDays:"الأيام", colTemp:"الحرارة", colHumidity:"الرطوبة",
+  colSpecies:"النوع", colDays:"الأيام", colTemp:"الحرارة", colHumidity:"الرطوبة", colRH:"الرطوبة٪", colWetC:"الرطب °م", colWetF:"الرطب °ف",
+  speciesTitle:"جدول مرجع الأنواع",
+  principlesTitle:"خمسة أمور يحتاجها كل جنين", principlesIntro:"مهما كان النوع، يجب إبقاء هذه العوامل الخمسة ضمن نطاقها طوال فترة التحضين — وهي مترابطة، فتصحيح واحد قد يُخلّ بآخر.",
+  principle_temp_t:"الحرارة", principle_temp_d:"لا تسير عمليات النمو الجنيني بالوتيرة الصحيحة إلا ضمن نافذة حرارية ضيقة — الهواء المحيط بالبيض ومركز البيضة نفسها.",
+  principle_turn_t:"التقليب", principle_turn_d:"إعادة توجيه البيضة بانتظام تُبقي الجنين متحركًا ضمن الزلال الطازج وتمنع التصاقه بغشاء القشرة.",
+  principle_humidity_t:"الرطوبة", principle_humidity_d:"يجب أن تفقد البيضة نسبة متوقعة من مائها بالتبخر. الفقد القليل جدًا يترك فرخًا منتفخًا وسيء الوضعية؛ والفقد الكثير جدًا يتركه جافًا وضعيفًا.",
+  principle_gas_t:"تبادل الغازات", principle_gas_d:"يحتاج الجنين النامي إمدادًا مستمرًا من الأكسجين وطريقة للتخلص من ثاني أكسيد الكربون، حتى مع ثبات الحرارة والرطوبة.",
+  principle_clean_t:"النظافة", principle_clean_d:"القشرة المسامية طريق أيضًا للبكتيريا والعفن — يجب أن تبقى منطقة تخزين البيض والحاضنة نظيفتين.",
+  altricialNote:"الفراخ المبكرة النمو (دواجن، طيور مائية) تفقس ناضجة نسبيًا — عيون مفتوحة، مغطاة بالزغب، قادرة على مغادرة العش خلال يوم أو يومين. أما الفراخ المتأخرة النمو (ببغاوات، جوارح) فتفقس أقل نضجًا بكثير وتعتمد على والديها — وفي العش تُقلَّب بشكل أكثر تكرارًا وقوة، وينقل المربّون هذا الفارق غالبًا إلى التحضين الاصطناعي.",
+  turning_precocial:"تقليب صواني/درافيل قياسي حسب الشركة المصنّعة، حتى الإغلاق (أنواع مبكرة النمو — §1.2)",
+  turning_altricial:"تقليب أكثر تكرارًا وقوة من الدواجن — الأنواع متأخرة النمو تُقلَّب بدورة أضيق في العش (§1.2)",
   devTitle:"مراحل نمو الجنين داخل البيضة", devIntro:"دورة الدجاج البالغة 21 يومًا كمرجع بصري — نفس المسار، مضغوطًا أو ممتدًا، ينطبق على كل الأنواع (راجع أيام كل نوع أعلاه).",
-  dev1_t:"اليوم 3–4", dev1_d:"يبدأ نبض القلب. يُظهر الفحص بالضوء شبكة دقيقة من الأوعية الدموية متفرعة من نقطة داكنة صغيرة.",
-  dev2_t:"اليوم 7", dev2_d:"الجنين واضح مع نقطة عين داكنة محددة؛ الأوعية الدموية امتدت أكثر عبر القشرة.",
-  dev3_t:"اليوم 10–12", dev3_d:"تتشكّل الأرجل والأجنحة والأصابع. الجسم يملأ جزءًا أكبر من القشرة بشكل ملحوظ.",
-  dev4_t:"اليوم 14", dev4_d:"الجنين يملأ معظم القشرة. تبدأ الريش بالظهور؛ الغرفة الهوائية أصبحت محددة بوضوح.",
-  dev5_t:"اليوم 18 (الإغلاق)", dev5_d:"الزغب يغطي الجسم، المنقار يتصلّب، ويضع الفرخ رأسه تحت جناحه نحو الغرفة الهوائية.",
+  dev1_t:"اليوم 1", dev1_d:"يبدأ القرص الجرثومي المخصَّب بالانقسام؛ يظهر الخط البدائي وتتشكّل أولى الجزر الدموية.",
+  dev2_t:"اليوم 2", dev2_d:"تترابط الجزر الدموية في شبكة وعائية. يتشكّل قلب أنبوبي بسيط ويبدأ بالنبض عند الساعة 44 تقريبًا.",
+  dev3_t:"اليوم 3–4", dev3_d:"ينقسم الجنين إلى ثلاث طبقات جرثومية (الاستقطاب المعدي). تظهر براعم الأجنحة والأرجل؛ يبدأ الكيس السلوي بالتشكّل حول الجنين.",
+  dev4_t:"اليوم 5–6", dev4_d:"تبدأ الأعضاء التناسلية والتمايز الجنسي. تبدأ الأصابع والمنقار بالتشكّل؛ تكتسب العين تصبّغًا مرئيًا.",
+  dev5_t:"اليوم 7–8", dev5_d:"تستطيل الرقبة فاصلةً الرأس عن الجسم. يتمايز المنقار العلوي والسفلي؛ يصبح تصبّغ العين واضحًا.",
+  dev6_t:"اليوم 9–10", dev6_d:"تظهر المخالب وأولى بصيلات الريش. ينمو السقاء (الألانتوس) بسرعة؛ تبدأ سنّ البيضة بالتشكّل.",
+  dev7_t:"اليوم 11–13", dev7_d:"يبدأ تكلّس الهيكل العظمي. تظهر الحراشف والزغب وأظافر الأصابع.",
+  dev8_t:"اليوم 14", dev8_d:"يعيد الجنين وضعيته، برأسه تحت الجناح الأيمن — يأخذ شكل الفرخ بوضوح الآن.",
+  dev9_t:"اليوم 15–17", dev9_d:"ينمو الزغب ويكتسب لونًا. يكاد الزلال ينفد؛ يتّجه المنقار نحو الغرفة الهوائية.",
+  dev10_t:"اليوم 18–19", dev10_d:"يبدأ كيس المح بالانسحاب إلى تجويف الجسم؛ ينخفض السائل السلوي بشكل حاد.",
+  dev11_t:"اليوم 20", dev11_d:"يُستوعب المح كاملاً. يخترق الفرخ الغرفة الهوائية (النقر الداخلي) ويأخذ أول نفس له.",
+  dev12_t:"اليوم 21", dev12_d:"يبدأ النقر الخارجي، يتبعه دوران بطيء يشقّ خطًا حول القشرة حتى تنفصل القبّة.",
+  incTypesTitle:"أنواع الحاضنات",
+  inc_stillair_t:"الهواء الساكن", inc_stillair_d:"صندوق معزول يعتمد على الحمل الحراري الطبيعي فقط — يرتفع الهواء الساخن فيتشكل تدرّج حراري حقيقي من الأعلى للأسفل. توضع المستشعرات قرب ارتفاع البيض؛ تعمل حاضنات الهواء الساكن عادة أدفأ بنحو 1–1.5°م من هدف الهواء القسري للتعويض، ويجب أن تبقى مستوية مع بيض متقارب الحجم.",
+  inc_forceddraft_t:"الهواء القسري", inc_forceddraft_d:"مروحة دوّارة تُبقي الحرارة شبه موحّدة في كل الحاضنة، فموضع المستشعر أقل أهمية ويمكن لأحجام بيض مختلفة مشاركة نفس الحاضنة. لكن نفس تدفق الهواء يجفف البيض أسرع، فتحتاج الرطوبة انتباهًا أدق.",
+  inc_contact_t:"التلامس/الإشعاع", inc_contact_d:"يُدفّئ البيض عبر سطح ساخن يلامس أعلاه، محاكيًا بقعة حضانة الأم، ويُرفع دوريًا لإدخال هواء طازج. تُظهر الأبحاث أن هذا يُنتج تدرّجًا حراريًا حقيقيًا عبر البيضة يتغيّر مع نمو الجنين — يبدو أن البيض يتحمّل التقلبات الصغيرة بشكل أفضل قليلاً بهذه الطريقة، رغم أن الدقة تبقى مهمة.",
+  turningTitle:"آليات التقليب",
+  turn_tilt_t:"صواني الإمالة", turn_tilt_d:"الطريقة التجارية الأكثر شيوعًا — يتأرجح البيض بزاوية إجمالية ~80° وفق دورة موقوتة. كفؤة على نطاق واسع، وملائمة لبيض نمط الدواجن.",
+  turn_roller_t:"أسرّة الدرافيل", turn_roller_d:"يستقر البيض على درافيل تدور مع تحرك أرضية متحركة تحتها، فيدور البيض في مكانه.",
+  turn_floor_t:"الأرضيات المتحركة", turn_floor_d:"يستلقي البيض على أرضية تنزلق جانبيًا مع فواصل ثابتة تُدحرج البيض. تعمل جيدًا مع بيض متماثل الطرفين كالبط؛ أما البيض المدبب فيميل للتجمع عند الفواصل.",
+  turn_trough_t:"القنوات نصف الدائرية", turn_trough_d:"قنوات مائلة نصف دائرية بحجم يناسب البيض الصغير جدًا كالسمان — بزاوية تقليب أكثر محدودية من الطرق الأخرى.",
+  humidityTitle:"قياس الرطوبة", humidityIntro:"طريقتان شائعتان — كلتاهما تحتاجان بعض حركة الهواء لقراءة دقيقة، لذا لا يمكن الاعتماد عليهما في حاضنة الهواء الساكن؛ فقد وزن البيض (أدناه) هو الدليل الأفضل هناك.",
+  hygrometer_t:"مقاييس الرطوبة", hygrometer_d:"تقيس الرطوبة مباشرة. المستشعرات الإلكترونية أدق عمومًا من الميكانيكية (الشعرية) — تحقق من أي مقياس رطوبة مقابل مرجع معروف قبل الوثوق به؛ فمقياس رخيص وغير معايَر قد يُضلّل أكثر من عدم استخدام أي مقياس.",
+  wetbulb_t:"ميزان الرطوبة الرطب", wetbulb_d:"ميزان حرارة ملفوف بفتيل رطب يقرأ حرارة أقل من الجاف بسبب تبخر الماء من الفتيل — كلما جفّ الهواء، كبرت الفجوة. تتحول هذه الفجوة إلى نسبة رطوبة نسبية.",
+  wetbulbNote:"التحويل عند حرارة جافة 37.5°م (99.5°ف). عند حرارة جافة مختلفة، تعطي نفس قراءة الرطوبة الرطبة نسبة رطوبة مختلفة قليلاً.",
+  weightLossTitle:"تتبّع فقد الوزن",
+  weightLossText:"وزن البيض طوال فترة التحضين هو أفضل وسيلة موثوقة للتحقق من صحة الظروف — أكثر موثوقية من أي قراءة رطوبة منفردة. تحتاج معظم البيضات لفقد نحو 13–15٪ من وزنها الطازج بحلول النقر الداخلي، رغم أن بعض الجوارح والببغاوات تحتاج نسبة أعلى قليلاً؛ تحقق من بيانات منشورة أو سجلات فقسك الخاصة.",
+  hoytText:"إن لم يُسجَّل الوزن الطازج عند البيض، تُقدّره معادلة هويت (1979) من الطول (L) والعرض (B) بالسنتيمتر: الحجم ≈ 0.51 × L × B²، والوزن الطازج ≈ Kw × L × B² (Kw ≈ 0.55–0.58 للبيض شبيه الدجاج، وإلا زِن عينة صغيرة لحساب Kw). الفقد اليومي المستهدف = (الوزن الطازج × النسبة المستهدفة) ÷ عدد الأيام حتى النقر الداخلي.",
+  hoytSource:"المصدر: Hoyt, D.F. (1979). \"Practical Methods of Estimating Volume and Fresh Weight of Bird Eggs.\" The Auk, 96(1), 73–77.",
+  stillAirNote:"الحرارة المعروضة لحاضنات الهواء القسري؛ حاضنات الهواء الساكن تحتاج عادة حرارة أعلى بنحو 1–1.5°م (2–3°ف) عند ارتفاع البيض للوصول لنفس حرارة مركز البيضة الفعلية.",
   dev6_t:"اليوم 21 (الفقس)", dev6_d:"فرخ مكتمل التكوّن، نقر داخليًا إلى الغرفة الهوائية ويتنفس هواءً — جاهز لنقر القشرة والفقس.",
   storeTitle:"المتجر", storeDesc:"مكائن تفريخ وقطع غيار ومستلزمات الطيور من ibirdbh.com.",
   storeGoBtn:"فتح المتجر الكامل",
@@ -380,10 +487,20 @@ ar:{
   candleModalTitle1:"فحص الإضاءة الأول", candleModalTitle2:"فحص الإضاءة الثاني",
   candleHint1:"كم عدد البيض الخصب/النامي حاليًا؟", candleHint2:"إعادة فحص — كم بيضة خصبة متبقية؟",
   hatchModalTitle:"تسجيل نتيجة الفقس",
-  species_poultry:"دجاج", species_quail:"سمان", species_waterfowl:"بط", species_geese:"إوز",
-  species_parrot:"ببغاء أمازون", species_macaw:"ماكاو", species_lovebird:"لوفبيرد", species_africangrey:"الرمادي الإفريقي", species_cockatoo:"كوكاتو", species_eclectus:"إكليكتوس",
-  species_turkey:"ديك رومي", species_pheasant:"تدرج (فيزنت)", species_partridge:"حجل", species_falcon:"صقر", species_cockatiel:"كوكتيل", species_budgie:"بادجي (عصفور دندن)",
-  infoSourceNote:"أرقام الحرارة والرطوبة ومدة التحضين هي قيم مرجعية معيارية في صناعة التحضين (بيانات بيولوجية عامة، وليست ملكية خاصة لأي جهة) — راجع دائمًا تعليمات الشركة المصنّعة لحاضنتك.",
+  candleRefTitle:"ماذا ترى عند الفحص بالضوء",
+  candleRef1_t:"صافية، بلا تفاصيل داخلية مرئية", candleRef1_d:"غالبًا غير مخصبة، أو موت جنين مبكر جدًا (بعد الثلث الأول من التحضين)",
+  candleRef2_t:"شبكة دقيقة من الأوعية الحمراء تتفرع من نقطة مركزية", candleRef2_d:"مخصبة وتنمو بشكل طبيعي",
+  candleRef3_t:"حلقة أو بقعة حمراء/داكنة، بلا شبكة أوعية", candleRef3_d:"موت جنين مبكر",
+  candleRef4_t:"كتلة داكنة غير واضحة تملأ معظم القشرة؛ الغرفة الهوائية تكبر بشكل طبيعي", candleRef4_d:"تنمو بشكل طبيعي في أواخر التحضين — يصعب رؤية التفاصيل الدقيقة طبيعيًا",
+  candleRef5_t:"حركة قليلة؛ مظهر باهت ومتقطع؛ حدود غرفة هوائية غير واضحة", candleRef5_d:"احتمال موت في مرحلة متأخرة — يستحق المراقبة، ليس بالضرورة الإزالة الفورية",
+  candleRef6_t:"جسم داكن متحرك مرئي، المنقار يتجه نحو الغرفة الهوائية", candleRef6_d:"قريب من الفقس، عادة خلال 24–48 ساعة",
+  cat_poultry:"دواجن وطرائد", cat_waterfowl:"طيور مائية", cat_parrot:"ببغاوات", cat_raptor:"جوارح", cat_ratite:"طيور عدّاءة",
+  species_chicken:"دجاج", species_turkey:"ديك رومي", species_guineafowl:"دجاج غينيا", species_pheasant:"تدرج (فيزنت)", species_chukar:"حجل تشوكار", species_peafowl:"طاووس", species_coturnix:"سمان كوترنكس", species_bobwhite:"سمان بوبوايت",
+  species_duck:"بط منزلي", species_muscovy:"بط المسك", species_goose:"إوز",
+  species_budgie:"بادجي (عصفور دندن)", species_cockatiel:"كوكتيل", species_lovebird:"لوفبيرد", species_conure:"كونيور", species_parrot:"ببغاء أمازون", species_africangrey:"الرمادي الإفريقي", species_macaw:"ماكاو", species_cockatoo:"كوكاتو",
+  species_kestrel:"عوسق / صقر صغير", species_peregrine:"شاهين / صقر كبير", species_owl:"بوم (عام)",
+  species_ostrich:"نعامة", species_emu:"إيمو", species_rhea:"ريا",
+  infoSourceNote:"المصادر: أدلة تحضين من خدمات الإرشاد الزراعي الجامعية (Mississippi State، Virginia Tech، Alabama Cooperative Extension، Oregon State)؛ Hoyt, D.F. (1979)، The Auk 96(1) لمعادلات تقدير الوزن؛ مراجع منشورة في تربية الببغاوات؛ مراجع تربية الجوارح بما فيها مواد من Raptor Research Foundation؛ مراجع عامة في علم الطيور حول النمو المبكر والمتأخر. جُمعت بشكل مستقل، وليست من وثائق أي شركة مصنّعة واحدة — الأشكال والرسوم أصلية وليست نسخًا من عمل أي جهة. هذا الدليل ليس بديلاً عن تعليمات حاضنتك الخاصة؛ وعند الاختلاف، اتّبع الشركة المصنّعة.",
 }
 };
 let LANG=(localStorage.getItem('ibird_lang')||'ar');
@@ -404,47 +521,63 @@ function applyLangAttrs(){
 }
 
 /* ---------- species profiles (§7/§3 of the dev plan) ----------
-   Incubation-day ranges, temperature and humidity figures are standard
-   incubation-reference values (egg biology, published across hatchery
-   and incubator-manufacturer literature) — not any single source's
-   proprietary data. Turning frequency and lockdown/candling offsets
-   follow common incubation practice. Cross-check against your own
-   incubator manufacturer's guidance; treat these as starting points. */
-const SPECIES=[
-  {id:'poultry', nameKey:'species_poultry', incubationDays:21, tempForced:37.5, tempStill:38.9,
-   humidityPre:'40–50%', humidityLock:'65–70%', turning:'3–5x/day (odd count)', lockdownOffsetDays:3, candlingDays:[7,14], hatchSpreadHours:36, chickRemovalHours:36},
-  {id:'quail', nameKey:'species_quail', incubationDays:18, tempForced:37.3, tempStill:38.7,
-   humidityPre:'40–50%', humidityLock:'65–70%', turning:'3–5x/day (odd count)', lockdownOffsetDays:2, candlingDays:[7,12], hatchSpreadHours:24, chickRemovalHours:24},
-  {id:'waterfowl', nameKey:'species_waterfowl', incubationDays:28, tempForced:37.5, tempStill:38.9,
-   humidityPre:'45–55%', humidityLock:'70–75%', turning:'3–5x/day (odd count)', lockdownOffsetDays:3, candlingDays:[9,20], hatchSpreadHours:48, chickRemovalHours:36},
-  {id:'geese', nameKey:'species_geese', incubationDays:30, tempForced:37.3, tempStill:38.7,
-   humidityPre:'45–55%', humidityLock:'70–75%', turning:'3–5x/day (odd count)', lockdownOffsetDays:3, candlingDays:[10,22], hatchSpreadHours:48, chickRemovalHours:36},
-  {id:'parrot', nameKey:'species_parrot', incubationDays:27, tempForced:37.3, tempStill:38.6,
-   humidityPre:'35–45%', humidityLock:'55–65%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:3, candlingDays:[7,14], hatchSpreadHours:48, chickRemovalHours:36},
-  {id:'macaw', nameKey:'species_macaw', incubationDays:29, tempForced:37.3, tempStill:38.6,
-   humidityPre:'35–45%', humidityLock:'55–65%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:3, candlingDays:[7,15], hatchSpreadHours:48, chickRemovalHours:36},
-  {id:'lovebird', nameKey:'species_lovebird', incubationDays:23, tempForced:37.3, tempStill:38.6,
-   humidityPre:'35–45%', humidityLock:'55–65%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:2, candlingDays:[6,12], hatchSpreadHours:36, chickRemovalHours:24},
-  {id:'africangrey', nameKey:'species_africangrey', incubationDays:27, tempForced:37.3, tempStill:38.6,
-   humidityPre:'35–45%', humidityLock:'55–65%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:3, candlingDays:[7,14], hatchSpreadHours:48, chickRemovalHours:36},
-  {id:'cockatoo', nameKey:'species_cockatoo', incubationDays:30, tempForced:37.3, tempStill:38.6,
-   humidityPre:'35–45%', humidityLock:'55–65%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:3, candlingDays:[7,15], hatchSpreadHours:48, chickRemovalHours:36},
-  {id:'eclectus', nameKey:'species_eclectus', incubationDays:28, tempForced:37.3, tempStill:38.6,
-   humidityPre:'35–45%', humidityLock:'55–65%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:3, candlingDays:[7,14], hatchSpreadHours:48, chickRemovalHours:36},
-  {id:'turkey', nameKey:'species_turkey', incubationDays:28, tempForced:37.5, tempStill:38.9,
-   humidityPre:'45–50%', humidityLock:'65–70%', turning:'3–5x/day (odd count)', lockdownOffsetDays:3, candlingDays:[10,24], hatchSpreadHours:48, chickRemovalHours:36},
-  {id:'pheasant', nameKey:'species_pheasant', incubationDays:24, tempForced:37.3, tempStill:38.7,
-   humidityPre:'40–50%', humidityLock:'65–70%', turning:'3–5x/day (odd count)', lockdownOffsetDays:3, candlingDays:[7,16], hatchSpreadHours:36, chickRemovalHours:36},
-  {id:'partridge', nameKey:'species_partridge', incubationDays:24, tempForced:37.5, tempStill:38.9,
-   humidityPre:'40–50%', humidityLock:'65–70%', turning:'3–5x/day (odd count)', lockdownOffsetDays:3, candlingDays:[7,16], hatchSpreadHours:36, chickRemovalHours:36},
-  {id:'falcon', nameKey:'species_falcon', incubationDays:32, tempForced:37.0, tempStill:38.4,
-   humidityPre:'40–45%', humidityLock:'55–60%', turning:'3–5x/day (odd count)', lockdownOffsetDays:3, candlingDays:[10,24], hatchSpreadHours:48, chickRemovalHours:36},
-  {id:'cockatiel', nameKey:'species_cockatiel', incubationDays:19, tempForced:37.3, tempStill:38.6,
-   humidityPre:'35–45%', humidityLock:'55–65%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:2, candlingDays:[6,12], hatchSpreadHours:36, chickRemovalHours:24},
-  {id:'budgie', nameKey:'species_budgie', incubationDays:18, tempForced:37.3, tempStill:38.6,
-   humidityPre:'35–45%', humidityLock:'55–65%', turning:'5–7x/day, 45° tilt', lockdownOffsetDays:2, candlingDays:[6,11], hatchSpreadHours:24, chickRemovalHours:24},
+   Sourced from Principles_of_Artificial_Incubation.docx §6 — an
+   independent reference compiled from published extension, avicultural
+   and raptor-breeding literature (see the Sources section in the Info
+   tab), not any single manufacturer's data. Day ranges and humidity
+   are as published; per-species turning frequency and lockdown/
+   candling day-offsets aren't in the source (which only distinguishes
+   precocial vs altricial handling in general, §1.2) so those are
+   derived per category below rather than invented per species. */
+const CATEGORY_META={
+  poultry:  {catNameKey:'cat_poultry',  altricial:false, lockdownOffsetDays:3, hatchSpreadHours:36, chickRemovalHours:36},
+  waterfowl:{catNameKey:'cat_waterfowl',altricial:false, lockdownOffsetDays:3, hatchSpreadHours:48, chickRemovalHours:36},
+  parrot:   {catNameKey:'cat_parrot',   altricial:true,  lockdownOffsetDays:2, hatchSpreadHours:36, chickRemovalHours:24},
+  raptor:   {catNameKey:'cat_raptor',   altricial:true,  lockdownOffsetDays:3, hatchSpreadHours:48, chickRemovalHours:36},
+  ratite:   {catNameKey:'cat_ratite',   altricial:false, lockdownOffsetDays:4, hatchSpreadHours:48, chickRemovalHours:48},
+};
+const SPECIES_RAW=[
+  // Poultry & Gamebirds
+  {id:'chicken',    nameKey:'species_chicken',    category:'poultry', daysMin:21, daysMax:21, temp:'37.5°C (99.5°F)',        humMain:'45–50%', humHatch:'65–75%'},
+  {id:'turkey',      nameKey:'species_turkey',     category:'poultry', daysMin:28, daysMax:28, temp:'37.5°C (99.5°F)',        humMain:'45–55%', humHatch:'65–70%'},
+  {id:'guineafowl',  nameKey:'species_guineafowl', category:'poultry', daysMin:26, daysMax:28, temp:'37.5°C (99.5°F)',        humMain:'45–50%', humHatch:'65–70%'},
+  {id:'pheasant',    nameKey:'species_pheasant',   category:'poultry', daysMin:23, daysMax:28, temp:'37.3–37.5°C (99.1–99.5°F)', humMain:'40–50%', humHatch:'55–65%'},
+  {id:'chukar',      nameKey:'species_chukar',     category:'poultry', daysMin:23, daysMax:24, temp:'37.5°C (99.5°F)',        humMain:'40–45%', humHatch:'55–65%'},
+  {id:'peafowl',     nameKey:'species_peafowl',    category:'poultry', daysMin:28, daysMax:30, temp:'37.5°C (99.5°F)',        humMain:'45–55%', humHatch:'65–70%'},
+  {id:'coturnix',    nameKey:'species_coturnix',   category:'poultry', daysMin:17, daysMax:18, temp:'37.5°C (99.5°F)',        humMain:'45–55%', humHatch:'65–70%'},
+  {id:'bobwhite',    nameKey:'species_bobwhite',   category:'poultry', daysMin:23, daysMax:24, temp:'37.5–37.8°C (99.5–100°F)', humMain:'45–50%', humHatch:'60–65%'},
+  // Waterfowl
+  {id:'duck',        nameKey:'species_duck',       category:'waterfowl', daysMin:28, daysMax:28, temp:'37.5°C (99.5°F)',      humMain:'55–60%', humHatch:'70–80%'},
+  {id:'muscovy',     nameKey:'species_muscovy',    category:'waterfowl', daysMin:35, daysMax:37, temp:'37.5°C (99.5°F)',      humMain:'45–55%', humHatch:'55–65%'},
+  {id:'goose',       nameKey:'species_goose',      category:'waterfowl', daysMin:28, daysMax:34, temp:'37.2–37.5°C (99–99.5°F)', humMain:'50–55%', humHatch:'75–80%'},
+  // Parrots (Psittacines)
+  {id:'budgie',      nameKey:'species_budgie',     category:'parrot', daysMin:17, daysMax:18, temp:'37.5°C (99.5°F)',        humMain:'45–55%', humHatch:'60–70%'},
+  {id:'cockatiel',   nameKey:'species_cockatiel',  category:'parrot', daysMin:18, daysMax:21, temp:'37.2–37.5°C (99.0–99.5°F)', humMain:'50–56%', humHatch:'65–70%'},
+  {id:'lovebird',    nameKey:'species_lovebird',   category:'parrot', daysMin:21, daysMax:23, temp:'37.3°C (99.1°F)',        humMain:'45–55%', humHatch:'60–70%'},
+  {id:'conure',      nameKey:'species_conure',     category:'parrot', daysMin:23, daysMax:25, temp:'37.3–37.5°C (99.1–99.5°F)', humMain:'45–52%', humHatch:'60–70%'},
+  {id:'parrot',      nameKey:'species_parrot',     category:'parrot', daysMin:24, daysMax:29, temp:'37.3°C (99.1°F)',        humMain:'38–45%', humHatch:'60–65%'},
+  {id:'africangrey', nameKey:'species_africangrey',category:'parrot', daysMin:26, daysMax:28, temp:'37.3°C (99.1°F)',        humMain:'40–50%', humHatch:'60–65%'},
+  {id:'macaw',       nameKey:'species_macaw',      category:'parrot', daysMin:24, daysMax:28, temp:'37.3–37.5°C (99.1–99.5°F)', humMain:'38–45%', humHatch:'60–65%'},
+  {id:'cockatoo',    nameKey:'species_cockatoo',   category:'parrot', daysMin:24, daysMax:30, temp:'37.3°C (99.1°F)',        humMain:'40–50%', humHatch:'60–65%'},
+  // Birds of Prey (Raptors)
+  {id:'kestrel',     nameKey:'species_kestrel',    category:'raptor', daysMin:27, daysMax:31, temp:'37.5–38.5°C (99.5–101.3°F)', humMain:'50–55%', humHatch:'60–65%'},
+  {id:'peregrine',   nameKey:'species_peregrine',  category:'raptor', daysMin:29, daysMax:33, temp:'37.2–37.8°C (99.0–100.0°F)', humMain:'50–55%', humHatch:'60–65%'},
+  {id:'owl',         nameKey:'species_owl',        category:'raptor', daysMin:29, daysMax:34, temp:'37.2–37.7°C (99.0–99.9°F)', humMain:'50–55%', humHatch:'60–65%'},
+  // Ratites
+  {id:'ostrich',     nameKey:'species_ostrich',    category:'ratite', daysMin:42, daysMax:46, temp:'36.4–37.0°C (97.5–98.6°F)', humMain:'20–30%', humHatch:'35–40%'},
+  {id:'emu',         nameKey:'species_emu',        category:'ratite', daysMin:48, daysMax:56, temp:'36.1–37.0°C (97.0–98.6°F)', humMain:'25–35%', humHatch:'40–45%'},
+  {id:'rhea',        nameKey:'species_rhea',       category:'ratite', daysMin:36, daysMax:44, temp:'36.5–37.0°C (97.7–98.6°F)', humMain:'35–45%', humHatch:'50–55%'},
 ];
+const SPECIES=SPECIES_RAW.map(s=>{
+  const meta=CATEGORY_META[s.category];
+  const incubationDays=Math.round((s.daysMin+s.daysMax)/2);
+  return Object.assign({}, s, meta, {
+    incubationDays,
+    candlingDays:[Math.round(incubationDays/3), Math.round(incubationDays*2/3)],
+  });
+});
 function speciesById(id){ return SPECIES.find(s=>s.id===id)||SPECIES[0]; }
+function speciesDaysLabel(sp){ return sp.daysMin===sp.daysMax?String(sp.daysMin):sp.daysMin+'–'+sp.daysMax; }
 
 /* original schematic egg/embryo illustration — not a photo, just growth-by-fraction diagram */
 function eggIllustration(pct){
@@ -473,7 +606,7 @@ function saveIncubators(){ save('ibird_incubators',incubators); }
 function saveBatches(){ save('ibird_batches',batches); }
 function saveEggs(){ save('ibird_eggs',eggs); }
 function saveSettings(){ save('ibird_settings',settings); }
-function defaultTargetLoss(sp){ return ['parrot','macaw','lovebird','africangrey','cockatoo','eclectus','cockatiel','budgie'].includes(sp.id)?14:13; }
+function defaultTargetLoss(sp){ return (sp.category==='parrot'||sp.category==='raptor')?14:13; }
 
 /* ---------- ibirdbh.com real store categories/products (user-confirmed source, not guessed) ---------- */
 const STORE_CATEGORIES=[
@@ -769,8 +902,15 @@ function saveBatch(){
 
 /* ---------- Egg Test List branch (§4a) ---------- */
 let EGGTEST_SELECTED=null;
+function candlingRefCard(){
+  let html=`<div class="card"><h2>${t('candleRefTitle')}</h2>`;
+  for(let i=1;i<=6;i++){
+    html+=`<div class="event"><div><div class="lbl">${t('candleRef'+i+'_t')}</div><div class="muted">${t('candleRef'+i+'_d')}</div></div></div>`;
+  }
+  return html+`</div>`;
+}
 function viewEggTest(){
-  if(batches.length===0) return `<div class="card"><div class="empty">${t('noBatches')}</div></div>`;
+  if(batches.length===0) return `<div class="card"><div class="empty">${t('noBatches')}</div></div>`+candlingRefCard();
   const options=batches.map(b=>{
     const sc=computeSchedule(b);
     return `<button class="chip ${EGGTEST_SELECTED===b.id?'active':''}" onclick="selectEggTestBatch('${b.id}')">${t(sc.sp.nameKey)} · ${fmtDate(b.setDate)}</button>`;
@@ -810,6 +950,7 @@ function viewEggTest(){
     <div class="metric" style="margin-top:6px"><b>${m.costPerChick!=null?ltr(m.costPerChick.toFixed(2)+' '+settings.currency):t('notSet')}</b><span>${t('metricsCostPerChick')}</span></div>
   </div>`;
 
+  html+=candlingRefCard();
   return html;
 }
 function selectEggTestBatch(id){ EGGTEST_SELECTED=id; renderView(); }
@@ -996,7 +1137,8 @@ function deleteEgg(eggId){
 
 /* ---------- Guidance branch (§1a #2, §5a) ---------- */
 function viewGuidance(){
-  let html=`<div class="card"><h2>${t('guideTitle')}</h2><div class="muted" style="margin-bottom:6px">${t('guideIntro')}</div>`;
+  let html=`<div class="card"><h2>${t('guideTitle')}</h2><div class="muted" style="margin-bottom:6px">${t('guideIntro')}</div>
+    <div class="event"><div><div class="lbl">${t('guide0_t')}</div><div class="muted">${t('guide0_d')}</div></div></div>`;
   for(let i=1;i<=7;i++){
     html+=`<div class="event"><div><div class="lbl">${t('guide'+i+'_t')}</div><div class="muted">${t('guide'+i+'_d')}</div></div></div>`;
   }
@@ -1030,6 +1172,12 @@ function viewGuidance(){
     <div class="note">${t('tr_principle')}</div>
   </div>`;
 
+  html+=`<div class="card"><h2>${t('problemsTitle')}</h2><div class="muted" style="margin-bottom:6px">${t('problemsIntro')}</div>`;
+  for(let i=1;i<=12;i++){
+    html+=`<div class="event"><div><div class="lbl">${t('prob'+i+'_t')}</div><div class="muted">${t('prob'+i+'_d')}</div></div></div>`;
+  }
+  html+=`</div>`;
+
   html+=notifCard();
   return html;
 }
@@ -1038,20 +1186,61 @@ function viewGuidance(){
 function viewInfo(){
   let html=`<div class="card"><h2>${t('infoTitle')}</h2><div class="muted">${t('infoIntro')}</div></div>`;
 
+  html+=`<div class="card"><h2>${t('principlesTitle')}</h2><div class="muted" style="margin-bottom:6px">${t('principlesIntro')}</div>`;
+  ['temp','turn','humidity','gas','clean'].forEach(k=>{
+    html+=`<div class="event"><div><div class="lbl">${t('principle_'+k+'_t')}</div><div class="muted">${t('principle_'+k+'_d')}</div></div></div>`;
+  });
+  html+=`<div class="note">${t('altricialNote')}</div></div>`;
+
   html+=`<div class="card"><h2>${t('devTitle')}</h2><div class="muted" style="margin-bottom:10px">${t('devIntro')}</div>
     <div class="dev-grid">`;
-  const fracs=[0.14,0.30,0.5,0.62,0.82,1];
-  for(let i=1;i<=6;i++){
+  const fracs=[0.05,0.10,0.17,0.26,0.36,0.45,0.57,0.67,0.76,0.88,0.95,1];
+  for(let i=1;i<=12;i++){
     html+=`<div class="dev-stage">${eggIllustration(fracs[i-1])}<b>${t('dev'+i+'_t')}</b><span>${t('dev'+i+'_d')}</span></div>`;
   }
   html+=`</div></div>`;
 
-  html+=`<div class="card"><table>
-    <tr><th>${t('colSpecies')}</th><th>${t('colDays')}</th><th>${t('colTemp')}</th><th>${t('colHumidity')}</th></tr>
-    ${SPECIES.map(sp=>`<tr onclick="openSpeciesDetail('${sp.id}')" style="cursor:pointer">
-      <td>${t(sp.nameKey)}</td><td>${sp.incubationDays}</td><td>${ltr(sp.tempForced+'°C')}</td><td>${ltr(sp.humidityPre)}</td>
-    </tr>`).join('')}
-  </table></div>`;
+  html+=`<div class="card"><h2>${t('incTypesTitle')}</h2>`;
+  ['stillair','forceddraft','contact'].forEach(k=>{
+    html+=`<div class="event"><div><div class="lbl">${t('inc_'+k+'_t')}</div><div class="muted">${t('inc_'+k+'_d')}</div></div></div>`;
+  });
+  html+=`</div>`;
+
+  html+=`<div class="card"><h2>${t('turningTitle')}</h2>`;
+  ['tilt','roller','floor','trough'].forEach(k=>{
+    html+=`<div class="event"><div><div class="lbl">${t('turn_'+k+'_t')}</div><div class="muted">${t('turn_'+k+'_d')}</div></div></div>`;
+  });
+  html+=`</div>`;
+
+  html+=`<div class="card"><h2>${t('speciesTitle')}</h2>`;
+  ['poultry','waterfowl','parrot','raptor','ratite'].forEach(cat=>{
+    const rows=SPECIES.filter(s=>s.category===cat);
+    html+=`<div class="set-label" style="margin-top:14px">${t(CATEGORY_META[cat].catNameKey)}</div>
+    <table>
+      <tr><th>${t('colSpecies')}</th><th>${t('colDays')}</th><th>${t('colTemp')}</th><th>${t('colHumidity')}</th></tr>
+      ${rows.map(sp=>`<tr onclick="openSpeciesDetail('${sp.id}')" style="cursor:pointer">
+        <td>${t(sp.nameKey)}</td><td>${ltr(speciesDaysLabel(sp))}</td><td>${ltr(sp.temp)}</td><td>${ltr(sp.humMain)}</td>
+      </tr>`).join('')}
+    </table>`;
+  });
+  html+=`</div>`;
+
+  html+=`<div class="card"><h2>${t('humidityTitle')}</h2><div class="muted" style="margin-bottom:6px">${t('humidityIntro')}</div>
+    <div class="event"><div><div class="lbl">${t('hygrometer_t')}</div><div class="muted">${t('hygrometer_d')}</div></div></div>
+    <div class="event"><div><div class="lbl">${t('wetbulb_t')}</div><div class="muted">${t('wetbulb_d')}</div></div></div>
+    <table style="margin-top:10px">
+      <tr><th>${t('colRH')}</th><th>${t('colWetC')}</th><th>${t('colWetF')}</th></tr>
+      ${[[20,21.6,70.9],[30,24.2,75.5],[40,26.5,79.8],[50,28.7,83.7],[60,30.7,87.3],[70,32.6,90.7],[80,34.3,93.8],[90,36.0,96.7],[100,37.5,99.5]]
+        .map(r=>`<tr><td>${ltr(r[0]+'%')}</td><td>${ltr(r[1].toFixed(1))}</td><td>${ltr(r[2].toFixed(1))}</td></tr>`).join('')}
+    </table>
+    <div class="note">${t('wetbulbNote')}</div>
+  </div>`;
+
+  html+=`<div class="card"><h2>${t('weightLossTitle')}</h2>
+    <div class="muted">${t('weightLossText')}</div>
+    <div class="note" style="margin-top:10px">${t('hoytText')}</div>
+    <div class="note">${t('hoytSource')}</div>
+  </div>`;
 
   html+=`<div class="note" style="padding:0 4px">${t('infoSourceNote')}</div>`;
   return html;
@@ -1059,17 +1248,18 @@ function viewInfo(){
 function openSpeciesDetail(id){
   const sp=speciesById(id);
   openModal(`
-    <div class="modalhead"><h2>${t(sp.nameKey)}</h2><button class="close" onclick="closeModal()">✕</button></div>
+    <div class="modalhead"><h2>${t(sp.nameKey)}</h2><div class="muted">${t(CATEGORY_META[sp.category].catNameKey)}</div>
+      <button class="close" onclick="closeModal()">✕</button></div>
     <table>
-      <tr><td class="muted">${t('infoIncubationDays')}</td><td>${sp.incubationDays} ${LANG==='ar'?'يوم':'days'}</td></tr>
-      <tr><td class="muted">${t('infoTempForced')}</td><td>${ltr(sp.tempForced+'°C')}</td></tr>
-      <tr><td class="muted">${t('infoTempStill')}</td><td>${ltr(sp.tempStill+'°C')}</td></tr>
-      <tr><td class="muted">${t('infoHumidityPre')}</td><td>${ltr(sp.humidityPre)}</td></tr>
-      <tr><td class="muted">${t('infoHumidityLock')}</td><td>${ltr(sp.humidityLock)}</td></tr>
-      <tr><td class="muted">${t('infoTurning')}</td><td>${ltr(sp.turning)}</td></tr>
+      <tr><td class="muted">${t('infoIncubationDays')}</td><td>${ltr(speciesDaysLabel(sp))} ${LANG==='ar'?'يوم':'days'}</td></tr>
+      <tr><td class="muted">${t('infoTempForced')}</td><td>${ltr(sp.temp)}</td></tr>
+      <tr><td class="muted">${t('infoHumidityPre')}</td><td>${ltr(sp.humMain)}</td></tr>
+      <tr><td class="muted">${t('infoHumidityLock')}</td><td>${ltr(sp.humHatch)}</td></tr>
+      <tr><td class="muted">${t('infoTurning')}</td><td>${t(sp.altricial?'turning_altricial':'turning_precocial')}</td></tr>
       <tr><td class="muted">${t('infoLockdownOffset')}</td><td>${t('daysBeforeHatch',{n:sp.lockdownOffsetDays})}</td></tr>
       <tr><td class="muted">${t('infoCandlingDays')}</td><td>${LANG==='ar'?'اليوم':'day'} ${ltr(sp.candlingDays[0]+', '+sp.candlingDays[1])}</td></tr>
     </table>
+    <div class="note">${t('stillAirNote')}</div>
   `);
 }
 
