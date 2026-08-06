@@ -276,28 +276,63 @@ en:{
   daysBeforeHatch:"{n} days before expected hatch",
   colSpecies:"Species", colDays:"Days", colTemp:"Temp", colHumidity:"Humidity", colRH:"RH%", colWetC:"Wet-bulb °C", colWetF:"Wet-bulb °F",
   speciesTitle:"Species reference table",
-  principlesTitle:"Five things every embryo needs", principlesIntro:"Whatever the species, these five factors need to stay in range for the whole incubation period — they interact, so a fix for one can disturb another.",
-  principle_temp_t:"Temperature", principle_temp_d:"Embryonic growth only runs at the right pace within a narrow thermal window — both the air around the eggs and the temperature at the egg's centre.",
-  principle_turn_t:"Turning", principle_turn_d:"Regularly re-angling the egg keeps the embryo moving through fresh albumen and stops it sticking to the shell membrane.",
-  principle_humidity_t:"Humidity", principle_humidity_d:"The embryo must lose a predictable share of the egg's water by evaporation. Too little leaves a chick swollen and poorly positioned; too much leaves it dehydrated.",
-  principle_gas_t:"Gas exchange", principle_gas_d:"A growing embryo needs a steady supply of oxygen and a way to shed carbon dioxide, even while temperature and humidity stay steady.",
-  principle_clean_t:"Cleanliness", principle_clean_d:"A porous shell is also a route for bacteria and mould — both the egg-storage area and the incubator itself need to stay clean.",
-  altricialNote:"Precocial chicks (poultry, waterfowl) hatch mature — eyes open, downy, able to leave the nest within a day or two. Altricial chicks (parrots, raptors) hatch far less developed and depend on their parents — in the nest they're turned more often and more vigorously, and breeders commonly carry that over into artificial incubation.",
+  guideBookTitle:"PRINCIPLES OF ARTIFICIAL INCUBATION", guideBookSubtitle:"An independent reference guide to hatching eggs across species",
+  guidePreface:"A bird egg laid outside the nest is not a dormant object — it is a self-contained life-support system for a growing embryo, and every part of that system depends on conditions the parent bird (or an incubator standing in for it) supplies from the outside. Whether the eggs in question belong to a backyard hen, a breeding pair of macaws, or a captive falcon, the underlying biology is shared, and successful incubation always comes back to controlling the same handful of variables well and consistently.",
+  principlesTitle:"1.1 · Five Environmental Requirements", principlesIntro:"Regardless of species, a developing embryo needs five things to be held within the right range for the whole incubation period:",
+  principle_temp_t:"Temperature", principle_temp_d:"the chemical reactions that drive embryonic growth only run at the correct pace within a narrow thermal window. Both the general air temperature in the incubator and, more importantly, the temperature at the centre of each egg need to stay inside that window.",
+  principle_turn_t:"Turning", principle_turn_d:"regularly re-angling the egg keeps the embryo moving through fresh albumen and stops it settling against and sticking to the membranes lining the inside of the shell.",
+  principle_humidity_t:"Humidity", principle_humidity_d:"the shell is porous, and the embryo must lose a predictable share of the egg's original water content by evaporation over the incubation period. Too little water loss leaves a chick swollen and poorly positioned for hatching; too much leaves it dehydrated and too weak to break out.",
+  principle_gas_t:"Gas exchange", principle_gas_d:"an actively growing embryo needs a continuous supply of oxygen and a way to shed carbon dioxide, so incoming air must be refreshed even while temperature and humidity are held steady.",
+  principle_clean_t:"Cleanliness", principle_clean_d:"a porous shell is also a route for bacteria and mould to get in, so both the egg-storage area and the incubator itself need to stay clean and free of contamination.",
+  principlesClose:"These five factors interact with one another — raising airflow to fix a humidity problem can disturb temperature uniformity, for instance — which is why incubator design (Section 3) and ongoing monitoring (Section 4) both matter as much as knowing the target numbers.",
+  altricialTitle:"1.2 · Precocial and Altricial Development",
+  altricialIntro:"Newly hatched birds fall along a spectrum from precocial to altricial, describing how developed and self-sufficient a chick is at the moment it hatches.",
+  precocialText:"Precocial chicks hatch relatively mature: eyes open, covered in down, able to leave the nest within a day or two, and capable of foraging for themselves within hours. Poultry and waterfowl are the classic examples.",
+  altricialText:"Altricial chicks hatch far less developed: eyes closed, little or no down, entirely dependent on their parents for food, and unable to leave the nest for an extended period. Birds of prey and parrots are typical examples.",
+  altricialNote:"The distinction is not just descriptive — it has practical consequences for artificial incubation. In the nest, altricial species are typically turned more often and more vigorously than precocial ones, and breeders of parrots and raptors commonly carry that difference over into artificial incubation schedules, turning those eggs on a tighter cycle than a standard poultry setting would use (see Section 3.4). Real species fall along a continuum between the two extremes rather than sorting neatly into either camp, so the specific published guidance for a species or family is always a better starting point than the general rule.",
+  eggStructTitle:"2.1 · Structure of the Egg", eggStructIntro:"A freshly laid egg already contains everything the embryo will draw on for the whole incubation period, packaged inside a shell that is simultaneously a barrier, a source of calcium, and a breathable membrane.",
+  struct_shell_t:"Shell", struct_shell_d:"a calcium-carbonate structure perforated by thousands of microscopic pores that allow gas and water vapour to pass in and out.",
+  struct_membranes_t:"Shell membranes", struct_membranes_d:"two thin protein membranes just inside the shell; they separate slightly at the blunt end soon after laying to form the air cell.",
+  struct_aircell_t:"Air cell", struct_aircell_d:"a pocket of air at the egg's broad end that grows steadily throughout incubation as water is lost through the shell, and which the chick eventually breaks into to take its first breath.",
+  struct_albumen_t:"Albumen (egg white)", struct_albumen_d:"mostly water and protein, it cushions the embryo, supplies part of its water and protein needs, and provides a reserve the embryo moves through as it grows.",
+  struct_chalazae_t:"Chalazae", struct_chalazae_d:"twisted protein cords that anchor the yolk roughly in the centre of the egg and let it rotate in place as the egg is turned.",
+  struct_yolk_t:"Yolk", struct_yolk_d:"the embryo's main energy reserve, rich in fats and other nutrients; it is gradually drawn into the embryo's body cavity in the final days before hatching.",
+  struct_germinal_t:"Germinal disc (blastoderm)", struct_germinal_d:"the small disc on the yolk's surface where, if fertilised, cell division begins.",
+  nutritionTitle:"2.2 · Nutritional Foundations Before Laying",
+  nutritionText:"An egg cannot be improved after it is laid — everything the embryo needs is already determined by what the parent bird was eating in the weeks beforehand. Breeding stock kept short of key nutrients tend to produce eggs with reduced hatchability, weaker chicks, and poorer disease resistance, even when incubation conditions themselves are perfect. The nutrients most consistently linked to hatch quality in breeding-bird diets include vitamins A, D, E and K, the B-complex vitamins (thiamine, riboflavin, niacin, B6, pantothenic acid, biotin, folic acid and B12), and minerals such as calcium, phosphorus, manganese, magnesium and zinc — each contributing to a different part of embryonic development, from bone and shell formation to circulatory integrity.",
+  storageTitle:"2.4 · Storage and Handling Before Incubation",
+  storageIntro:"Eggs collected for hatching are rarely set immediately, and how they are handled between laying and incubation has a measurable effect on the final hatch rate.",
+  storage_temp_t:"Temperature", storage_temp_d:"hold fertile eggs at roughly 13–18°C (55–65°F). Refrigeration is too cold and increases embryo mortality; ordinary room temperature is generally too warm and allows uneven, partial development to begin.",
+  storage_humidity_t:"Humidity", storage_humidity_d:"aim for about 70–80% RH in the storage area to limit early moisture loss through the shell.",
+  storage_orient_t:"Orientation and turning", storage_orient_d:"store eggs pointed-end down. If they will be held for more than two or three days, tilt or turn the carton through roughly 90° once or twice a day so the yolk does not settle against and stick to the shell membrane.",
+  storage_time_t:"Time in storage", storage_time_d:"hatchability declines measurably once eggs pass about 7–10 days in storage, and drops more sharply beyond two weeks, so it pays to plan hatching schedules around the freshest eggs practical.",
+  storage_warm_t:"Warming before setting", storage_warm_d:"bring stored eggs up to near room temperature gradually, over several hours, before placing them in the incubator. Setting a cold egg directly into a warm incubator causes condensation on the shell, and that moisture is a route for bacterial contamination.",
+  storage_clean_t:"Cleanliness", storage_clean_d:"discard cracked, badly misshapen or heavily soiled eggs where possible. If a soiled egg must be cleaned, use wash water that is noticeably warmer than the egg, so that the egg's contents expand and push contamination outward through the pores rather than drawing dirty water in. Any washing also strips the shell's natural protective cuticle, leaving the egg more exposed to contamination afterward — so cleaning is a trade-off, not a free fix.",
+  storage_handle_t:"Handling", storage_handle_d:"handle every egg gently. A hard bump can rupture internal membranes or blood vessels without visibly damaging the shell, and the same care is worth taking once eggs are in the incubator, not just beforehand.",
+  accuracyTitle:"3.5 · Setting Up for Accuracy",
+  accuracyText:"Temperature accuracy matters more than any other single setting. Commercial practice generally aims to hold the egg tray within about ±0.3°C (±0.5°F) of target, and small deviations sustained over hours — not just brief spikes — are what cause developmental problems, so a stable average matters more than chasing an exact instantaneous reading. Humidity is comparatively forgiving during the bulk of incubation but needs to be raised for the final days before hatching (often called lockdown), when higher humidity keeps the inner shell membrane pliable enough for the chick to tear through it rather than drying out and trapping the chick inside.",
+  candlingIntroTitle:"4.1 · Candling",
+  candlingIntroText:"Candling means shining a concentrated beam of light through the shell, usually in a darkened room, to see the egg's contents without opening it. It is the simplest way to track how fast the air cell is growing — a rough proxy for the rate of water loss — and to spot eggs that are infertile or have stopped developing so they can be removed before they spoil or, in rare cases, burst inside the incubator. If the air cell looks larger than expected for the day of incubation, too much water is being lost and humidity should be raised; if it looks smaller than expected, the reverse applies.",
+  problemsIntroFull:"Most hatching problems trace back to one or more of the five environmental factors in Section 1.1 drifting out of range, or to conditions further back in the chain — breeder nutrition, egg storage, or handling — that no amount of incubator adjustment can fix after the fact. The table below groups the problems most commonly reported across species with their most frequently cited contributing factors; because several causes often overlap, the most useful diagnostic tool is usually a candled sample of eggs and a weight-loss trend (Section 4) rather than any single symptom in isolation.",
+  speciesTableIntro:"The ranges below synthesise multiple published extension, avicultural and raptor-breeding sources rather than a single manufacturer's recommendation, and are meant as a starting point rather than a fixed prescription. Real variation between breeding lines, shell quality, local climate and even the specific incubator model means the numbers on the page always need to be checked against what a weight-loss trend and candling actually show for a given batch (Section 4) — and the manufacturer's instructions for a specific machine should take precedence over any general guide, including this one.",
+  parrotNote:"Published sources vary more widely for parrots than for poultry — some experienced breeders run large-egg species (macaws, Amazons) as low as 38% RH, others closer to 45–50%; the range shown reflects that spread. Smaller-egged species generally sit toward the higher end of the humidity range and larger-egged species toward the lower end.",
+  raptorNote:"Raptor eggs are commonly incubated slightly warmer than typical poultry settings; several published studies on falcons and kestrels found improved hatch rates nearer 38–38.5°C than at standard poultry temperatures.",
+  ratiteNote:"Ratite eggs are large, thick-shelled and slow to warm or cool, so swings in temperature or humidity take longer to show up — and take longer to correct — than in small eggs.",
   turning_precocial:"Standard tray/roller turning per manufacturer, until lockdown (precocial species — §1.2)",
   turning_altricial:"More frequent, more vigorous turning than poultry — altricial species are turned on a tighter cycle in the nest (§1.2)",
   devTitle:"Egg development, stage by stage", devIntro:"A hen's 21-day cycle shown as a visual reference — the same arc, compressed or stretched, applies to every species (see each species' own days above).",
-  dev1_t:"Day 1", dev1_d:"The fertilised germinal disc begins dividing; the primitive streak appears and the first blood islands form.",
-  dev2_t:"Day 2", dev2_d:"Blood islands link into a vascular network. A simple tubular heart forms and starts beating by about hour 44.",
-  dev3_t:"Day 3–4", dev3_d:"The embryo splits into three germ layers (gastrulation). Wing and leg buds appear; the amniotic sac begins enclosing the embryo.",
-  dev4_t:"Day 5–6", dev4_d:"Reproductive organs and sex differentiation begin. Digits and the beak start forming; the eye gains visible pigment.",
-  dev5_t:"Day 7–8", dev5_d:"The neck lengthens, separating head from body. Upper and lower beak differentiate; eye pigmentation is clearly visible.",
-  dev6_t:"Day 9–10", dev6_d:"Claws and the first feather follicles appear. The allantois grows rapidly; the egg tooth begins forming.",
+  dev1_t:"Day 1", dev1_d:"The fertilised germinal disc begins dividing. The primitive streak — the axis along which the head and spine will form — appears, and the first blood islands begin forming.",
+  dev2_t:"Day 2", dev2_d:"Blood islands link into a simple vascular network. A simple tubular heart forms and begins beating by roughly the 44th hour.",
+  dev3_t:"Day 3–4", dev3_d:"The embryo differentiates into three germ layers (ectoderm, mesoderm, endoderm) through a stage called gastrulation. Wing and leg buds appear, and the amniotic sac begins enclosing the embryo in fluid.",
+  dev4_t:"Day 5–6", dev4_d:"Reproductive organs and sex differentiation begin. Digits and the beak start to take shape, and the eye gains visible pigment.",
+  dev5_t:"Day 7–8", dev5_d:"The neck lengthens, visibly separating head from body. The upper and lower beak differentiate, the vitelline (yolk) membrane spreads to cover nearly the whole yolk, and eye pigmentation becomes clearly visible.",
+  dev6_t:"Day 9–10", dev6_d:"Claws and the first feather follicles appear. The allantois — the embryo's combined respiratory and waste-storage organ — grows rapidly, and the egg tooth begins forming.",
   dev7_t:"Day 11–13", dev7_d:"Skeletal calcification begins. Scales, down and toenails appear.",
-  dev8_t:"Day 14", dev8_d:"The embryo repositions, head tucked under the right wing — distinctly chick-like now.",
-  dev9_t:"Day 15–17", dev9_d:"Down grows in and gains colour. Albumen is nearly used up; the beak turns toward the air cell.",
-  dev10_t:"Day 18–19", dev10_d:"The yolk sac begins drawing into the body cavity; amniotic fluid falls sharply.",
-  dev11_t:"Day 20", dev11_d:"Yolk fully internalised. The chick breaks into the air cell (internal pip) and takes its first breath.",
-  dev12_t:"Day 21", dev12_d:"External pipping begins, followed by a slow rotation that chips a line around the shell until the cap detaches.",
+  dev8_t:"Day 14", dev8_d:"The embryo repositions with its head tucked under the right wing, taking on a distinctly chick-like form.",
+  dev9_t:"Day 15–17", dev9_d:"Down grows in and gains colour. The albumen is nearly used up, and the beak turns toward the air cell in preparation for the first breath.",
+  dev10_t:"Day 18–19", dev10_d:"The yolk sac — the last major food reserve before hatching — begins drawing into the body cavity, and the amount of amniotic fluid falls sharply.",
+  dev11_t:"Day 20", dev11_d:"The yolk is fully internalised. The chick breaks into the air cell (internal pipping) and takes its first lung breath; the resulting build-up of carbon dioxide triggers the neck-muscle twitches that drive the hatching sequence.",
+  dev12_t:"Day 21", dev12_d:"External pipping begins, followed by a slow rotation inside the shell that chips a line around the egg's wide end until the cap detaches and the chick works itself free.",
   incTypesTitle:"Incubator types",
   inc_stillair_t:"Still-air", inc_stillair_d:"An insulated box with natural convection only — heat rises, so a real top-to-bottom gradient forms. Sensors sit near egg height; still-air machines typically run ~1–1.5°C warmer than the forced-draft target to compensate, and need to stay level with similarly-sized eggs.",
   inc_forceddraft_t:"Forced-draft", inc_forceddraft_d:"A circulating fan keeps temperature close to uniform throughout, so sensor placement matters less and different egg sizes can share a machine. The same airflow dries eggs faster, so humidity needs closer attention.",
@@ -437,28 +472,63 @@ ar:{
   daysBeforeHatch:"قبل {n} أيام من الفقس المتوقع",
   colSpecies:"النوع", colDays:"الأيام", colTemp:"الحرارة", colHumidity:"الرطوبة", colRH:"الرطوبة٪", colWetC:"الرطب °م", colWetF:"الرطب °ف",
   speciesTitle:"جدول مرجع الأنواع",
-  principlesTitle:"خمسة أمور يحتاجها كل جنين", principlesIntro:"مهما كان النوع، يجب إبقاء هذه العوامل الخمسة ضمن نطاقها طوال فترة التحضين — وهي مترابطة، فتصحيح واحد قد يُخلّ بآخر.",
-  principle_temp_t:"الحرارة", principle_temp_d:"لا تسير عمليات النمو الجنيني بالوتيرة الصحيحة إلا ضمن نافذة حرارية ضيقة — الهواء المحيط بالبيض ومركز البيضة نفسها.",
-  principle_turn_t:"التقليب", principle_turn_d:"إعادة توجيه البيضة بانتظام تُبقي الجنين متحركًا ضمن الزلال الطازج وتمنع التصاقه بغشاء القشرة.",
-  principle_humidity_t:"الرطوبة", principle_humidity_d:"يجب أن تفقد البيضة نسبة متوقعة من مائها بالتبخر. الفقد القليل جدًا يترك فرخًا منتفخًا وسيء الوضعية؛ والفقد الكثير جدًا يتركه جافًا وضعيفًا.",
-  principle_gas_t:"تبادل الغازات", principle_gas_d:"يحتاج الجنين النامي إمدادًا مستمرًا من الأكسجين وطريقة للتخلص من ثاني أكسيد الكربون، حتى مع ثبات الحرارة والرطوبة.",
-  principle_clean_t:"النظافة", principle_clean_d:"القشرة المسامية طريق أيضًا للبكتيريا والعفن — يجب أن تبقى منطقة تخزين البيض والحاضنة نظيفتين.",
-  altricialNote:"الفراخ المبكرة النمو (دواجن، طيور مائية) تفقس ناضجة نسبيًا — عيون مفتوحة، مغطاة بالزغب، قادرة على مغادرة العش خلال يوم أو يومين. أما الفراخ المتأخرة النمو (ببغاوات، جوارح) فتفقس أقل نضجًا بكثير وتعتمد على والديها — وفي العش تُقلَّب بشكل أكثر تكرارًا وقوة، وينقل المربّون هذا الفارق غالبًا إلى التحضين الاصطناعي.",
+  guideBookTitle:"مبادئ التحضين الاصطناعي", guideBookSubtitle:"دليل مرجعي مستقل لتحضين البيض عبر الأنواع",
+  guidePreface:"بيضة الطائر الموضوعة خارج العش ليست جسمًا خاملاً — بل نظام دعم حياة مكتفٍ ذاتيًا لجنين نامٍ، وكل جزء من هذا النظام يعتمد على ظروف يوفرها الطائر الأم (أو حاضنة تقوم مقامه) من الخارج. سواء كان البيض المعني لدجاجة منزلية، أو زوج تربية من الماكاو، أو صقر في الأسر، فإن البيولوجيا الأساسية مشتركة، ونجاح التحضين يعود دائمًا إلى التحكم الجيد والمستمر في نفس المجموعة من المتغيرات.",
+  principlesTitle:"١.١ · خمسة متطلبات بيئية", principlesIntro:"بغض النظر عن النوع، يحتاج الجنين النامي لخمسة أمور أن تبقى ضمن النطاق الصحيح طوال فترة التحضين:",
+  principle_temp_t:"الحرارة", principle_temp_d:"التفاعلات الكيميائية التي تقود النمو الجنيني لا تسير بالوتيرة الصحيحة إلا ضمن نافذة حرارية ضيقة. يجب أن تبقى كل من الحرارة العامة للهواء في الحاضنة، والأهم، حرارة مركز كل بيضة، ضمن تلك النافذة.",
+  principle_turn_t:"التقليب", principle_turn_d:"إعادة توجيه البيضة بانتظام تُبقي الجنين متحركًا ضمن الزلال الطازج وتمنعه من الاستقرار والالتصاق بالأغشية المبطّنة لداخل القشرة.",
+  principle_humidity_t:"الرطوبة", principle_humidity_d:"القشرة مسامية، ويجب أن تفقد البيضة نسبة متوقعة من محتواها المائي الأصلي بالتبخر خلال فترة التحضين. الفقد القليل جدًا للماء يترك فرخًا منتفخًا وسيء الوضعية للفقس؛ والفقد الكثير جدًا يتركه جافًا وضعيفًا جدًا عن الخروج.",
+  principle_gas_t:"تبادل الغازات", principle_gas_d:"يحتاج الجنين النامي بنشاط إمدادًا مستمرًا من الأكسجين وطريقة للتخلص من ثاني أكسيد الكربون، لذا يجب تجديد الهواء الداخل حتى مع ثبات الحرارة والرطوبة.",
+  principle_clean_t:"النظافة", principle_clean_d:"القشرة المسامية طريق أيضًا لدخول البكتيريا والعفن، لذا يجب أن تبقى منطقة تخزين البيض والحاضنة نفسها نظيفتين وخاليتين من التلوث.",
+  principlesClose:"تتفاعل هذه العوامل الخمسة مع بعضها — فرفع التهوية لإصلاح مشكلة رطوبة قد يُخلّ بانتظام الحرارة، على سبيل المثال — وهذا سبب أهمية تصميم الحاضنة (القسم 3) والمراقبة المستمرة (القسم 4) بقدر أهمية معرفة الأرقام المستهدفة.",
+  altricialTitle:"١.٢ · النمو المبكر والمتأخر",
+  altricialIntro:"تقع الفراخ حديثة الفقس على طيف بين مبكرة النمو ومتأخرة النمو، يصف مدى نضج الفرخ واكتفائه الذاتي لحظة الفقس.",
+  precocialText:"تفقس الفراخ المبكرة النمو ناضجة نسبيًا: عيون مفتوحة، مغطاة بالزغب، قادرة على مغادرة العش خلال يوم أو يومين، وقادرة على البحث عن طعامها خلال ساعات. الدواجن والطيور المائية أمثلة كلاسيكية.",
+  altricialText:"تفقس الفراخ المتأخرة النمو أقل نضجًا بكثير: عيون مغلقة، زغب قليل أو معدوم، معتمدة كليًا على والديها للغذاء، وغير قادرة على مغادرة العش لفترة طويلة. الجوارح والببغاوات أمثلة نموذجية.",
+  altricialNote:"هذا التمييز ليس وصفيًا فقط — له تبعات عملية على التحضين الاصطناعي. في العش، تُقلَّب الأنواع متأخرة النمو عادة بشكل أكثر تكرارًا وقوة من مبكرة النمو، وينقل مربّو الببغاوات والجوارح هذا الفارق غالبًا إلى جداول التحضين الاصطناعي، بتقليب تلك البيضات بدورة أضيق مما يُستخدم لإعداد الدواجن القياسي (راجع القسم 3.4). تقع الأنواع الحقيقية على سلسلة متصلة بين الطرفين المتطرفين بدلاً من الانحصار بدقة في أحد المعسكرين، لذا فإن الإرشادات المنشورة الخاصة بنوع أو عائلة معينة هي دائمًا نقطة بداية أفضل من القاعدة العامة.",
+  eggStructTitle:"٢.١ · تركيب البيضة", eggStructIntro:"تحتوي البيضة الطازجة الموضوعة بالفعل على كل ما سيعتمد عليه الجنين طوال فترة التحضين، معبأً داخل قشرة هي في آن واحد حاجز، ومصدر للكالسيوم، وغشاء قابل للتنفس.",
+  struct_shell_t:"القشرة", struct_shell_d:"بنية من كربونات الكالسيوم مثقوبة بآلاف المسام المجهرية التي تسمح بمرور الغازات وبخار الماء للداخل والخارج.",
+  struct_membranes_t:"أغشية القشرة", struct_membranes_d:"غشاءان بروتينيان رقيقان داخل القشرة مباشرة؛ ينفصلان قليلاً عند الطرف الكليل بعد الوضع بوقت قصير لتشكيل الغرفة الهوائية.",
+  struct_aircell_t:"الغرفة الهوائية", struct_aircell_d:"جيب هواء عند الطرف العريض للبيضة يكبر تدريجيًا طوال التحضين مع فقد الماء عبر القشرة، ويخترقه الفرخ في النهاية ليأخذ أول نفس له.",
+  struct_albumen_t:"الزلال (بياض البيض)", struct_albumen_d:"معظمه ماء وبروتين، يوسّد الجنين، ويوفر جزءًا من احتياجاته المائية والبروتينية، ويشكل احتياطيًا يتحرك الجنين خلاله وهو ينمو.",
+  struct_chalazae_t:"الحبال البيضاء (الشلازا)", struct_chalazae_d:"حبال بروتينية ملتوية تُثبّت المح تقريبًا في مركز البيضة وتسمح له بالدوران في مكانه عند تقليب البيضة.",
+  struct_yolk_t:"المح (الصفار)", struct_yolk_d:"الاحتياطي الرئيسي لطاقة الجنين، غني بالدهون والمغذيات الأخرى؛ يُسحب تدريجيًا إلى تجويف جسم الجنين في الأيام الأخيرة قبل الفقس.",
+  struct_germinal_t:"القرص الجرثومي (البلاستوديرم)", struct_germinal_d:"القرص الصغير على سطح المح حيث يبدأ الانقسام الخلوي إن كانت البيضة مخصبة.",
+  nutritionTitle:"٢.٢ · الأسس الغذائية قبل وضع البيض",
+  nutritionText:"لا يمكن تحسين البيضة بعد وضعها — كل ما يحتاجه الجنين محدد مسبقًا بما كان يأكله الطائر الأم في الأسابيع السابقة. القطعان التي تفتقر لمغذيات أساسية تنتج غالبًا بيضًا بقابلية فقس أقل، وفراخ أضعف، ومقاومة أضعف للأمراض، حتى مع ظروف تحضين مثالية. المغذيات الأكثر ارتباطًا بجودة الفقس في تغذية طيور التربية تشمل فيتامينات A وD وE وK، فيتامينات المجموعة B (الثيامين، الريبوفلافين، النياسين، B6، حمض البانتوثنيك، البيوتين، حمض الفوليك وB12)، ومعادن مثل الكالسيوم والفوسفور والمنغنيز والمغنيسيوم والزنك — يساهم كل منها في جانب مختلف من النمو الجنيني، من تكوّن العظام والقشرة إلى سلامة الدورة الدموية.",
+  storageTitle:"٢.٤ · التخزين والتعامل قبل التحضين",
+  storageIntro:"نادرًا ما يُعيَّن البيض المجموع للفقس فورًا، وطريقة التعامل معه بين الوضع والتحضين لها أثر ملموس على معدل الفقس النهائي.",
+  storage_temp_t:"الحرارة", storage_temp_d:"احفظ البيض الخصب عند حرارة 13–18°م (55–65°ف) تقريبًا. التبريد بارد جدًا ويزيد نفوق الأجنة؛ وحرارة الغرفة العادية دافئة جدًا عمومًا وتسمح ببدء نمو جزئي غير متساوٍ.",
+  storage_humidity_t:"الرطوبة", storage_humidity_d:"استهدف رطوبة نسبية حوالي 70–80٪ في منطقة التخزين للحد من فقد الرطوبة المبكر عبر القشرة.",
+  storage_orient_t:"الوضعية والتقليب", storage_orient_d:"خزّن البيض بالطرف المدبب للأسفل. إذا سيُحفظ لأكثر من يومين أو ثلاثة، أمِل أو قلّب الصندوق بزاوية ~90° مرة أو مرتين يوميًا حتى لا يستقر المح ويلتصق بغشاء القشرة.",
+  storage_time_t:"مدة التخزين", storage_time_d:"تنخفض قابلية الفقس بشكل ملحوظ بعد تجاوز البيض حوالي 7–10 أيام في التخزين، وتنخفض بشكل أحدّ بعد أسبوعين، لذا يستحق التخطيط لجداول الفقس حول أطزج بيض ممكن عمليًا.",
+  storage_warm_t:"التدفئة قبل التعيين", storage_warm_d:"دفّئ البيض المخزَّن تدريجيًا لحرارة قريبة من حرارة الغرفة على مدى عدة ساعات قبل وضعه في الحاضنة. وضع بيضة باردة مباشرة في حاضنة دافئة يسبب تكاثفًا على القشرة، وتلك الرطوبة طريق للتلوث البكتيري.",
+  storage_clean_t:"النظافة", storage_clean_d:"تخلّص من البيض المتصدع أو المشوّه بشدة أو المتّسخ بشدة حيثما أمكن. إن وجب تنظيف بيضة متّسخة، استخدم ماء غسيل أدفأ ملحوظًا من البيضة، بحيث تتمدد محتويات البيضة وتدفع التلوث للخارج عبر المسام بدلاً من سحب الماء المتّسخ للداخل. كما أن أي غسيل يزيل الطبقة الواقية الطبيعية (الكيوتيكل) للقشرة، تاركًا البيضة أكثر عرضة للتلوث لاحقًا — فالتنظيف مقايضة، وليس حلاً مجانيًا.",
+  storage_handle_t:"التعامل", storage_handle_d:"تعامل مع كل بيضة برفق. الصدمة القوية يمكن أن تمزّق الأغشية الداخلية أو الأوعية الدموية دون إتلاف مرئي للقشرة، ونفس الحذر يستحق أن يُتّبع بعد وضع البيض في الحاضنة أيضًا، وليس فقط قبل ذلك.",
+  accuracyTitle:"٣.٥ · الإعداد من أجل الدقة",
+  accuracyText:"دقة الحرارة أهم من أي إعداد منفرد آخر. تهدف الممارسة التجارية عمومًا للحفاظ على صينية البيض ضمن ±0.3°م (±0.5°ف) من الهدف، والانحرافات الصغيرة المستمرة لساعات — وليس مجرد ارتفاعات لحظية — هي ما يسبب مشاكل النمو، لذا فإن ثبات المتوسط أهم من ملاحقة قراءة لحظية دقيقة. الرطوبة متسامحة نسبيًا خلال معظم فترة التحضين لكنها تحتاج للرفع في الأيام الأخيرة قبل الفقس (تُعرف غالبًا بالإغلاق)، حين تُبقي الرطوبة الأعلى الغشاء الداخلي للقشرة مرنًا بما يكفي ليخترقه الفرخ بدلاً من أن يجف ويحبسه بالداخل.",
+  candlingIntroTitle:"٤.١ · الفحص بالضوء (Candling)",
+  candlingIntroText:"الفحص بالضوء يعني تسليط شعاع ضوء مركّز عبر القشرة، عادة في غرفة مظلمة، لرؤية محتوى البيضة دون فتحها. إنها أبسط طريقة لتتبع سرعة نمو الغرفة الهوائية — مؤشر تقريبي لمعدل فقد الماء — واكتشاف البيض غير المخصب أو المتوقف عن النمو لإزالته قبل أن يفسد أو، في حالات نادرة، ينفجر داخل الحاضنة. إذا بدت الغرفة الهوائية أكبر من المتوقع ليوم التحضين، فهذا يعني فقدان ماء زائد ويجب رفع الرطوبة؛ وإذا بدت أصغر من المتوقع، فالعكس صحيح.",
+  problemsIntroFull:"معظم مشكلات الفقس تعود لواحد أو أكثر من العوامل البيئية الخمسة في القسم 1.1 بعد خروجه عن نطاقه، أو لظروف أسبق في السلسلة — تغذية القطيع، أو تخزين البيض، أو التعامل معه — لا يمكن لأي تعديل بالحاضنة إصلاحها بعد فوات الأوان. يجمع الجدول أدناه المشكلات الأكثر شيوعًا عبر الأنواع مع أكثر أسبابها المساهمة ذكرًا؛ ولأن عدة أسباب غالبًا ما تتداخل، فإن أداة التشخيص الأكثر فائدة عادة هي عينة مفحوصة بالضوء واتجاه فقد الوزن (القسم 4) وليس أي عرض منفرد بمعزل عن غيره.",
+  speciesTableIntro:"النطاقات أدناه تُلخّص مصادر منشورة متعددة في الإرشاد الزراعي وتربية الطيور والجوارح، وليست توصية شركة مصنّعة واحدة، وهي مقصودة كنقطة بداية وليس وصفة ثابتة. التباين الحقيقي بين سلالات التربية، جودة القشرة، المناخ المحلي، وحتى طراز الحاضنة نفسه يعني أن الأرقام هنا يجب أن تُراجع دائمًا مقابل ما يُظهره اتجاه فقد الوزن والفحص بالضوء فعليًا لدفعة معينة (القسم 4) — وتعليمات الشركة المصنّعة لحاضنة محددة يجب أن تكون لها الأولوية على أي دليل عام، بما فيه هذا الدليل.",
+  parrotNote:"تتباين المصادر المنشورة للببغاوات أكثر من الدواجن — بعض المربين ذوي الخبرة يشغّلون الأنواع كبيرة البيض (الماكاو، الأمازون) عند رطوبة منخفضة تصل إلى 38٪، وآخرون أقرب لـ45–50٪؛ النطاق المعروض يعكس هذا التباين. الأنواع صغيرة البيض تميل عمومًا للطرف الأعلى من نطاق الرطوبة، والأنواع كبيرة البيض للطرف الأدنى.",
+  raptorNote:"تُحضَّن بيوض الجوارح عادة أدفأ قليلاً من إعدادات الدواجن المعتادة؛ وجدت عدة دراسات منشورة عن الصقور والعوسق معدلات فقس أفضل قرب 38–38.5°م مقارنة بحرارة الدواجن القياسية.",
+  ratiteNote:"بيوض الطيور العدّاءة كبيرة وسميكة القشرة وبطيئة التسخّن أو التبرّد، لذا فإن تقلبات الحرارة أو الرطوبة تستغرق وقتًا أطول لتظهر — ووقتًا أطول لتصحيحها — مقارنة بالبيض الصغير.",
   turning_precocial:"تقليب صواني/درافيل قياسي حسب الشركة المصنّعة، حتى الإغلاق (أنواع مبكرة النمو — §1.2)",
   turning_altricial:"تقليب أكثر تكرارًا وقوة من الدواجن — الأنواع متأخرة النمو تُقلَّب بدورة أضيق في العش (§1.2)",
   devTitle:"مراحل نمو الجنين داخل البيضة", devIntro:"دورة الدجاج البالغة 21 يومًا كمرجع بصري — نفس المسار، مضغوطًا أو ممتدًا، ينطبق على كل الأنواع (راجع أيام كل نوع أعلاه).",
-  dev1_t:"اليوم 1", dev1_d:"يبدأ القرص الجرثومي المخصَّب بالانقسام؛ يظهر الخط البدائي وتتشكّل أولى الجزر الدموية.",
-  dev2_t:"اليوم 2", dev2_d:"تترابط الجزر الدموية في شبكة وعائية. يتشكّل قلب أنبوبي بسيط ويبدأ بالنبض عند الساعة 44 تقريبًا.",
-  dev3_t:"اليوم 3–4", dev3_d:"ينقسم الجنين إلى ثلاث طبقات جرثومية (الاستقطاب المعدي). تظهر براعم الأجنحة والأرجل؛ يبدأ الكيس السلوي بالتشكّل حول الجنين.",
-  dev4_t:"اليوم 5–6", dev4_d:"تبدأ الأعضاء التناسلية والتمايز الجنسي. تبدأ الأصابع والمنقار بالتشكّل؛ تكتسب العين تصبّغًا مرئيًا.",
-  dev5_t:"اليوم 7–8", dev5_d:"تستطيل الرقبة فاصلةً الرأس عن الجسم. يتمايز المنقار العلوي والسفلي؛ يصبح تصبّغ العين واضحًا.",
-  dev6_t:"اليوم 9–10", dev6_d:"تظهر المخالب وأولى بصيلات الريش. ينمو السقاء (الألانتوس) بسرعة؛ تبدأ سنّ البيضة بالتشكّل.",
+  dev1_t:"اليوم 1", dev1_d:"يبدأ القرص الجرثومي المخصَّب بالانقسام. يظهر الخط البدائي — المحور الذي سيتشكّل حوله الرأس والعمود الفقري — وتبدأ أولى الجزر الدموية بالتشكّل.",
+  dev2_t:"اليوم 2", dev2_d:"تترابط الجزر الدموية في شبكة وعائية بسيطة. يتشكّل قلب أنبوبي بسيط ويبدأ بالنبض عند الساعة 44 تقريبًا.",
+  dev3_t:"اليوم 3–4", dev3_d:"يتمايز الجنين إلى ثلاث طبقات جرثومية (الأديم الظاهر، والمتوسط، والباطن) عبر مرحلة تُسمى الاستقطاب المعدي (gastrulation). تظهر براعم الأجنحة والأرجل، ويبدأ الكيس السلوي بالتشكّل حول الجنين داخل سائل.",
+  dev4_t:"اليوم 5–6", dev4_d:"تبدأ الأعضاء التناسلية والتمايز الجنسي. تبدأ الأصابع والمنقار بأخذ شكلهما، وتكتسب العين تصبّغًا مرئيًا.",
+  dev5_t:"اليوم 7–8", dev5_d:"تستطيل الرقبة فاصلةً الرأس عن الجسم بوضوح. يتمايز المنقار العلوي والسفلي، ويمتد الغشاء المحّي (الفيتيلين) ليغطي معظم المح، ويصبح تصبّغ العين واضحًا تمامًا.",
+  dev6_t:"اليوم 9–10", dev6_d:"تظهر المخالب وأولى بصيلات الريش. ينمو السقاء (الألانتوس) — عضو الجنين المشترك للتنفس وتخزين الفضلات — بسرعة، وتبدأ سنّ البيضة بالتشكّل.",
   dev7_t:"اليوم 11–13", dev7_d:"يبدأ تكلّس الهيكل العظمي. تظهر الحراشف والزغب وأظافر الأصابع.",
-  dev8_t:"اليوم 14", dev8_d:"يعيد الجنين وضعيته، برأسه تحت الجناح الأيمن — يأخذ شكل الفرخ بوضوح الآن.",
-  dev9_t:"اليوم 15–17", dev9_d:"ينمو الزغب ويكتسب لونًا. يكاد الزلال ينفد؛ يتّجه المنقار نحو الغرفة الهوائية.",
-  dev10_t:"اليوم 18–19", dev10_d:"يبدأ كيس المح بالانسحاب إلى تجويف الجسم؛ ينخفض السائل السلوي بشكل حاد.",
-  dev11_t:"اليوم 20", dev11_d:"يُستوعب المح كاملاً. يخترق الفرخ الغرفة الهوائية (النقر الداخلي) ويأخذ أول نفس له.",
-  dev12_t:"اليوم 21", dev12_d:"يبدأ النقر الخارجي، يتبعه دوران بطيء يشقّ خطًا حول القشرة حتى تنفصل القبّة.",
+  dev8_t:"اليوم 14", dev8_d:"يعيد الجنين وضعيته برأسه تحت الجناح الأيمن، آخذًا شكل الفرخ بوضوح.",
+  dev9_t:"اليوم 15–17", dev9_d:"ينمو الزغب ويكتسب لونًا. يكاد الزلال ينفد، ويتّجه المنقار نحو الغرفة الهوائية استعدادًا لأول نفس.",
+  dev10_t:"اليوم 18–19", dev10_d:"يبدأ كيس المح — آخر احتياطي غذائي رئيسي قبل الفقس — بالانسحاب إلى تجويف الجسم، وتنخفض كمية السائل السلوي بشكل حاد.",
+  dev11_t:"اليوم 20", dev11_d:"يُستوعب المح كاملاً. يخترق الفرخ الغرفة الهوائية (النقر الداخلي) ويأخذ أول نفس رئوي له؛ وتراكم ثاني أكسيد الكربون الناتج يُحفّز ارتعاشات عضلات الرقبة التي تقود سلسلة الفقس.",
+  dev12_t:"اليوم 21", dev12_d:"يبدأ النقر الخارجي، يتبعه دوران بطيء داخل القشرة يشقّ خطًا حول الطرف العريض للبيضة حتى تنفصل القبّة ويحرر الفرخ نفسه.",
   incTypesTitle:"أنواع الحاضنات",
   inc_stillair_t:"الهواء الساكن", inc_stillair_d:"صندوق معزول يعتمد على الحمل الحراري الطبيعي فقط — يرتفع الهواء الساخن فيتشكل تدرّج حراري حقيقي من الأعلى للأسفل. توضع المستشعرات قرب ارتفاع البيض؛ تعمل حاضنات الهواء الساكن عادة أدفأ بنحو 1–1.5°م من هدف الهواء القسري للتعويض، ويجب أن تبقى مستوية مع بيض متقارب الحجم.",
   inc_forceddraft_t:"الهواء القسري", inc_forceddraft_d:"مروحة دوّارة تُبقي الحرارة شبه موحّدة في كل الحاضنة، فموضع المستشعر أقل أهمية ويمكن لأحجام بيض مختلفة مشاركة نفس الحاضنة. لكن نفس تدفق الهواء يجفف البيض أسرع، فتحتاج الرطوبة انتباهًا أدق.",
@@ -1184,13 +1254,27 @@ function viewGuidance(){
 
 /* ---------- Info branch (§7) ---------- */
 function viewInfo(){
-  let html=`<div class="card"><h2>${t('infoTitle')}</h2><div class="muted">${t('infoIntro')}</div></div>`;
+  let html=`<div class="card"><div class="tag" style="margin-bottom:4px">${t('guideBookTitle')}</div><h2 style="margin-bottom:4px">${t('infoTitle')}</h2><div class="muted">${t('guideBookSubtitle')}</div>
+    <div class="muted" style="margin-top:10px">${t('guidePreface')}</div></div>`;
 
   html+=`<div class="card"><h2>${t('principlesTitle')}</h2><div class="muted" style="margin-bottom:6px">${t('principlesIntro')}</div>`;
   ['temp','turn','humidity','gas','clean'].forEach(k=>{
     html+=`<div class="event"><div><div class="lbl">${t('principle_'+k+'_t')}</div><div class="muted">${t('principle_'+k+'_d')}</div></div></div>`;
   });
-  html+=`<div class="note">${t('altricialNote')}</div></div>`;
+  html+=`<div class="note">${t('principlesClose')}</div></div>`;
+
+  html+=`<div class="card"><h2>${t('altricialTitle')}</h2><div class="muted" style="margin-bottom:6px">${t('altricialIntro')}</div>
+    <div class="event"><div><div class="lbl">${LANG==='ar'?'مبكرة النمو':'Precocial'}</div><div class="muted">${t('precocialText')}</div></div></div>
+    <div class="event"><div><div class="lbl">${LANG==='ar'?'متأخرة النمو':'Altricial'}</div><div class="muted">${t('altricialText')}</div></div></div>
+    <div class="note">${t('altricialNote')}</div></div>`;
+
+  html+=`<div class="card"><h2>${t('eggStructTitle')}</h2><div class="muted" style="margin-bottom:6px">${t('eggStructIntro')}</div>`;
+  ['shell','membranes','aircell','albumen','chalazae','yolk','germinal'].forEach(k=>{
+    html+=`<div class="event"><div><div class="lbl">${t('struct_'+k+'_t')}</div><div class="muted">${t('struct_'+k+'_d')}</div></div></div>`;
+  });
+  html+=`</div>`;
+
+  html+=`<div class="card"><h2>${t('nutritionTitle')}</h2><div class="muted">${t('nutritionText')}</div></div>`;
 
   html+=`<div class="card"><h2>${t('devTitle')}</h2><div class="muted" style="margin-bottom:10px">${t('devIntro')}</div>
     <div class="dev-grid">`;
@@ -1199,6 +1283,12 @@ function viewInfo(){
     html+=`<div class="dev-stage">${eggIllustration(fracs[i-1])}<b>${t('dev'+i+'_t')}</b><span>${t('dev'+i+'_d')}</span></div>`;
   }
   html+=`</div></div>`;
+
+  html+=`<div class="card"><h2>${t('storageTitle')}</h2><div class="muted" style="margin-bottom:6px">${t('storageIntro')}</div>`;
+  ['temp','humidity','orient','time','warm','clean','handle'].forEach(k=>{
+    html+=`<div class="event"><div><div class="lbl">${t('storage_'+k+'_t')}</div><div class="muted">${t('storage_'+k+'_d')}</div></div></div>`;
+  });
+  html+=`</div>`;
 
   html+=`<div class="card"><h2>${t('incTypesTitle')}</h2>`;
   ['stillair','forceddraft','contact'].forEach(k=>{
@@ -1212,7 +1302,12 @@ function viewInfo(){
   });
   html+=`</div>`;
 
-  html+=`<div class="card"><h2>${t('speciesTitle')}</h2>`;
+  html+=`<div class="card"><h2>${t('accuracyTitle')}</h2><div class="muted">${t('accuracyText')}</div></div>`;
+
+  html+=`<div class="card"><h2>${t('candlingIntroTitle')}</h2><div class="muted">${t('candlingIntroText')}</div></div>`;
+
+  html+=`<div class="card"><h2>${t('speciesTitle')}</h2><div class="muted" style="margin-bottom:6px">${t('speciesTableIntro')}</div>`;
+  const catNotes={parrot:'parrotNote', raptor:'raptorNote', ratite:'ratiteNote'};
   ['poultry','waterfowl','parrot','raptor','ratite'].forEach(cat=>{
     const rows=SPECIES.filter(s=>s.category===cat);
     html+=`<div class="set-label" style="margin-top:14px">${t(CATEGORY_META[cat].catNameKey)}</div>
@@ -1221,7 +1316,8 @@ function viewInfo(){
       ${rows.map(sp=>`<tr onclick="openSpeciesDetail('${sp.id}')" style="cursor:pointer">
         <td>${t(sp.nameKey)}</td><td>${ltr(speciesDaysLabel(sp))}</td><td>${ltr(sp.temp)}</td><td>${ltr(sp.humMain)}</td>
       </tr>`).join('')}
-    </table>`;
+    </table>
+    ${catNotes[cat]?`<div class="note">${t(catNotes[cat])}</div>`:''}`;
   });
   html+=`</div>`;
 
@@ -1241,6 +1337,12 @@ function viewInfo(){
     <div class="note" style="margin-top:10px">${t('hoytText')}</div>
     <div class="note">${t('hoytSource')}</div>
   </div>`;
+
+  html+=`<div class="card"><h2>${t('problemsTitle')}</h2><div class="muted" style="margin-bottom:6px">${t('problemsIntroFull')}</div>`;
+  for(let i=1;i<=12;i++){
+    html+=`<div class="event"><div><div class="lbl">${t('prob'+i+'_t')}</div><div class="muted">${t('prob'+i+'_d')}</div></div></div>`;
+  }
+  html+=`</div>`;
 
   html+=`<div class="note" style="padding:0 4px">${t('infoSourceNote')}</div>`;
   return html;
